@@ -62,7 +62,7 @@ public class matrix {
     }
 
     /* Baca matrix dari file */
-    public void bacaFileMatrix(String filename){
+    public void readFileMatrix(String filename){
         // Kamus lokal
         File file = new File(filename);
         int i, j;
@@ -105,7 +105,7 @@ public class matrix {
         }
     }
 
-    public void bacaFileMatrixBolong(String filename, int nKosong){
+    public void readFileMatrixBolong(String filename, int nKosong){
         // Membuat matriks dengan bagian baris terbawah tidak lengkap sebanyak nbBolong element
         /* DEFAULT nKosong
          * Interpolasi Polinom: 1
