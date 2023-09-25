@@ -246,22 +246,22 @@ public class matrix {
     }
 
     public void OBEMatriksEselon(matrix matriks){
-    int lead = 0; //lead = kolom utama  
-    int rowCount = nRow; //jumlah baris
-    int colCount = nCol; //jumlah kolom
+    int kolom_utama = 0; //kolom yang sedang dicek 
+    int jumlah_baris = nRow; //jumlah baris
+    int jumlah_kolom = nCol; //jumlah kolom
 
-    for (int r = 0; r < rowCount; r++) {
-        if (lead >= colCount)
+    for (int r = 0; r < jumlah_baris; r++) {
+        if (kolom_utama >= jumlah_kolom)
             break;
         
         //mencari kolom utama pertama = kolom yg tidak memiliki 0 pada baris manapun
         int i = r; //r adalah indeks baris yang sedang diproses
-        while (matriks.Matrix[i][lead] == 0) { //mencari baris di bawah baris saat ini (baris r) yang memiliki elemen utama (leading entry) yang tidak nol pada kolom utama (lead).
+        while (matriks.Matrix[i][kolom_utama] == 0) { //mencari baris di bawah baris saat ini (baris r) yang memiliki elemen utama (leading entry) yang tidak nol pada kolom utama
             i++;
-            if (i == rowCount) {
+            if (i == jumlah_baris) {
                 i = r;
-                lead++;
-                if (colCount == lead)
+                kolom_utama++;
+                if (jumlah_kolom == kolom_utama)
                     break; 
             }
         }
@@ -273,42 +273,42 @@ public class matrix {
         matriks.Matrix[r] = temp;
 
         // Perhitungan 1 utama
-        double elemenutama = matriks.Matrix[r][lead];
-        for (int j = 0; j < colCount; j++) {
+        double elemenutama = matriks.Matrix[r][kolom_utama];
+        for (int j = 0; j < jumlah_kolom; j++) {
             matriks.Matrix[r][j] /= elemenutama;
         }
 
         //membuat kolom di bawah 1 utama jadi 0
-        for (i = 0; i < rowCount; i++) {
+        for (i = 0; i < jumlah_baris; i++) {
             if (i != r) {
-                double elemenutama2 = matriks.Matrix[i][lead];
-                for (int j = 0; j < colCount; j++) {
+                double elemenutama2 = matriks.Matrix[i][kolom_utama];
+                for (int j = 0; j < jumlah_kolom; j++) {
                     matriks.Matrix[i][j] -= elemenutama2 * matriks.Matrix[r][j];
                 }
             }
         }
         
-        lead++;
+        kolom_utama++;
     }
     }
 
     public void OBEMatriksEselonTereduksi(matrix matriks){
-        int lead = 0; //lead = kolom utama  
-        int rowCount = nRow; //jumlah baris
-        int colCount = nCol; //jumlah kolom
+        int kolom_utama = 0; //kolom utama  
+        int jumlah_baris = nRow; //jumlah baris
+        int jumlah_kolom = nCol; //jumlah kolom
 
-        for (int r = 0; r < rowCount; r++) {
-            if (lead >= colCount)
+        for (int r = 0; r < jumlah_baris; r++) {
+            if (kolom_utama >= jumlah_kolom)
                 break;
             
             //mencari kolom utama pertama = kolom yg tidak memiliki 0 pada baris manapun
             int i = r; //r adalah indeks baris yang sedang diproses
-            while (matriks.Matrix[i][lead] == 0) { //mencari baris di bawah baris saat ini (baris r) yang memiliki elemen utama (leading entry) yang tidak nol pada kolom utama (lead).
+            while (matriks.Matrix[i][kolom_utama] == 0) { //mencari baris di bawah baris saat ini (baris r) yang memiliki elemen utama yang tidak nol pada kolom utama.
                 i++;
-                if (i == rowCount) {
+                if (i == jumlah_baris) {
                     i = r;
-                    lead++;
-                    if (colCount == lead)
+                    kolom_utama++;
+                    if (jumlah_kolom == kolom_utama)
                         break; 
                 }
             }
@@ -320,42 +320,67 @@ public class matrix {
             matriks.Matrix[r] = temp;
 
             // Perhitungan 1 utama
-            double elemenutama = matriks.Matrix[r][lead];
-            for (int j = 0; j < colCount; j++) {
+            double elemenutama = matriks.Matrix[r][kolom_utama];
+            for (int j = 0; j < jumlah_kolom; j++) {
                 matriks.Matrix[r][j] /= elemenutama;
             }
 
             //membuat kolom di bawah 1 utama jadi 0
-            for (i = 0; i < rowCount; i++) {
+            for (i = 0; i < jumlah_baris; i++) {
                 if (i != r) {
-                    double elemenutama2 = matriks.Matrix[i][lead];
-                    for (int j = 0; j < colCount; j++) {
+                    double elemenutama2 = matriks.Matrix[i][kolom_utama];
+                    for (int j = 0; j < jumlah_kolom; j++) {
                         matriks.Matrix[i][j] -= elemenutama2 * matriks.Matrix[r][j];
                     }
                 }
             }
             
-            lead++;
+            kolom_utama++;
         }
     
         //buat angka !0 di atas 1 utama jadi 0
-        for (int r = rowCount - 1; r >= 0; r--) {
-            int leadIndex = -1;
-            for (int j = 0; j < colCount; j++) {
+        for (int r = jumlah_baris - 1; r >= 0; r--) {
+            int kolom_utamaIndex = -1;
+            for (int j = 0; j < jumlah_kolom; j++) {
                 if (matriks.Matrix[r][j] != 0) {
-                    leadIndex = j;
+                    kolom_utamaIndex = j;
                     break;
                 }
             }
     
-            if (leadIndex != -1) {
+            if (kolom_utamaIndex != -1) {
                 for (int i = 0; i < r; i++) {
-                    double factor = matriks.Matrix[i][leadIndex];
-                    for (int j = 0; j < colCount; j++) {
+                    double factor = matriks.Matrix[i][kolom_utamaIndex];
+                    for (int j = 0; j < jumlah_kolom; j++) {
                         matriks.Matrix[i][j] -= factor * matriks.Matrix[r][j];
                     }
                 }
             }
         }
     }
+
+    public boolean isEselonBarisTereduksi(matrix matriks) {
+        for (int i = 0; i < nRow; i++) {
+            if (matriks.Matrix[i][i] != 1) {
+                return false; 
+            }
+            //memeriksa elemen di atas 1 utama
+            for (int j = 0; j < i; j++) {
+                if (matriks.Matrix[i][j] != 0) {
+                    return false; 
+                }
+            }
+    
+            // Memeriksa elemen di bawah 1 utama
+            for (int j = i + 1; j < nCol; j++) {
+                if (matriks.Matrix[i][j] != 0) {
+                    return false; 
+                }
+            }
+        }
+    
+        return true; 
+    }
+    
+
 }
