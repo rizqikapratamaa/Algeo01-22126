@@ -244,4 +244,118 @@ public class matrix {
         this.nRow = 0;
         this.nCol = 0;
     }
+
+    public void OBEMatriksEselon(matrix matriks){
+    int lead = 0; //lead = kolom utama  
+    int rowCount = nRow; //jumlah baris
+    int colCount = nCol; //jumlah kolom
+
+    for (int r = 0; r < rowCount; r++) {
+        if (lead >= colCount)
+            break;
+        
+        //mencari kolom utama pertama = kolom yg tidak memiliki 0 pada baris manapun
+        int i = r; //r adalah indeks baris yang sedang diproses
+        while (matriks.Matrix[i][lead] == 0) { //mencari baris di bawah baris saat ini (baris r) yang memiliki elemen utama (leading entry) yang tidak nol pada kolom utama (lead).
+            i++;
+            if (i == rowCount) {
+                i = r;
+                lead++;
+                if (colCount == lead)
+                    break; 
+            }
+        }
+
+        //OBE pertukaran baris 
+        //Tujuan dari pertukaran baris ini adalah untuk memindahkan baris dengan elemen non-nol di kolom utama (kolom yang sedang diproses) ke baris di atas, sehingga elemen non-nol tersebut menjadi elemen utama di baris baru.
+        double[] temp = matriks.Matrix[i];
+        matriks.Matrix[i] = matriks.Matrix[r];
+        matriks.Matrix[r] = temp;
+
+        // Perhitungan 1 utama
+        double elemenutama = matriks.Matrix[r][lead];
+        for (int j = 0; j < colCount; j++) {
+            matriks.Matrix[r][j] /= elemenutama;
+        }
+
+        //membuat kolom di bawah 1 utama jadi 0
+        for (i = 0; i < rowCount; i++) {
+            if (i != r) {
+                double elemenutama2 = matriks.Matrix[i][lead];
+                for (int j = 0; j < colCount; j++) {
+                    matriks.Matrix[i][j] -= elemenutama2 * matriks.Matrix[r][j];
+                }
+            }
+        }
+        
+        lead++;
+    }
+    }
+
+    public void OBEMatriksEselonTereduksi(matrix matriks){
+        int lead = 0; //lead = kolom utama  
+        int rowCount = nRow; //jumlah baris
+        int colCount = nCol; //jumlah kolom
+
+        for (int r = 0; r < rowCount; r++) {
+            if (lead >= colCount)
+                break;
+            
+            //mencari kolom utama pertama = kolom yg tidak memiliki 0 pada baris manapun
+            int i = r; //r adalah indeks baris yang sedang diproses
+            while (matriks.Matrix[i][lead] == 0) { //mencari baris di bawah baris saat ini (baris r) yang memiliki elemen utama (leading entry) yang tidak nol pada kolom utama (lead).
+                i++;
+                if (i == rowCount) {
+                    i = r;
+                    lead++;
+                    if (colCount == lead)
+                        break; 
+                }
+            }
+
+            //OBE pertukaran baris 
+            //Tujuan dari pertukaran baris ini adalah untuk memindahkan baris dengan elemen non-nol di kolom utama (kolom yang sedang diproses) ke baris di atas, sehingga elemen non-nol tersebut menjadi elemen utama di baris baru.
+            double[] temp = matriks.Matrix[i];
+            matriks.Matrix[i] = matriks.Matrix[r];
+            matriks.Matrix[r] = temp;
+
+            // Perhitungan 1 utama
+            double elemenutama = matriks.Matrix[r][lead];
+            for (int j = 0; j < colCount; j++) {
+                matriks.Matrix[r][j] /= elemenutama;
+            }
+
+            //membuat kolom di bawah 1 utama jadi 0
+            for (i = 0; i < rowCount; i++) {
+                if (i != r) {
+                    double elemenutama2 = matriks.Matrix[i][lead];
+                    for (int j = 0; j < colCount; j++) {
+                        matriks.Matrix[i][j] -= elemenutama2 * matriks.Matrix[r][j];
+                    }
+                }
+            }
+            
+            lead++;
+        }
+    
+        //buat angka !0 di atas 1 utama jadi 0
+        for (int r = rowCount - 1; r >= 0; r--) {
+            int leadIndex = -1;
+            for (int j = 0; j < colCount; j++) {
+                if (matriks.Matrix[r][j] != 0) {
+                    leadIndex = j;
+                    break;
+                }
+            }
+    
+            if (leadIndex != -1) {
+                for (int i = 0; i < r; i++) {
+                    double factor = matriks.Matrix[i][leadIndex];
+                    for (int j = 0; j < colCount; j++) {
+                        matriks.Matrix[i][j] -= factor * matriks.Matrix[r][j];
+                    }
+                }
+            }
+        }
+    }
 }
