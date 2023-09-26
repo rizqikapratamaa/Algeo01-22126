@@ -54,7 +54,7 @@ public class Main {
                         input = Integer.parseInt(row[0]);
     
                     }catch(NumberFormatException e){
-                        input = 0
+                        input = 0;
                     }
                     if (input <= 0 || input > 5){
                         System.out.println("Input tidak valid!");
@@ -99,7 +99,7 @@ public class Main {
                         input = Integer.parseInt(row[0]);
     
                     }catch(NumberFormatException e){
-                        input = 0
+                        input = 0;
                     }
                     if (input <= 0 || input > 5){
                         System.out.println("Input tidak valid!");
@@ -144,7 +144,7 @@ public class Main {
                         input = Integer.parseInt(row[0]);
     
                     }catch(NumberFormatException e){
-                        input = 0
+                        input = 0;
                     }
                     if (input <= 0 || input > 5){
                         System.out.println("Input tidak valid!");
