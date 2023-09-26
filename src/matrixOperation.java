@@ -401,6 +401,27 @@ public class matrixOperation {
             }
         }
 
+        /* Submatriks untuk ekspansi kofaktor */
+        public static matrix createSubMatrix(matrix m, int rowToRemove, int colToRemove) {
+            matrix subMatrix = new matrix();
+            int sub_i = 0;
+            for (int i = 0; i < m.nRow; i++) {
+                if (i == rowToRemove) {
+                    continue;
+                }
+                int sub_j = 0;
+                for (int j = 0; j < m.nCol; j++) {
+                    if (j == colToRemove) {
+                        continue;
+                    }
+                    subMatrix.Matrix[sub_i][sub_j] = m.Matrix[i][j];
+                    sub_j++;
+                }
+                sub_i++;
+            }
+            return subMatrix;
+        }
+
 
     
 }
