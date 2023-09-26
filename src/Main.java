@@ -64,7 +64,7 @@ public class Main {
                 switch(input){
                     // Metode eliminasi gauss
                     case 1:
-                    // Ntar taro disini aja fungsinya EliminasiGauss()
+                    SPLGauss();
                     break;
                     
                     // Metode eliminasi Gauss-Jordan
@@ -178,4 +178,108 @@ public class Main {
 
     }
 
+    public static void SPLGauss(){
+        String line;
+        String[] row;
+        matrix M = new matrix();
+        int baris, kolom, input = 0;
+        Boolean notFirst = false;
+
+        System.out.println("\nPilih metode masukan: ");
+        System.out.println("1. Dari file");
+        System.out.println("2. Dari keyboard");
+
+        do{
+            line = in.nextLine();
+            row = line.split(" ");
+            try{
+                input = Integer.parseInt(row[0]);
+            }catch (NumberFormatException e){
+                input = 0;
+            }
+            if (input <= 0 || input > 2){
+                System.out.println("Input tidak valid!");
+            }
+        }while (input <= 0 || input > 2);
+
+        switch (input){
+            case 1:
+            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
+            System.out.print("\nNama (.txt): ");
+            String filename = in.nextLine();
+            filename = "./test/" + filename;
+            M.readFileMatrix(filename);
+            break;
+
+            case 2:
+            do{
+                System.out.print("\nMasukkan jumlah persamaan: ");
+                line = in.nextLine();
+                row = line.split(" ");
+                try{
+                    baris = Integer.parseInt(row[0]);
+                }catch (NumberFormatException e){
+                    baris = 0;
+                }
+                if (baris <= 0){
+                    System.out.println("Input tidak valid!");
+                }
+            } while (baris <= 0);
+
+            do{
+                System.out.print("Masukkan jumlah variabel: ");
+                line = in.nextLine();
+                row = line.split(" ");
+                try{
+                    kolom = Integer.parseInt(row[0]);
+                } catch (NumberFormatException e){
+                    kolom = 0;
+                }
+                if (kolom <= 0){
+                    System.out.println("Input tidak valid!");
+                }
+            } while (kolom <= 0);
+            kolom = kolom + 1;
+
+            System.out.print("Masukkan nilai dan hasil dari tiap variabel di tiap persamaan: \n");
+            M.readMatrix(baris, kolom);
+            break;
+        }
+
+        if (M.nRow > 0 && M.nCol > 0){
+            M = matrixOperation.gauss(M);
+            SPL.solveSPL(M);
+
+            System.out.println("Apakah ingin dalam bentuk file?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+
+            do{
+                line = in.nextLine();
+                row = line.split(" ");
+                try{
+                    input = Integer.parseInt(row[0]);
+                } catch (NumberFormatException e){
+                    input = 0;
+                }
+                if ((input <= 0 || input > 2) && notFirst){
+                    System.out.println("Input tidak valid!");
+                }
+                notFirst = true;
+            } while(input <= 0 || input > 2);
+
+            switch (input){
+                case 1:
+                SPL.solveSPLFile(M);
+                break;
+                
+                case 2:
+                System.out.println("\nOK! Kembali ke menu utama");
+                break;
+            }
+        }
+        else{
+            System.out.println("Operasi gagal, kembali ke menu utama...");
+        }
+    }
 }

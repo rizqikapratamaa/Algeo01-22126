@@ -119,6 +119,30 @@ public class matrixOperation {
         return mOut;
     }
 
+    public static matrix sliceLastRow(matrix mIn){
+        matrix mOut = new matrix();
+        mOut.nRow = mIn.nRow - 1;
+        mOut.nCol = mIn.nCol;
+        for (int i = 0; i < mOut.nRow; i++){
+            for (int j = 0; j < mOut.nCol; j++){
+                mOut.Matrix[i][j] = mIn.Matrix[i][j];
+            }
+        }
+        return mOut;
+    }
+
+    public static matrix sliceLastCol(matrix mIn){
+        matrix mOut = new matrix();
+        mOut.nRow = mIn.nRow;
+        mOut.nCol = mIn.nCol - 1;
+        for (int i = 0; i < mOut.nRow; i++){
+            for (int j = 0; j < mOut.nCol; j++){
+                mOut.Matrix[i][j] = mIn.Matrix[i][j];
+            }
+        }
+        return mOut;
+    }
+
     static void tidyUp(matrix mIn){
         for (int i = 0; i < mIn.nRow; i++){
             for (int j = 0; j < mIn.nCol; i++){
