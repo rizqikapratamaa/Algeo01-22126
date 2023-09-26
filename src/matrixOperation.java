@@ -212,4 +212,195 @@ public class matrixOperation {
         }
         return mOut;
     }
+
+     
+    public void OBEMatriksEselon(matrix matriks){
+        int kolom_utama = 0; //kolom yang sedang dicek 
+        int jumlah_baris = matriks.nRow; //jumlah baris
+        int jumlah_kolom = matriks.nCol; //jumlah kolom
+    
+        for (int r = 0; r < jumlah_baris; r++) {
+            if (kolom_utama >= jumlah_kolom)
+                break;
+            
+            //mencari kolom utama pertama = kolom yg tidak memiliki 0 pada baris manapun
+            int i = r; //r adalah indeks baris yang sedang diproses
+            while (matriks.Matrix[i][kolom_utama] == 0) { //mencari baris di bawah baris saat ini (baris r) yang memiliki elemen utama (leading entry) yang tidak nol pada kolom utama
+                i++;
+                if (i == jumlah_baris) {
+                    i = r;
+                    kolom_utama++;
+                    if (jumlah_kolom == kolom_utama)
+                        break; 
+                }
+            }
+    
+            //OBE pertukaran baris 
+            //Tujuan dari pertukaran baris ini adalah untuk memindahkan baris dengan elemen non-nol di kolom utama (kolom yang sedang diproses) ke baris di atas, sehingga elemen non-nol tersebut menjadi elemen utama di baris baru.
+            double[] temp = matriks.Matrix[i];
+            matriks.Matrix[i] = matriks.Matrix[r];
+            matriks.Matrix[r] = temp;
+    
+            // Perhitungan 1 utama
+            double elemenutama = matriks.Matrix[r][kolom_utama];
+            for (int j = 0; j < jumlah_kolom; j++) {
+                matriks.Matrix[r][j] /= elemenutama;
+            }
+    
+            //membuat kolom di bawah 1 utama jadi 0
+            for (i = 0; i < jumlah_baris; i++) {
+                if (i != r) {
+                    double elemenutama2 = matriks.Matrix[i][kolom_utama];
+                    for (int j = 0; j < jumlah_kolom; j++) {
+                        matriks.Matrix[i][j] -= elemenutama2 * matriks.Matrix[r][j];
+                    }
+                }
+            }
+            
+            kolom_utama++;
+        }
+        }
+    
+        public void OBEMatriksEselonTereduksi(matrix matriks){
+            int kolom_utama = 0; //kolom utama  
+            int jumlah_baris = matriks.nRow; //jumlah baris
+            int jumlah_kolom = matriks.nCol; //jumlah kolom
+    
+            for (int r = 0; r < jumlah_baris; r++) {
+                if (kolom_utama >= jumlah_kolom)
+                    break;
+                
+                //mencari kolom utama pertama = kolom yg tidak memiliki 0 pada baris manapun
+                int i = r; //r adalah indeks baris yang sedang diproses
+                while (matriks.Matrix[i][kolom_utama] == 0) { //mencari baris di bawah baris saat ini (baris r) yang memiliki elemen utama yang tidak nol pada kolom utama.
+                    i++;
+                    if (i == jumlah_baris) {
+                        i = r;
+                        kolom_utama++;
+                        if (jumlah_kolom == kolom_utama)
+                            break; 
+                    }
+                }
+    
+                //OBE pertukaran baris 
+                //Tujuan dari pertukaran baris ini adalah untuk memindahkan baris dengan elemen non-nol di kolom utama (kolom yang sedang diproses) ke baris di atas, sehingga elemen non-nol tersebut menjadi elemen utama di baris baru.
+                double[] temp = matriks.Matrix[i];
+                matriks.Matrix[i] = matriks.Matrix[r];
+                matriks.Matrix[r] = temp;
+    
+                // Perhitungan 1 utama
+                double elemenutama = matriks.Matrix[r][kolom_utama];
+                for (int j = 0; j < jumlah_kolom; j++) {
+                    matriks.Matrix[r][j] /= elemenutama;
+                }
+    
+                //membuat kolom di bawah 1 utama jadi 0
+                for (i = 0; i < jumlah_baris; i++) {
+                    if (i != r) {
+                        double elemenutama2 = matriks.Matrix[i][kolom_utama];
+                        for (int j = 0; j < jumlah_kolom; j++) {
+                            matriks.Matrix[i][j] -= elemenutama2 * matriks.Matrix[r][j];
+                        }
+                    }
+                }
+                
+                kolom_utama++;
+            }
+        
+            //buat angka !0 di atas 1 utama jadi 0
+            for (int r = jumlah_baris - 1; r >= 0; r--) {
+                int kolom_utamaIndex = -1;
+                for (int j = 0; j < jumlah_kolom; j++) {
+                    if (matriks.Matrix[r][j] != 0) {
+                        kolom_utamaIndex = j;
+                        break;
+                    }
+                }
+        
+                if (kolom_utamaIndex != -1) {
+                    for (int i = 0; i < r; i++) {
+                        double factor = matriks.Matrix[i][kolom_utamaIndex];
+                        for (int j = 0; j < jumlah_kolom; j++) {
+                            matriks.Matrix[i][j] -= factor * matriks.Matrix[r][j];
+                        }
+                    }
+                }
+            }
+        }
+    
+        public boolean isEselonBarisTereduksi(matrix matriks) {
+            for (int i = 0; i < matriks.nRow; i++) {
+                if (matriks.Matrix[i][i] != 1) {
+                    return false; 
+                }
+                //memeriksa elemen di atas 1 utama
+                for (int j = 0; j < i; j++) {
+                    if (matriks.Matrix[i][j] != 0) {
+                        return false; 
+                    }
+                }
+        
+                // Memeriksa elemen di bawah 1 utama
+                for (int j = i + 1; j < matriks.nCol; j++) {
+                    if (matriks.Matrix[i][j] != 0) {
+                        return false; 
+                    }
+                }
+            }
+        
+            return true; 
+        }
+    
+        public void EliminasiGaussJordan(matrix Matriks) {
+            if (!isEselonBarisTereduksi(Matriks)) {
+                OBEMatriksEselonTereduksi(Matriks);
+            }
+        
+            // Menginisialisasi solusi dengan nol
+            double[] solusi = new double[Matriks.nCol - 1];
+        
+            // Mencari tipe baris/tipe solusi
+            for (int i = Matriks.nRow - 1; i >= 0; i--) {
+                boolean hasNonZeroCoefficient = false; 
+        
+                for (int j = 0; j < Matriks.nCol - 1; j++) {
+                    if (Matriks.Matrix[i][j] != 0) {
+                        hasNonZeroCoefficient = true; // Jika ada koefisien non-nol, tandai sebagai benar
+                        break;
+                    }
+                }
+        
+                if (!hasNonZeroCoefficient) {
+                    if (Matriks.Matrix[i][Matriks.nCol - 1] != 0) {
+                        // Jika baris semua nol dengan b(last column) != 0 -> tidak ada solusi
+                        System.out.println("Tidak ada solusi.");
+                        break; 
+                    } else {
+                        // Jika baris semua nol dengan b(last column) == 0 -> solusi banyak atau tak hingga
+                        System.out.println("Solusi parametrik :");
+                        for (int j = 0; j < Matriks.nCol - 1; j++) {
+                            if (solusi[j] != 0) {
+                                System.out.println("x" + (j + 1) + " = " + solusi[j]);
+                            }
+                        }
+                        break; 
+                    }
+                } else {
+                    // Solusi unik
+                    solusi[i] = Matriks.Matrix[i][Matriks.nCol - 1];
+                    for (int j = i + 1; j < Matriks.nCol - 1; j++) {
+                        solusi[i] -= Matriks.Matrix[i][j] * solusi[j];
+                    }
+                }
+            }
+        
+            // display solusi unik
+            System.out.println("Solusi unik :");
+            for (int i = 0; i < Matriks.nCol - 1; i++) {
+                System.out.println("x" + (i + 1) + " = " + solusi[i]);
+            }
+        }
+
+
+    
 }
