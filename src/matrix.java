@@ -381,6 +381,58 @@ public class matrix {
     
         return true; 
     }
+
+    public void EliminasiGaussJordan(matrix Matriks) {
+        if (!isEselonBarisTereduksi(Matriks)) {
+            OBEMatriksEselonTereduksi(Matriks);
+        }
+    
+        // Menginisialisasi solusi dengan nol
+        double[] solusi = new double[nCol - 1];
+    
+        // Mencari tipe baris/tipe solusi
+        for (int i = nRow - 1; i >= 0; i--) {
+            boolean hasNonZeroCoefficient = false; 
+    
+            for (int j = 0; j < nCol - 1; j++) {
+                if (Matriks.Matrix[i][j] != 0) {
+                    hasNonZeroCoefficient = true; // Jika ada koefisien non-nol, tandai sebagai benar
+                    break;
+                }
+            }
+    
+            if (!hasNonZeroCoefficient) {
+                if (Matriks.Matrix[i][nCol - 1] != 0) {
+                    // Jika baris semua nol dengan b(last column) != 0 -> tidak ada solusi
+                    System.out.println("Tidak ada solusi.");
+                    break; 
+                } else {
+                    // Jika baris semua nol dengan b(last column) == 0 -> solusi banyak atau tak hingga
+                    System.out.println("Solusi parametrik :");
+                    for (int j = 0; j < nCol - 1; j++) {
+                        if (solusi[j] != 0) {
+                            System.out.println("x" + (j + 1) + " = " + solusi[j]);
+                        }
+                    }
+                    break; 
+                }
+            } else {
+                // Solusi unik
+                solusi[i] = Matriks.Matrix[i][nCol - 1];
+                for (int j = i + 1; j < nCol - 1; j++) {
+                    solusi[i] -= Matriks.Matrix[i][j] * solusi[j];
+                }
+            }
+        }
+    
+        // display solusi unik
+        System.out.println("Solusi unik :");
+        for (int i = 0; i < nCol - 1; i++) {
+            System.out.println("x" + (i + 1) + " = " + solusi[i]);
+        }
+    }
+    
+    
     
 
 }
