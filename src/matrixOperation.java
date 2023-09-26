@@ -529,6 +529,63 @@ public class matrixOperation {
         }
         
 
+        /* Menghitung determinan matriks dengan menggunakan ekspansi kofaktor */
+        public static double determinantKofaktor(matrix m){
+            double det = 0.0;
+            if(m.nRow == 1){
+                det = m.Matrix[0][0];
+            } else if (m.nRow == 4){
+                det = (m.Matrix[0][0]*m.Matrix[1][1]) - (m.Matrix[0][1]*m.Matrix[1][0]);
+            } else{
+                int sign = 1;
+                for(int j = 0; j < m.nCol; j++){
+                    det += sign * m.Matrix[0][j] * determinantKofaktor(createSubMatrix(m, 0, j));
+                    sign = -sign;
+                }
+            }
+            return det;
+        }
+
+        
+        /* Menghitung Kofaktor */
+        public static matrix kofaktor(matrix m) {
+            int sign;
+            matrix cofactor = new matrix(); // Membuat matriks kofaktor dengan ukuran yang sama
+            for (int i = 0; i < m.nRow; i++) { // Loop baris matriks
+                if (i % 2 == 0) {
+                    sign = 1; // Jika baris genap, set tanda positif
+                } else {
+                    sign = -1; // Jika baris ganjil, set tanda negatif
+                }
+        
+                for (int j = 0; j < m.nCol; j++) { // Loop kolom matriks
+                    matrix subMatrix = createSubMatrix(m, i, j); // Buat submatriks tanpa baris dan kolom i, j
+                    cofactor.Matrix[i][j] = sign * determinantKofaktor(subMatrix); // Hitung kofaktor dan tambahkan ke matriks kofaktor
+                    sign = -sign; // Ubah tanda untuk kolom ??? berikutnya
+                }
+            }
+            return cofactor; // Kembalikan matriks kofaktor
+        }
+
+
+        /* Menghitung Invers Menggunakan Adjoin */
+        public static matrix inverseAdjoin(matrix m){
+            matrix adjoin, invers;
+            double determinan;
+            int i, j;
+
+            determinan = determinantKofaktor(m);
+            adjoin = matrixOperation.transpose(kofaktor(m));
+            invers = new matrix();
+
+            for(i = 0; i < m.nRow; i++){
+                for(j = 0; j < m.nCol; j++){
+                    invers.Matrix[i][j] = adjoin.Matrix[i][j] / determinan;
+                }
+            }
+            return invers;
+        }
+
             
     
 }
