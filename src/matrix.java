@@ -211,8 +211,8 @@ public class matrix {
         int i, j;
         boolean foundNonZero;
         foundNonZero = false;
-        for (i = 0; i < this.nRow; i++){
-            for (j = 0; j < this.nCol; j++){
+        for (i = 0; i < this.nRow && !foundNonZero; i++){
+            for (j = 0; j < this.nCol && !foundNonZero; j++){
                 foundNonZero = (this.Matrix[i][j] != 0);
             }
         }

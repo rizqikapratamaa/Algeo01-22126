@@ -25,6 +25,7 @@ public class matrixOperation {
         return mOut;
     }
 
+
     public static matrix matrixAddition(matrix m1, matrix m2){
         /* Menambahkan matriks */
         // I.S Dimensi m1 = dimensi m2
@@ -144,8 +145,8 @@ public class matrixOperation {
     }
 
     static void tidyUp(matrix mIn){
-        for (int i = 0; i < mIn.nRow; i++){
-            for (int j = 0; j < mIn.nCol; i++){
+        for(int i = 0; i < mIn.nRow; i++){
+            for(int j = 0; j < mIn.nCol; j++){
                 if (mIn.Matrix[i][j] < 0.00000000001 && mIn.Matrix[i][j] > -0.00000000001){
                     mIn.Matrix[i][j] = 0;
                 }
@@ -178,7 +179,7 @@ public class matrixOperation {
                         lenNon0 += 1;
                     }
                     else{
-                        kolom += 1;
+                        colSearch += 1;
                     }
                 }
                 if (!adaNon0){
@@ -217,7 +218,7 @@ public class matrixOperation {
         int baris = 0;
         int i;
 
-        tidyUp(mIn);
+        tidyUp(mOut);
         mOut = compactzero(mIn);
         while (kolom < mOut.nCol-1){
             if (mOut.Matrix[baris][kolom] == 0){

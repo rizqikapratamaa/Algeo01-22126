@@ -82,7 +82,9 @@ public class SPL{
                     unique = false;
                 }
             }
-            if (unique) x = 1;
+            if (unique){
+                x = 1;
+            }
             else x = 2;
         }
         else{
@@ -106,7 +108,8 @@ public class SPL{
             while (adabaris0 && i > -1){
                 j = 0;
                 while (adabaris0 && j < mIn.nCol){
-                    if (mIn.Matrix[i][j] != 0){   
+                    if (mIn.Matrix[i][j] != 0){  
+                        adabaris0 = false;
                     }
                     j += 1;
                 }
@@ -126,12 +129,12 @@ public class SPL{
         matrix temp = new matrix();
         boolean solvable = false;
 
-        int j = 0;
+        int j;
 
         temp = removerow0(mIn);
-
+        j = 0;
         while (!solvable && j < temp.nCol-1){
-            if (temp.Matrix[temp.nCol-1][j] != 0){
+            if (temp.Matrix[temp.nRow-1][j] != 0){
                 solvable = true;
             }
             else{
@@ -147,9 +150,10 @@ public class SPL{
         // Dipake di solusi banyak
         
         // Kamus Lokal
-        int kolom = 0;
+        int kolom;
         boolean ada = false;
 
+        kolom = 0;
         while ((!ada) && (kolom < mIn.nCol)){
             if (mIn.Matrix[baris][kolom] == 1){
                 ada = true;
@@ -246,13 +250,13 @@ public class SPL{
         double arrayHasil[] = new double[mIn.nCol - 1];
 
         // Algortima
-        for (i = 0; i < mIn.nCol; i++){
+        for (i = 0; i < mIn.nCol - 1; i++){
             arrayHasil[i] = 0;
         }
 
         for (i = mIn.nRow-1; i > -1; i--){
             cache = mIn.Matrix[i][mIn.nCol-1];
-            for (j = 0; j < mIn.nCol-1; j++){
+            for (j = i; j < mIn.nCol-1; j++){
                 cache -= arrayHasil[j] * mIn.Matrix[i][j];
             }
             arrayHasil[i] = cache;
@@ -379,7 +383,7 @@ public class SPL{
                     if (!realzero){
                         if (arrayChar[j] == '/'){
                             arrayChar[j] = var;
-                            if (var == 'z'){
+                            if (var == 'Z'){
                                 var = 'A';
                             }
                             else if (var == 'R'){
@@ -435,7 +439,7 @@ public class SPL{
             System.out.print(" = ");
             if (arrayHasil[i] == 0){
                 realzero = true;
-                for (j = i; j < mIn.nRow-1; j++){
+                for (j = i; j < mIn.nCol-1; j++){
                     if (arrayChar[j] != '/'){
                         realzero = true;
                     }
