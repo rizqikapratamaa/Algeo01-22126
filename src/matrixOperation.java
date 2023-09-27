@@ -165,10 +165,10 @@ public class matrixOperation {
     /* Fungsi Buat Ambil Baris Terakhir */
     public static matrix takeLastRow(matrix mIn){
         matrix mOut = new matrix();
-        mOut.nRow = mIn.nRow;
-        mOut.nCol = 1;
-        for (int i = 0; i < mOut.nCol; i++){
-            mOut.Matrix[i][0] = mIn.Matrix[mIn.nRow - 1][i];
+        mOut.nRow = 1;
+        mOut.nCol = mIn.nCol;
+        for (int i = 0; i < mOut.nRow; i++){
+            mOut.Matrix[0][i] = mIn.Matrix[mIn.nRow - 1][i];
         }
         return mOut;
     }
@@ -176,10 +176,10 @@ public class matrixOperation {
     /* Fungsi Buat Ambil Kolom Terakhir */
     public static matrix takeLastCol(matrix mIn){
         matrix mOut = new matrix();
-        mOut.nRow = 1;
-        mOut.nCol = mIn.nCol;
+        mOut.nRow = mIn.nRow;
+        mOut.nCol = 1;
         for (int i = 0; i < mOut.nRow; i++){
-            mOut.Matrix[0][i] = mIn.Matrix[mIn.nRow - 1][i];
+            mOut.Matrix[i][0] = mIn.Matrix[i][mIn.nCol - 1];
         }
         return mOut;
     }
@@ -636,7 +636,7 @@ public class matrixOperation {
     }
 
     
-    public static double detOBE(matrix MIn){
+    public static double detOBE(matrix mIn){
         /* Mengembalikan determinan matriks */
         //prekondisi berukuran aXa
         //determinan dicari menggunakan metode segitiga atas
@@ -652,7 +652,7 @@ public class matrixOperation {
         // Algoritma
 
 
-        MTemp = cloneMatrix(MIn);
+        MTemp = cloneMatrix(mIn);
         
         //Padetin 0 dulu
         while ((lenNon0 < MTemp.nRow) && (kolom < MTemp.nCol)) {
@@ -780,7 +780,7 @@ public class matrixOperation {
     }
 
     public static matrix inverseAdjoint(matrix mIn){
-        // PREKONDISI: MIn matriks persegi, DET mIn != 0
+        // PREKONDISI: mIn matriks persegi, DET mIn != 0
         matrix mOut = new matrix();
         mOut = transpose(matrixCof(mIn));
         for (int i = 0; i < mIn.nCol; i++){
@@ -808,18 +808,21 @@ public class matrixOperation {
     public static void kaidahCramer(matrix m){
         matrix mCut = new matrix();
         matrix mhasilB = new matrix();
-        double determinanX;
+        double determinanX, determinan;
         int i, j;
 
-        if(determinantKofaktor(m) == 0){
+        // memotong elemen terakhir dari matriks augmented dan masukin ke matriks mCut
+        for(i = 0; i < m.nRow; i++){
+            for(j = 0; j < m.nCol-1; j++){
+                mCut.Matrix[i][j] = m.Matrix[i][j];
+            }
+        }
+
+        determinan = determinantKofaktor(mCut);
+
+        if(determinan == 0){
             System.out.println("Tidak bisa menggunakan kaidah cramer karena determinan matriks = 0");
         }else{
-            // memotong elemen terakhir dari matriks augmented dan masukin ke matriks mCut
-            for(i = 0; i < m.nRow; i++){
-                for(j = 0; j < m.nCol-1; j++){
-                    mCut.Matrix[i][j] = m.Matrix[i][j];
-                }
-            }
 
             // bikin matriks yang isinya b
             for(i=0; i<m.nRow; i++){
@@ -831,8 +834,17 @@ public class matrixOperation {
                     mCut.Matrix[i][j] = mhasilB.Matrix[i][0];
                 }
                 determinanX = determinantKofaktor(mCut);
-                System.out.println("Nilai x" + (j+1) + " = " + determinanX/determinantKofaktor(m));
+                System.out.println("Nilai x" + (j+1) + " = " + determinanX/determinan);
             }
         }
+    }
+
+    public static matrix cramerSwap(matrix m2, matrix m1, int col){
+        matrix temp = new matrix();
+        temp = cloneMatrix(m2);
+        for (int i = 0; i < m2.nRow; i++){
+            temp.Matrix[i][col] = m1.Matrix[i][0];
+        }
+        return temp;
     }
 }

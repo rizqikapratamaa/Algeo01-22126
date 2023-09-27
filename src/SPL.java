@@ -86,7 +86,37 @@ public class SPL{
             }
         }   
     }
-    /* Persamaan SPL dari Gauss atau Gauss Jordan */
+    
+    public static void solveCramer(matrix M){
+        matrix m1 = new matrix();
+        matrix m2 = new matrix();
+        matrix temp = new matrix();
+
+        m1 = matrixOperation.takeLastCol(M);
+        m2 = matrixOperation.sliceLastCol(M);
+        temp = matrixOperation.cloneMatrix(m2);
+
+        System.out.print("\n");
+        if (m2.nRow != m2.nCol){
+            System.out.println("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat disolusikan.");
+        }
+        else if (matrixOperation.detExCofRow0(m2) == 0){
+            System.out.println("Matriks tidak memiliki inverse sehingga tidak dapat disolusikan.");
+        }
+
+        else{
+            for (int i = 0; i < m1.nRow; i++){
+                temp = matrixOperation.cramerSwap(m2, m1, i);
+
+                System.out.print("x");
+                System.out.print(i+1);
+                System.out.print(" = ");
+                System.out.print(matrixOperation.detExCofRow0(temp)/matrixOperation.detExCofRow0(m2));
+                System.out.print(", \n");
+            }
+        }
+    }
+
     public static int checkSPL(matrix m){
         // I.S matriks m adalah matriks gauss/gauss jordan spl
         // 0 = Matriks kosong (semua 0)
