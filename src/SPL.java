@@ -4,24 +4,24 @@ import java.io.*;
 public class SPL{
     static Scanner in = new Scanner(System.in);
 
-    public static void solveSPL(matrix m){
+    public static void solveSPL(matrix mIn){
         /* Menerima matrix gauss/gauss jordan spl */
         int condition;
-        matrixOperation.tidyUp(m);
-        condition = checkSPL(m);
+        matrixOperation.tidyUp(mIn);
+        condition = checkSPL(mIn);
 
         System.out.print("\n");
         switch (condition){
             case 0:
-            solusiKosong(m);
+            solusiKosong(mIn);
             break;
 
             case 1:
-            solusiUnik(m);
+            solusiUnik(mIn);
             break;
 
             case 2:
-            solusiBanyak(m);
+            solusiBanyak(mIn);
             break;
 
             case 3:
@@ -30,35 +30,62 @@ public class SPL{
         }
     }
 
-    public static void solveSPLFile(matrix m){
+    public static void solveSPLFile(matrix mIn){
         // Buat output file
         int condition;
         String filename;
 
-        matrixOperation.tidyUp(m);
-        condition = checkSPL(m);
+        matrixOperation.tidyUp(mIn);
+        condition = checkSPL(mIn);
         System.out.print("\nMasukkan nama file: ");
         filename = in.nextLine();
 
         switch (condition){
             case 0:
-            solusiKosongFile(m, filename);
+            solusiKosongFile(mIn, filename);
             break;
 
             case 1:
-            solusiUnikFile(m, filename);
+            solusiUnikFile(mIn, filename);
             break;
 
             case 2:
-            solusiBanyakFile(m, filename);
+            solusiBanyakFile(mIn, filename);
             break;
 
             case 3:
-            solusiNoneFile(m, filename);
+            solusiNoneFile(mIn, filename);
             break;
         }
     }
 
+    public static void solveWithInverse(matrix mIn){
+        matrix m1 = new matrix();
+        matrix m2 = new matrix();
+
+        m1 = matrixOperation.sliceLastCol(mIn);
+        m2 = matrixOperation.takeLastCol(mIn);
+
+        System.out.print("\n");
+        if (m1.nRow != m1.nCol){
+            System.out.println("Matriks memerlukan " + m1.nCol + " persamaan untuk dapat diselesaikan");
+        }
+        else if (matrixOperation.detExCofRow0(m1) == 0){
+            System.out.println("Matriks tidak memiliki inverse.");
+        }
+        else{
+            m1 = matrixOperation.inverseAdjoint(m1);
+            m2 = matrixOperation.multiplyMatrix(m1, m2);
+
+            for (int i = 0; i < m2.nRow; i++){
+                System.out.print("x");
+                System.out.print(i+1);
+                System.out.print(" = ");
+                System.out.print(m2.Matrix[i][0]);
+                System.out.print(", \n");
+            }
+        }   
+    }
     /* Persamaan SPL dari Gauss atau Gauss Jordan */
     public static int checkSPL(matrix m){
         // I.S matriks m adalah matriks gauss/gauss jordan spl
