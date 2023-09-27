@@ -803,4 +803,36 @@ public class matrixOperation {
         }
         return mOut;
     }
+
+    /* Kaidah Cramer */
+    public static void kaidahCramer(matrix m){
+        matrix mCut = new matrix();
+        matrix mhasilB = new matrix();
+        double determinanX;
+        int i, j;
+
+        if(determinantKofaktor(m) == 0){
+            System.out.println("Tidak bisa menggunakan kaidah cramer karena determinan matriks = 0");
+        }else{
+            // memotong elemen terakhir dari matriks augmented dan masukin ke matriks mCut
+            for(i = 0; i < m.nRow; i++){
+                for(j = 0; j < m.nCol-1; j++){
+                    mCut.Matrix[i][j] = m.Matrix[i][j];
+                }
+            }
+
+            // bikin matriks yang isinya b
+            for(i=0; i<m.nRow; i++){
+                mhasilB.Matrix[i][0] = m.Matrix[i][m.nCol-1];
+            }
+
+            for(j=0; j<m.nCol-1; j++){
+                for(i=0; i<m.nRow; i++){
+                    mCut.Matrix[i][j] = mhasilB.Matrix[i][0];
+                }
+                determinanX = determinantKofaktor(mCut);
+                System.out.println("Nilai x" + (j+1) + " = " + determinanX/determinantKofaktor(m));
+            }
+        }
+    }
 }
