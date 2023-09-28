@@ -244,6 +244,22 @@ public class matrix {
         this.nRow = 0;
         this.nCol = 0;
     }
+
+    public static double getElement(matrix matriks, int row, int col) {
+        if (row < 0 || row >= matriks.nRow || col < 0 || col >= matriks.nCol) {
+            System.out.println("Indeks baris atau kolom tidak valid.");
+        }
+
+        return matriks.Matrix[row][col];
+    }
+    
+    public static void setElement(matrix matriks, int row, int col, double value) {
+        if (row < 0 || row >= matriks.nRow || col < 0 || col >= matriks.nCol) {
+            System.out.println("Indeks baris atau kolom tidak valid.");
+        }
+    
+        matriks.Matrix[row][col] = value;
+    }
     
 
 }
