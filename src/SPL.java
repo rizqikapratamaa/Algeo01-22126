@@ -2,11 +2,14 @@ import java.util.*;
 import java.io.*;
 
 public class SPL{
+    private int nEff;
+    private double[] x;
+    private String[] answer;
     /*Konstruktor */
     public SPL(){
         this.nEff = 0; //jumlah elemen valid
-        this.x = new double[100001]; //inisialisasi x
-        this.answer = new String[100001];
+        this.x = new double[100000]; //inisialisasi x
+        this.answer = new String[100000];
     }
 
     static Scanner in = new Scanner(System.in);
