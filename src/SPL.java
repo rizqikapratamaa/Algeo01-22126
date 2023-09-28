@@ -2,6 +2,16 @@ import java.util.*;
 import java.io.*;
 
 public class SPL{
+    public int nEff;
+    public double[] x;
+    public String[] answer;
+    /*Konstruktor */
+    public SPL(){
+        this.nEff = 0; //jumlah elemen valid
+        this.x = new double[100000]; //inisialisasi x
+        this.answer = new String[100000];
+    }
+
     static Scanner in = new Scanner(System.in);
 
     public static void solveSPL(matrix mIn){
