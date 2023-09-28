@@ -327,7 +327,7 @@ public class matrixOperation {
     }
 
      
-    public void OBEMatriksEselon(matrix matriks){
+    public static void OBEMatriksEselon(matrix matriks){
         int kolom_utama = 0; //kolom yang sedang dicek 
         int jumlah_baris = matriks.nRow; //jumlah baris
         int jumlah_kolom = matriks.nCol; //jumlah kolom
@@ -374,7 +374,7 @@ public class matrixOperation {
         }
         }
     
-    public void OBEMatriksEselonTereduksi(matrix matriks){
+    public static void OBEMatriksEselonTereduksi(matrix matriks){
         int kolom_utama = 0; //kolom utama
         int jumlah_baris = matriks.nRow; //jumlah baris
         int jumlah_kolom = matriks.nCol; //jumlah kolom
@@ -441,7 +441,7 @@ public class matrixOperation {
         }
     }
 
-    public boolean isEselonBarisTereduksi(matrix matriks) {
+    public static boolean isEselonBarisTereduksi(matrix matriks) {
         for (int i = 0; i < matriks.nRow; i++) {
             if (matriks.Matrix[i][i] != 1) {
                 return false; 
@@ -464,7 +464,7 @@ public class matrixOperation {
         return true; 
     }
 
-    public void EliminasiGaussJordan(matrix Matriks) {
+    public static void EliminasiGaussJordan(matrix Matriks) {
         if (!isEselonBarisTereduksi(Matriks)) {
             OBEMatriksEselonTereduksi(Matriks);
         }
@@ -536,7 +536,7 @@ public class matrixOperation {
     }
 
 
-    public matrix setIdentity(matrix matriks) {
+    public static matrix setIdentity(matrix matriks) {
         for (int i = 0; i < matriks.nRow; i++) {
             for (int j = 0; j < matriks.nCol; j++) {
                 if (i == j) {
@@ -549,24 +549,24 @@ public class matrixOperation {
         return matriks;
     }
     
-    // public matrix inverseWithGaussJordan(matrix matriks) {
-    //     int n = matriks.nRow; // Ukuran matriks A (n x n)
-    //     matrix identity = new matrix();
-    //     identity = setIdentity(identity); // Matriks identitas I
+    public static matrix inverseWithGaussJordan(matrix matriks) {
+        int n = matriks.nRow; // Ukuran matriks A (n x n)
+        matrix identity = new matrix();
+        identity = setIdentity(identity); // Matriks identitas I
     
-    //     // Buat matriks gabungan [A | I]
-    //     matrix combinedMatrix = concatenateHorizontal(matriks, identity);
+        // Buat matriks gabungan [A | I]
+        matrix combinedMatrix = concatenateHorizontal(matriks, identity);
     
-    //     // Eliminasi Gauss-Jordan pada matriks gabungan
-    //     EliminasiGaussJordan(combinedMatrix);
+        // Eliminasi Gauss-Jordan pada matriks gabungan
+        EliminasiGaussJordan(combinedMatrix);
     
-    //     // Ekstrak matriks invers dari matriks hasil
-    //     matrix inverseMatrix = getSubmatrix(combinedMatrix, 0, n, n, 2 * n);
-    //     return inverseMatrix;
-    // }
+        // Ekstrak matriks invers dari matriks hasil
+        matrix inverseMatrix = getSubmatrix(combinedMatrix, n,  2 * n);
+        return inverseMatrix;
+    }
     
     // Menggabungkan dua matriks secara horizontal
-    public matrix concatenateHorizontal(matrix A, matrix B) {
+    public static matrix concatenateHorizontal(matrix A, matrix B) {
         if (A.nRow != B.nRow) {
             System.out.println("Matriks harus memiliki jumlah baris yang sama.");
         }
@@ -585,7 +585,7 @@ public class matrixOperation {
         return combined;
     }
 
-    public double getElement(matrix matriks, int row, int col) {
+    public static double getElement(matrix matriks, int row, int col) {
         if (row < 0 || row >= matriks.nRow || col < 0 || col >= matriks.nCol) {
             System.out.println("Indeks baris atau kolom tidak valid.");
         }
@@ -593,7 +593,7 @@ public class matrixOperation {
         return matriks.Matrix[row][col];
     }
     
-    public void setElement(matrix matriks, int row, int col, double value) {
+    public static void setElement(matrix matriks, int row, int col, double value) {
         if (row < 0 || row >= matriks.nRow || col < 0 || col >= matriks.nCol) {
             System.out.println("Indeks baris atau kolom tidak valid.");
         }
