@@ -327,7 +327,7 @@ public class matrixOperation {
     }
 
      
-    public void OBEMatriksEselon(matrix matriks){
+    public static void OBEMatriksEselon(matrix matriks){
         int kolom_utama = 0; //kolom yang sedang dicek 
         int jumlah_baris = matriks.nRow; //jumlah baris
         int jumlah_kolom = matriks.nCol; //jumlah kolom
@@ -374,7 +374,7 @@ public class matrixOperation {
         }
         }
     
-    public void OBEMatriksEselonTereduksi(matrix matriks){
+    public static void OBEMatriksEselonTereduksi(matrix matriks){
         int kolom_utama = 0; //kolom utama  
         int jumlah_baris = matriks.nRow; //jumlah baris
         int jumlah_kolom = matriks.nCol; //jumlah kolom
@@ -441,7 +441,7 @@ public class matrixOperation {
         }
     }
 
-    public boolean isEselonBarisTereduksi(matrix matriks) {
+    public static boolean isEselonBarisTereduksi(matrix matriks) {
         for (int i = 0; i < matriks.nRow; i++) {
             if (matriks.Matrix[i][i] != 1) {
                 return false; 
@@ -464,7 +464,7 @@ public class matrixOperation {
         return true; 
     }
 
-    public void EliminasiGaussJordan(matrix Matriks) {
+    public static void EliminasiGaussJordan(matrix Matriks) {
         if (!isEselonBarisTereduksi(Matriks)) {
             OBEMatriksEselonTereduksi(Matriks);
         }
@@ -575,34 +575,18 @@ public class matrixOperation {
     
         for (int i = 0; i < A.nRow; i++) {
             for (int j = 0; j < A.nCol; j++) {
-                setElement(combined, i, j, getElement(A,i, j));
+                matrix.setElement(combined, i, j, matrix.getElement(A,i, j));
             }
             for (int j = 0; j < B.nCol; j++) {
-                setElement(combined, i, A.nCol + j, getElement(B,i, j));
+                matrix.setElement(combined, i, A.nCol + j, matrix.getElement(B,i, j));
             }
         }
     
         return combined;
     }
 
-    public double getElement(matrix matriks, int row, int col) {
-        if (row < 0 || row >= matriks.nRow || col < 0 || col >= matriks.nCol) {
-            System.out.println("Indeks baris atau kolom tidak valid.");
-        }
-
-        return matriks.Matrix[row][col];
-    }
-    
-    public void setElement(matrix matriks, int row, int col, double value) {
-        if (row < 0 || row >= matriks.nRow || col < 0 || col >= matriks.nCol) {
-            System.out.println("Indeks baris atau kolom tidak valid.");
-        }
-    
-        matriks.Matrix[row][col] = value;
-    }
-    
     // Fungsi untuk mendapatkan submatriks dari matriks
-    public matrix getSubmatrix(matrix matriks, int rowStart, int rowEnd, int colStart, int colEnd) {
+    public static matrix getSubmatrix(matrix matriks, int rowStart, int rowEnd, int colStart, int colEnd) {
         int subRows = rowEnd - rowStart;
         int subCols = colEnd - colStart;
     
@@ -610,7 +594,7 @@ public class matrixOperation {
     
         for (int i = 0; i < subRows; i++) {
             for (int j = 0; j < subCols; j++) {
-                setElement(submatrix,i, j, matriks.Matrix[rowStart + i][colStart + j]);
+                matrix.setElement(submatrix,i, j, matriks.Matrix[rowStart + i][colStart + j]);
             }
         }
     
