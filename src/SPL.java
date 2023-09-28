@@ -2,9 +2,9 @@ import java.util.*;
 import java.io.*;
 
 public class SPL{
-    private int nEff;
-    private double[] x;
-    private String[] answer;
+    public int nEff;
+    public double[] x;
+    public String[] answer;
     /*Konstruktor */
     public SPL(){
         this.nEff = 0; //jumlah elemen valid
