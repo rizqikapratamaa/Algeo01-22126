@@ -38,7 +38,7 @@ public class SPL{
         matrixOperation.tidyUp(mIn);
         condition = checkSPL(mIn);
         System.out.print("\nMasukkan nama file: ");
-        filename = in.nextLine();
+        filename = in.nextLine() + ".txt";
 
         switch (condition){
             case 0:
@@ -70,7 +70,7 @@ public class SPL{
         if (m1.nRow != m1.nCol){
             System.out.println("Matriks memerlukan " + m1.nCol + " persamaan untuk dapat diselesaikan");
         }
-        else if (matrixOperation.detExCofRow0(m1) == 0){
+        else if (matrixOperation.determinanKofaktor(m1) == 0){
             System.out.println("Matriks tidak memiliki inverse.");
         }
         else{
@@ -87,21 +87,79 @@ public class SPL{
         }   
     }
     
-    public static void solveCramer(matrix M){
+    public static void solveWithInverseFile(matrix mIn){
+        matrix m1 = new matrix();
+        matrix m2 = new matrix();
+
+        int i, j;
+
+        String filename;
+
+        m1 = matrixOperation.takeLastCol(mIn);
+        m2 = matrixOperation.sliceLastCol(mIn);
+
+        System.out.print("\nMasukkan nama file: ");
+        filename = in.nextLine() + ".txt";
+
+        try{
+            // Buat file
+            BufferedWriter bw = new BufferedWriter(new FileWriter("../test/" + filename));
+
+            // Write Perline
+            bw.write("Matriks: ");
+            bw.newLine();
+            for (i = 0; i < mIn.nRow; i++){
+                for (j = 0; j < mIn.nCol; j++){
+                    bw.write(mIn.Matrix[i][j] + ((j == mIn.nCol - 1) ? "" : " "));
+                }
+            bw.newLine();
+            }
+
+            bw.newLine();
+            if (m2.nRow != m2.nCol){
+                bw.write("Matriks tidak memerlukan " + m2.nCol + " persamaan untuk dapat diselesaikan");
+            }
+            else if (matrixOperation.determinanKofaktor(m2) == 0){
+                bw.write("Tidak dapat menggunakan metode matriks balikan!");
+                bw.newLine();
+            }
+            else{
+                m2 = matrixOperation.inverseAdjoint(mIn);
+                m1 = matrixOperation.multiplyMatrix(m2, m1);
+
+                for (i = 0; i < m1.nRow; i++){
+                    bw.write("x" + (i+1) + " = " + m1.Matrix[i][0]);
+                    if (i == m1.nRow - 1){
+                        bw.newLine();
+                    }
+                    else{
+                        bw.write(", ");
+                        bw.newLine();
+                    }
+                }
+            }
+            bw.flush();
+            bw.close();
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void solveCramer(matrix mIn){
         matrix m1 = new matrix();
         matrix m2 = new matrix();
         matrix temp = new matrix();
 
-        m1 = matrixOperation.takeLastCol(M);
-        m2 = matrixOperation.sliceLastCol(M);
+        m1 = matrixOperation.takeLastCol(mIn);
+        m2 = matrixOperation.sliceLastCol(mIn);
         temp = matrixOperation.cloneMatrix(m2);
 
         System.out.print("\n");
         if (m2.nRow != m2.nCol){
             System.out.println("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat disolusikan.");
         }
-        else if (matrixOperation.detExCofRow0(m2) == 0){
-            System.out.println("Matriks tidak memiliki inverse sehingga tidak dapat disolusikan.");
+        else if (matrixOperation.determinanKofaktor(m2) == 0){
+            System.out.println("Tidak dapat menggunakan kaidah Cramer!");
         }
 
         else{
@@ -111,9 +169,71 @@ public class SPL{
                 System.out.print("x");
                 System.out.print(i+1);
                 System.out.print(" = ");
-                System.out.print(matrixOperation.detExCofRow0(temp)/matrixOperation.detExCofRow0(m2));
+                System.out.print(matrixOperation.determinanKofaktor(temp)/matrixOperation.determinanKofaktor(m2));
                 System.out.print(", \n");
             }
+        }
+    }
+
+    public static void solveCramerFile(matrix mIn){
+        matrix m1 = new matrix();
+        matrix m2 = new matrix();
+        matrix temp = new matrix();
+
+        int i, j;
+        String filename;
+
+        m1 = matrixOperation.takeLastCol(mIn);
+        m2 = matrixOperation.sliceLastCol(mIn);
+        temp = matrixOperation.cloneMatrix(m2);
+
+        System.out.print("\nMasukkan nama file: ");
+        filename = in.nextLine() + ".txt";
+
+        try {
+            // Buat file
+            BufferedWriter bw = new BufferedWriter(new FileWriter("../test/" + filename));
+
+            // Write Perline
+            bw.write("Matriks:");
+            bw.newLine();
+            for (i = 0; i < mIn.nRow; i++){
+                for (j = 0; j < mIn.nCol; j++){
+                    bw.write(mIn.Matrix[i][j] + ((j == mIn.nCol-1) ? "" : " "));
+                }
+            bw.newLine();
+            }
+
+            bw.newLine();
+            if (m2.nRow != m2.nCol){
+                bw.write("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat disolusikan.");
+                bw.newLine();
+            }
+            else if (matrixOperation.determinanKofaktor(m2) == 0){
+                bw.write("Matriks tidak memiliki inverse sehingga tidak dapat disolusikan.");
+                bw.newLine();
+            }
+            else{
+                for (i = 0; i < m1.nRow; i++){
+                    temp = matrixOperation.cramerSwap(m2, m1, i);
+
+                    bw.write("x" + (i+1) + " = " + (matrixOperation.determinanKofaktor(temp)/matrixOperation.determinanKofaktor(m2)));
+                    if (i == m1.nRow-1) {
+                        bw.newLine();
+                    }
+                    else{
+                        bw.write(", ");
+                        bw.newLine();
+                    }
+                }
+            }
+
+            bw.flush();
+            bw.close();
+
+        // Handling Error
+        } catch(IOException e){
+            System.out.println(e.getMessage());
         }
     }
 
@@ -264,7 +384,7 @@ public class SPL{
 
         try{
             // Buat file
-            BufferedWriter bw = new BufferedWriter(new FileWriter("./test/" + filename));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("../test/" + filename));
 
             // Nulis hasil matrix
             bw.write("Hasil pengolahan matriks: ");
@@ -351,7 +471,7 @@ public class SPL{
                 arrayHasil[i] = cache;
             }
                 // Buat file
-                BufferedWriter bw = new BufferedWriter(new FileWriter("./test/" + filename));
+                BufferedWriter bw = new BufferedWriter(new FileWriter("../test/" + filename));
     
     
                 //nulis hasil matriks
@@ -624,7 +744,7 @@ public class SPL{
     
             try {
                 // Buat file
-                BufferedWriter bw = new BufferedWriter(new FileWriter("./test/" + filename));
+                BufferedWriter bw = new BufferedWriter(new FileWriter("../test/" + filename));
     
                 //nulis hasil matriks
                 bw.write("Hasil pengolahan matriks:");
@@ -711,7 +831,7 @@ public class SPL{
 
         try {
             // Buat file
-            BufferedWriter bw = new BufferedWriter(new FileWriter("./test/" + filename));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("../test/" + filename));
 
             //nulis hasil matriks
             bw.write("Hasil pengolahan matriks:");

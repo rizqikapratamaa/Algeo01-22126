@@ -184,7 +184,7 @@ public class matrixOperation {
         return mOut;
     }
 
-    public static double detExCofRow0 (matrix mIn) {
+    public static double determinanKofaktor(matrix mIn) {
         /* kenapa row 0 doang? jadi buat nyari determinan pake ekspansi kofaktor itu kan rekursif ya
        (coba aja sendiri kalo matriksnya 4 x 4), sedangkan di sini untuk setiap determinan harus pake ekspansi kofaktor.
        sedangkan si fungsi slice() itu bakal ngebuang bbrp baris dan kolom. satu2nya yang bisa dipastiin dari setiap matriks
@@ -198,9 +198,9 @@ public class matrixOperation {
             det = 0;
             for (int j = 0; j < mIn.nRow; j++) {
                 if (j % 2 == 0) {
-                    det += mIn.Matrix[0][j] * detExCofRow0(slice(mIn, 0, j));
+                    det += mIn.Matrix[0][j] * determinanKofaktor(slice(mIn, 0, j));
                 } else {
-                    det += (-1) * mIn.Matrix[0][j] * detExCofRow0(slice(mIn, 0, j));
+                    det += (-1) * mIn.Matrix[0][j] * determinanKofaktor(slice(mIn, 0, j));
                 }
             }
         }
@@ -375,7 +375,7 @@ public class matrixOperation {
         }
     
     public void OBEMatriksEselonTereduksi(matrix matriks){
-        int kolom_utama = 0; //kolom utama  
+        int kolom_utama = 0; //kolom utama
         int jumlah_baris = matriks.nRow; //jumlah baris
         int jumlah_kolom = matriks.nCol; //jumlah kolom
 
@@ -549,21 +549,21 @@ public class matrixOperation {
         return matriks;
     }
     
-    public matrix inverseWithGaussJordan(matrix matriks) {
-        int n = matriks.nRow; // Ukuran matriks A (n x n)
-        matrix identity = new matrix();
-        identity = setIdentity(identity); // Matriks identitas I
+    // public matrix inverseWithGaussJordan(matrix matriks) {
+    //     int n = matriks.nRow; // Ukuran matriks A (n x n)
+    //     matrix identity = new matrix();
+    //     identity = setIdentity(identity); // Matriks identitas I
     
-        // Buat matriks gabungan [A | I]
-        matrix combinedMatrix = concatenateHorizontal(matriks, identity);
+    //     // Buat matriks gabungan [A | I]
+    //     matrix combinedMatrix = concatenateHorizontal(matriks, identity);
     
-        // Eliminasi Gauss-Jordan pada matriks gabungan
-        EliminasiGaussJordan(combinedMatrix);
+    //     // Eliminasi Gauss-Jordan pada matriks gabungan
+    //     EliminasiGaussJordan(combinedMatrix);
     
-        // Ekstrak matriks invers dari matriks hasil
-        matrix inverseMatrix = getSubmatrix(combinedMatrix, 0, n, n, 2 * n);
-        return inverseMatrix;
-    }
+    //     // Ekstrak matriks invers dari matriks hasil
+    //     matrix inverseMatrix = getSubmatrix(combinedMatrix, 0, n, n, 2 * n);
+    //     return inverseMatrix;
+    // }
     
     // Menggabungkan dua matriks secara horizontal
     public matrix concatenateHorizontal(matrix A, matrix B) {
@@ -602,40 +602,23 @@ public class matrixOperation {
     }
     
     // Fungsi untuk mendapatkan submatriks dari matriks
-    public matrix getSubmatrix(matrix matriks, int rowStart, int rowEnd, int colStart, int colEnd) {
-        int subRows = rowEnd - rowStart;
-        int subCols = colEnd - colStart;
-    
-        matrix submatrix = new matrix();
-    
-        for (int i = 0; i < subRows; i++) {
-            for (int j = 0; j < subCols; j++) {
-                setElement(submatrix,i, j, matriks.Matrix[rowStart + i][colStart + j]);
+    public static matrix getSubmatrix(matrix mIn, int row, int col) {
+        // Membuat matriks submatriks
+        matrix subMatrix = new matrix();
+        subMatrix.nRow = mIn.nRow - 1;
+        subMatrix.nCol = mIn.nCol - 1;
+
+        // Mengisi matriks submatriks
+        for (int i = 0; i < mIn.nRow - 1; i++) {
+            for (int j = 0; j < mIn.nCol - 1; j++) {
+                subMatrix.Matrix[i][j] = mIn.Matrix[i + row][j + col];
             }
         }
-    
-        return submatrix;
-    }
-    
 
-    /* Menghitung determinan matriks dengan menggunakan ekspansi kofaktor */
-    public static double determinantKofaktor(matrix m){
-        double det = 0.0;
-        if(m.nRow == 1){
-            det = m.Matrix[0][0];
-        } else if (m.nRow == 4){
-            det = (m.Matrix[0][0]*m.Matrix[1][1]) - (m.Matrix[0][1]*m.Matrix[1][0]);
-        } else{
-            int sign = 1;
-            for(int j = 0; j < m.nCol; j++){
-                det += sign * m.Matrix[0][j] * determinantKofaktor(createSubMatrix(m, 0, j));
-                sign = -sign;
-            }
-        }
-        return det;
+        return subMatrix;
     }
 
-    
+    // Menghitung determinan dengan metode OBE
     public static double detOBE(matrix mIn){
         /* Mengembalikan determinan matriks */
         //prekondisi berukuran aXa
@@ -647,24 +630,24 @@ public class matrixOperation {
         int lenNon0 = 0;
         int kolomSearch;
         boolean adaNon0;
-        matrix MTemp = new matrix();
+        matrix temp = new matrix();
 
         // Algoritma
 
 
-        MTemp = cloneMatrix(mIn);
+        temp = cloneMatrix(mIn);
         
         //Padetin 0 dulu
-        while ((lenNon0 < MTemp.nRow) && (kolom < MTemp.nCol)) {
+        while ((lenNon0 < temp.nRow) && (kolom < temp.nCol)) {
             adaNon0 = false;
 
-            if (MTemp.Matrix[lenNon0][kolom] == 0) {
+            if (temp.Matrix[lenNon0][kolom] == 0) {
                 
                 kolomSearch = lenNon0 + 1;
-                while ((kolomSearch < MTemp.nRow) && (!adaNon0)) {
-                    if (MTemp.Matrix[kolomSearch][kolom] != 0) {
+                while ((kolomSearch < temp.nRow) && (!adaNon0)) {
+                    if (temp.Matrix[kolomSearch][kolom] != 0) {
                         adaNon0 = true;
-                        MTemp = rowSwap(MTemp, kolomSearch, lenNon0);
+                        temp = rowSwap(temp, kolomSearch, lenNon0);
                         det *= -1;
                         lenNon0 += 1;
                     }
@@ -683,29 +666,29 @@ public class matrixOperation {
 
 
         //Kalo awal 0 ya udah 0
-        if (MTemp.Matrix[0][0] == 0){
+        if (temp.Matrix[0][0] == 0){
             det = 0;
         }
 
         //Kalo engga diubah jadi matriks segitiga
         else{
-            for (int i = 0; i < MTemp.nCol; i++){
-                for (int j = i+1; j < MTemp.nRow; j++){                    
-                    MTemp = minKaliBaris(MTemp, j, i, MTemp.Matrix[j][i]/MTemp.Matrix[i][i]);
+            for (int i = 0; i < temp.nCol; i++){
+                for (int j = i+1; j < temp.nRow; j++){                    
+                    temp = minKaliBaris(temp, j, i, temp.Matrix[j][i]/temp.Matrix[i][i]);
                 }
 
                 //Padetin 0 lagi
                 kolom = 0;
                 lenNon0 = 0;
-                while ((lenNon0 < MTemp.nRow) && (kolom < MTemp.nCol)) {
+                while ((lenNon0 < temp.nRow) && (kolom < temp.nCol)) {
                     adaNon0 = false;
                     
-                    if (MTemp.Matrix[lenNon0][kolom] == 0) {
+                    if (temp.Matrix[lenNon0][kolom] == 0) {
                         kolomSearch = lenNon0 + 1;
-                        while ((kolomSearch < MTemp.nRow) && (!adaNon0)) {
-                            if (MTemp.Matrix[kolomSearch][kolom] != 0) {
+                        while ((kolomSearch < temp.nRow) && (!adaNon0)) {
+                            if (temp.Matrix[kolomSearch][kolom] != 0) {
                                 adaNon0 = true;
-                                MTemp = rowSwap(MTemp, kolomSearch, lenNon0);
+                                temp = rowSwap(temp, kolomSearch, lenNon0);
                                 det *= -1;
                                 lenNon0 += 1;
                             }
@@ -723,13 +706,48 @@ public class matrixOperation {
                 }
 
                 //diagonal dikaliin
-                det *= MTemp.Matrix[i][i];
+                det *= temp.Matrix[i][i];
             }
         }
 
         //dibuletin 5 angka dibelakang koma
         det = Math.round(det *10000) / 10000;
         return det;
+    }
+
+    public static void detFile(matrix mIn, double det){
+        int i, j;
+        String filename;
+
+        // Algoritma
+        System.out.print("\nMasukkan nama file: ");
+        filename = in.nextLine() + ".txt";
+        try {
+            // Buat file
+            BufferedWriter bw = new BufferedWriter(new FileWriter("../test/" + filename));
+
+            // Write Perline
+
+            bw.write("Matriks:");
+            bw.newLine();
+            for (i= 0; i<mIn.nRow; i++){
+                for (j=0; j<mIn.nCol; j++){
+                    bw.write(mIn.Matrix[i][j] + ((j == mIn.nCol-1) ? "" : " "));
+                }
+            bw.newLine();
+            }
+
+            bw.newLine();
+            bw.write("Determinannya adalah = " + det);
+            bw.newLine();
+
+            bw.flush();
+            bw.close();
+
+        // Handling Error
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /* Menghitung Kofaktor */
@@ -745,7 +763,7 @@ public class matrixOperation {
     
             for (int j = 0; j < m.nCol; j++) { // Loop kolom matriks
                 matrix subMatrix = createSubMatrix(m, i, j); // Buat submatriks tanpa baris dan kolom i, j
-                cofactor.Matrix[i][j] = sign * determinantKofaktor(subMatrix); // Hitung kofaktor dan tambahkan ke matriks kofaktor
+                cofactor.Matrix[i][j] = sign * determinanKofaktor(subMatrix); // Hitung kofaktor dan tambahkan ke matriks kofaktor
                 sign = -sign; // Ubah tanda untuk kolom ??? berikutnya
             }
         }
@@ -761,13 +779,145 @@ public class matrixOperation {
         return cof;
     }
 
+    public static matrix inverseIdentitas(matrix mIn){
+        matrix temp = new matrix();
+        matrix mOut = new matrix();
+        double cache = 0;
+        int lenNon0 = 0;
+        int kolom = 0;
+        int kolom2 = 0;
+        int kolomSearch = 0;
+        int baris = 0;
+        int i = 0;
+        int j = 0;
+        boolean adaNon0;
+
+        temp = cloneMatrix(mIn);
+
+        //Bikin matriks identitas
+        mOut.nRow = mIn.nRow;
+        mOut.nCol = mIn.nCol;
+        for (i = 0; i <mOut.nRow; i++){
+            for (j = 0; j < mOut.nCol; j++){
+                if (i == j){
+                    mOut.Matrix[i][j] = 1;
+                }
+                else {
+                    mOut.Matrix[i][j] = 0;
+                }
+            }
+        }
+
+        //Gunakan metode gauss
+        //Kumpulkan 0 ke atas
+        while ((lenNon0 < temp.nRow) && (kolom < temp.nCol)) {
+            adaNon0 = false;
+            if (temp.Matrix[lenNon0][kolom] == 0) {
+                kolomSearch = lenNon0 + 1;
+                while ((kolomSearch < temp.nRow) && (!adaNon0)) {
+                    if (temp.Matrix[kolomSearch][kolom] != 0) {
+                        adaNon0 = true;
+                        temp = rowSwap(temp, kolomSearch, lenNon0);
+                        mOut = rowSwap(mOut, kolomSearch, lenNon0);
+                        lenNon0 += 1;
+                    }
+                    else{
+                        kolomSearch += 1;
+                    }
+                }
+                if (!adaNon0) {
+                    kolom += 1;
+                }
+            }
+            else{
+                lenNon0 += 1;
+            }
+        }
+        //endcompact 0 pertama
+
+        kolom = 0;
+        baris = 0;
+        while (kolom < temp.nCol) {
+            if (temp.Matrix[baris][kolom] == 0) {
+                kolom += 1;
+            }
+            else{
+                for(i = baris + 1; i < temp.nRow; i++){
+                    cache = temp.Matrix[i][kolom]/temp.Matrix[baris][kolom];
+                    temp = minKaliBaris(temp, i, baris, cache);
+                    mOut = minKaliBaris(mOut, i, baris, cache);
+                }
+
+                cache = 1/temp.Matrix[baris][kolom];
+
+                temp = rowXConst(temp, baris, cache);
+                mOut = rowXConst(mOut, baris, cache);
+
+                //compact 0 kedua
+                lenNon0 = 0;
+                kolom2 = 0;
+                kolomSearch = 0;
+                while ((lenNon0 < temp.nRow) && (kolom2 < temp.nCol)) {
+                    adaNon0 = false;
+                    if (temp.Matrix[lenNon0][kolom2] == 0) {
+                        kolomSearch = lenNon0 + 1;
+                        while ((kolomSearch < temp.nRow) && (!adaNon0)) {
+                            if (temp.Matrix[kolomSearch][kolom2] != 0) {
+                                adaNon0 = true;
+                                temp = rowSwap(temp, kolomSearch, lenNon0);
+                                mOut = rowSwap(mOut, kolomSearch, lenNon0);
+                                lenNon0 += 1;
+                            }
+                            else{
+                                kolomSearch += 1;
+                            }
+                        }
+                        if (!adaNon0) {
+                            kolom2 += 1;
+                        }
+                    }
+                    else{
+                        lenNon0 += 1;
+                    }
+                }
+                //endcompact 0 kedua
+                kolom += 1;
+                baris += 1;
+            }
+        }
+        //endgauss
+
+        //jordan
+        kolom = 0;
+        baris = 0;
+        while (kolom < temp.nCol) {
+            if (temp.Matrix[baris][kolom] == 0) {
+                kolom += 1;
+            }
+            else{
+                for(i = 0; i < baris; i++){
+                    if (i != baris){
+                        cache = temp.Matrix[i][kolom]/temp.Matrix[baris][kolom];
+                        temp = minKaliBaris(temp, i, baris, cache);
+                        mOut = minKaliBaris(mOut, i, baris, cache);
+                    }
+                }
+                kolom += 1;
+                baris += 1;
+            }
+        }
+        //endjordan
+
+        return mOut;
+    }
+
     /* Menghitung Invers Menggunakan Adjoin */
     public static matrix invAdjoint(matrix m){
         matrix adjoin, invers;
         double determinan;
         int i, j;
 
-        determinan = determinantKofaktor(m);
+        determinan = determinanKofaktor(m);
         adjoin = matrixOperation.transpose(kofaktor(m));
         invers = new matrix();
 
@@ -818,7 +968,7 @@ public class matrixOperation {
             }
         }
 
-        determinan = determinantKofaktor(mCut);
+        determinan = determinanKofaktor(mCut);
 
         if(determinan == 0){
             System.out.println("Tidak bisa menggunakan kaidah cramer karena determinan matriks = 0");
@@ -833,7 +983,7 @@ public class matrixOperation {
                 for(i=0; i<m.nRow; i++){
                     mCut.Matrix[i][j] = mhasilB.Matrix[i][0];
                 }
-                determinanX = determinantKofaktor(mCut);
+                determinanX = determinanKofaktor(mCut);
                 System.out.println("Nilai x" + (j+1) + " = " + determinanX/determinan);
             }
         }
@@ -846,5 +996,24 @@ public class matrixOperation {
             temp.Matrix[i][col] = m1.Matrix[i][0];
         }
         return temp;
+    }
+
+    public static matrix concatCol(matrix m1, matrix m2) {
+        // Menyatukan m1 dan m2
+        // I.S m1.nRow = m2.nRow
+        matrix m3 = new matrix();
+        m3.nRow = m1.nRow;
+        m3.nCol = m1.nCol + m2.nCol;
+        int i, j;
+        for (i = 0; i <= m3.nRow; i++) {
+            for (j = 0; j <= m3.nCol; j++) {
+                if (j < m1.nCol) {
+                    m3.Matrix[i][j] = m1.Matrix[i][j];
+                } else {
+                    m3.Matrix[i][j] = m2.Matrix[i][j - m1.nCol];
+                }
+            }
+        }
+        return m3;
     }
 }

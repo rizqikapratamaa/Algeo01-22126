@@ -165,30 +165,30 @@ public class matrix {
     }
 
     /* Write File dari matriks */
-    public void writeMatrixFIle(matrix m){
-        // kamus lokal
+    public void writeMatrixFile(matrix m){
+        // Kamus Lokal
         int i, j;
         String filename;
 
         // Algoritma
-        System.out.println("\nMasukkan nama file: ");
+        System.out.print("\nMasukkan nama file: ");
         filename = in.nextLine() + ".txt";
-        try{
+        try {
             // Buat file
             BufferedWriter bw = new BufferedWriter(new FileWriter("./test/" + filename));
 
-            // Write per-line
-            for (i = 0; i < m.nRow; i++){
-                for (j = 0; j < m.nCol; j++){
-                    bw.write(m.Matrix[i][j] + ((j == m.nCol - 1) ? "" : " "));
+            // Write Perline
+            for (i= 0; i < m.nRow; i++){
+                for (j=0; j < m.nCol; j++){
+                    bw.write(m.Matrix[i][j] + ((j == m.nCol-1) ? "" : " "));
                 }
-                bw.newLine();
+            bw.newLine();
             }
             bw.flush();
             bw.close();
 
-        // Handling error
-        }catch (IOException e){
+        // Handling Error
+        } catch(IOException e){
             System.out.println(e.getMessage());
         }
     }
@@ -222,19 +222,17 @@ public class matrix {
     public void writeMatrix(){
         /* I.S. Matriks terdefinisi */
         /* Menuliskan matriks pada layar */
-
-        // Kamus lokal
+        // Kamus Lokal
         int i, j;
-
         // Algoritma
-        for (i = 0; i < this.nRow; i++){
-            System.out.println("| ");
-            for (j = 0; j < this.nCol; j++){
-                System.out.println(this.Matrix[i][j]);
-                System.out.println(" ");
+        for(i = 0; i < this.nRow; i++) {
+            System.out.print("| ");
+            for (j = 0; j < this.nCol; j++) {
+                System.out.print(this.Matrix[i][j]);
+                System.out.print(" ");
             }
-            System.out.println("|\n");
-        }
+            System.out.print("|\n");
+        }  
     }
 
     /* Mengubah kapasitas matrix */
