@@ -1121,10 +1121,10 @@ public class Main {
         System.out.println("2. Dari keyboard");
 
         do{
+            System.out.println("Pilih : ");
             mark = in.nextLine();
             baris = mark.split(" ");
             try {
-                System.out.println("Pilih : ");
                 input = Integer.parseInt(baris[0]);
             } catch (NumberFormatException e) {
                 input = 0;
@@ -1167,9 +1167,9 @@ public class Main {
             System.out.println("2. Tidak perlu");
             
             do{
+                System.out.println("Pilih : ");
                 mark = in.nextLine();
                 baris = mark.split(" ");
-                System.out.println("Pilih : ");
                 try {
                     input = Integer.parseInt(baris[0]);
                 } catch (NumberFormatException e) {
@@ -1185,11 +1185,11 @@ public class Main {
                 break;
     
                 case 2:
-                System.out.println("\nOk! Kembali ke menu utama...");
+                System.out.println("\n Silahkan ke menu utama!");
                 break;
             }
         } else {
-            System.out.println("\nOperasi gagal, kembali ke menu utama...");
+            System.out.println("\nUps! operasi Regresi Linear Berganda tidak dapat dijalankan, Silahkan ke menu utama...");
         }
     }
 
