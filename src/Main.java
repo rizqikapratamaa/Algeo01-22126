@@ -1140,7 +1140,7 @@ public class Main {
             System.out.print("\nPastikan file yang Anda masukkan sudah berada di dalam folder test.");
             System.out.print("\nNama file harus dalam format (.txt): ");
             String filename = in.nextLine();
-            String filespath = "./test/" + filename;
+            String filespath = "../test/" + filename;
             mtxinput.readFileMatrixBolong(filespath, 1);
             break;
 
@@ -1189,7 +1189,7 @@ public class Main {
                 break;
             }
         } else {
-            System.out.println("\nUps! operasi Regresi Linear Berganda tidak dapat dijalankan, Silahkan ke menu utama...");
+            System.out.println("\nUps! operasi Regresi Linear Berganda tidak dapat dijalankan, Silahkan ke menu utama!");
         }
     }
 
