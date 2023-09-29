@@ -183,6 +183,7 @@ public class Main {
                 break;
 
                 case 6:
+                RLB();
                 break;
 
                 case 7:
@@ -1107,4 +1108,89 @@ public class Main {
             System.out.println("\nOperasi gagal, kembali ke menu utama...");
         }
     }
+
+    //Regresi Linear Berganda
+    public static void RLB() {
+        matrix mtxinput = new matrix();
+        int input;
+        String mark;
+        String[] baris;
+
+        System.out.println("\nPilih metode masukan:");
+        System.out.println("1. Dari file");
+        System.out.println("2. Dari keyboard");
+
+        do{
+            mark = in.nextLine();
+            baris = mark.split(" ");
+            try {
+                System.out.println("Pilih : ");
+                input = Integer.parseInt(baris[0]);
+            } catch (NumberFormatException e) {
+                input = 0;
+            }
+            if (input <= 0 || input > 2) {
+                System.out.println("Pilihan Anda tidak valid, Silahkan Ulangi!");
+            } 
+        } while (input <= 0 || input > 2);
+
+
+        switch (input) {
+            case 1:
+            System.out.print("\nPastikan file yang Anda masukkan sudah berada di dalam folder test.");
+            System.out.print("\nNama file harus dalam format (.txt): ");
+            String filename = in.nextLine();
+            String filespath = "./test/" + filename;
+            mtxinput.readFileMatrixBolong(filespath, 1);
+            break;
+
+            case 2:
+            mtxinput = RegresiLinearBerganda.mtxfromkeyboard();
+            break;
+        }
+
+        /* Proses */
+        if (!(mtxinput.nRow == 0 || mtxinput.nRow == 0)) {
+            matrix koefreg = RegresiLinearBerganda.koefreg(mtxinput);
+            matrix AI = RegresiLinearBerganda.AI(RegresiLinearBerganda.varbebas(mtxinput), RegresiLinearBerganda.variabelterikat(mtxinput));
+            
+            //output terminal biasa
+            System.out.println("\nHasil Perhitungan Regresi Linear Berganda");
+            System.out.println("Persamaan regresi linear berganda f(x):");
+            System.out.println(RegresiLinearBerganda.hasilfxStringvers (AI));
+            System.out.println("Hampiran (taksiran) nilai f(x):");
+            System.out.println("f(x) = " + RegresiLinearBerganda.hasilfx(RegresiLinearBerganda.koefreg(mtxinput), RegresiLinearBerganda.AI(RegresiLinearBerganda.varbebas(mtxinput), RegresiLinearBerganda.variabelterikat(mtxinput))));
+            
+           //Output File
+            System.out.println("\nSimpan dalam bentuk file?");
+            System.out.println("1. Boleh");
+            System.out.println("2. Tidak perlu");
+            
+            do{
+                mark = in.nextLine();
+                baris = mark.split(" ");
+                System.out.println("Pilih : ");
+                try {
+                    input = Integer.parseInt(baris[0]);
+                } catch (NumberFormatException e) {
+                    input = 0;                    }
+                    if (input <= 0 || input > 2) {
+                        System.out.println("Input tidak valid");
+                    } 
+            } while (input <= 0 || input > 2);
+    
+            switch (input){
+                case 1:
+                RegresiLinearBerganda.RLBFile(koefreg, AI);;
+                break;
+    
+                case 2:
+                System.out.println("\nOk! Kembali ke menu utama...");
+                break;
+            }
+        } else {
+            System.out.println("\nOperasi gagal, kembali ke menu utama...");
+        }
+    }
+
 }
