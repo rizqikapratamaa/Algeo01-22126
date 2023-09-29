@@ -1198,12 +1198,7 @@ public class Main {
         String line;
         String[] row;
 
-        /* Memilih metode input */
         System.out.println("\nBICUBIC INTERPOLATION");
-        System.out.println("\nPilih metode masukan:");
-        System.out.println("1. File");
-        System.out.println("2. Keyboard");
-        System.out.println("\n3. Kembali Ke Menu");
 
         int input; 
         matrix mInput = new matrix();
@@ -1218,8 +1213,8 @@ public class Main {
         /* Proses */
         if (!(mInput.nRow == 0 || mInput.nCol == 0)) {
             matrix mAij = bicubicInterpolation.mAij(bicubicInterpolation.m16x1(bicubicInterpolation.m4x4(mInput)));
-            double a = bicubicInterpolation.getA(mInput); // ???
-            double b = bicubicInterpolation.getB(mInput); // ???
+            double a = bicubicInterpolation.getA(mInput); 
+            double b = bicubicInterpolation.getB(mInput); 
 
             /* Output terminal */
             System.out.println("\nHasil Bicubic Interpolation");
@@ -1257,5 +1252,4 @@ public class Main {
             System.out.println("\nOperasi gagal, kembali ke menu utama...");
         }
     }
-
 }
