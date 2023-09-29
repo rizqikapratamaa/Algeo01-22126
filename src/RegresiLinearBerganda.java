@@ -1,266 +1,210 @@
-import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
 import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*; 
+
 public class RegresiLinearBerganda {
-    public static void main(String[] args) {
-        RLB(); // Panggil metode RLB() dari metode main()
-    }
-    public static void RLB(){
-        /*Kamus lokal */
-        int m,n, userchoice;
-        double x;
-        m=0;n=0;
-        matrix mtx = new matrix();
-        mtx.nCol = 100;mtx.nRow=100;
-        matrix mtxforoperate = new matrix();
-        mtxforoperate.nCol=16;mtxforoperate.nRow=1;
-    
 
-        /*Algoritma */
-        //Input
-        Scanner input = new Scanner(System.in);
-        BufferedReader inputfile = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("\nPilih metode masukan: ");
-        System.out.println("1. Dari keyboard");
-        System.out.println("2. Dari file");
-        System.out.println("Pilih : ");
-        userchoice = input.nextInt();
-        while (userchoice !=1 && userchoice != 2){
-            System.out.println("Pilihan tidak valid! Silahkan Pilih ulang!\nPilih : ");
-            userchoice = input.nextInt();
-        }
+    static Scanner in = new Scanner (System.in);
 
-        if (userchoice==1){
-            System.out.println("Masukkan jumlah data yang akan dihitung : ");
-            m = input.nextInt();
-            System.out.println("Notes : Untuk jumlah variabel, variabel y tidak diperhitungkan\nMasukkan jumlah variabel : ");
-            n = input.nextInt();
-            matrix mtxdata = new matrix(); mtxdata.nRow=n+1;mtxdata.nCol=m;
-            matrix mtxinput = new matrix(); mtxinput.nRow=1;mtxinput.nCol=n;
-            System.out.println("Notes : Masukkan x dan y dengan urutan x1 x2 x3 ... xn y");
+    public static matrix mtxfromkeyboard() {
+        int n, m;
+        System.out.println("Masukkan jumlah data yang akan dihitung : ");
+        m = Integer.parseInt(in.nextLine());
+        System.out.println("Notes : Untuk jumlah variabel peubah, variabel y tidak diperhitungkan\nMasukkan jumlah variabel : ");
+        n = Integer.parseInt(in.nextLine());
 
-            for (int j = 0; j < m; j++) {
-                String urutan = Integer.toString(j + 1);
-                System.out.printf("Masukkan titik-titik ke-%s: \n", urutan);
-            
-                String line = input.nextLine(); // Baca satu baris input sebagai string
-                String[] values = line.split(" "); // Pisahkan angka-angka dengan spasi
-            
-                boolean valid = true;
-            
-                if (values.length == n + 2) {
-                    // Baris pertama harus sesuai dengan n + 2 elemen (x1, x2, x3, y)
-                    for (int i = 0; i < n + 2; i++) {
-                        try {
-                            x = Double.parseDouble(values[i]);
-                            matrix.setElement(mtxdata, i, j, x);
-                        } catch (NumberFormatException e) {
-                            System.err.println("Format angka tidak valid: " + values[i]);
-                            valid = false;
-                            break; // Keluar dari loop jika ada kesalahan format
-                        }
+        matrix mtxinput = new matrix();
+        mtxinput.nRow = m + 1;
+        mtxinput.nCol = n + 1;
+
+        for (int i = 0; i < mtxinput.nRow; i++) {
+            for (int j = 0; j < mtxinput.nCol; j++) {
+                if (i != mtxinput.nRow - 1) {
+                    if (j != mtxinput.nCol - 1) {
+                        System.out.println("Masukkan nilai x" + (j + 1) + " sampel ke-" + (i + 1) + ": ");
+                    } else {
+                        System.out.println("Masukkan nilai y sampel ke-" + (i + 1) + ": ");
                     }
+                    mtxinput.Matrix[i][j] = Double.parseDouble(in.nextLine());
                 } else {
-                    valid = false; // Jumlah elemen tidak sesuai
-                }
-            
-                if (!valid) {
-                    System.err.println("Format baris tidak valid: " + line);
-                }
-            }
-            
-            
-
-            System.out.println("Notes : Masukkan x dan y dengan urutan x1 x2 x3 ... xn y");
-            System.out.println("Masukkan data yang ingin dihampiri nilainya : ");
-            for (int i=0;i<n;i++){
-                    x = input.nextDouble();
-                    matrix.setElement(mtxinput, 0,i,x);
-            }
-            mtx = mtxdata;
-            mtxforoperate = mtxinput;
-            
-                
-        } else{
-            Boolean finding = false;
-            while(!finding){
-                finding = true;
-                String namafile = "";
-                System.out.println("Masukkan nama file : ");
-                try{
-                    namafile = inputfile.readLine();
-
-                }catch (IOException err){
-                    System.err.println("Terjadi kesalahan I/O: " + err.getMessage());
-                }
-
-                try{
-                    Scanner foundedfile = new Scanner(new File("../test/"+namafile));
-                    m=0;
-                    int cek;
-                    while(foundedfile.hasNextLine()){
-                        n++;
-                        cek= foundedfile.nextLine().split(" ").length;
-                        if(cek>m){
-                            m = cek;
-                        }
+                    if (j != mtxinput.nCol - 1) {
+                        System.out.println("Masukkan nilai x" + (j + 1) + " yang akan diregresi: ");
+                        mtxinput.Matrix[i][j] = Double.parseDouble(in.nextLine());
                     }
-                    n--;
-                    int replace = n;
-                    n=m;
-                    m= replace;
-                    foundedfile.close();
-
-                    matrix mtxdata = new matrix();
-                    mtxdata.nRow=n;mtxdata.nCol=m;
-                    matrix mtxinput = new matrix();
-                    mtxdata.nRow=1;mtxdata.nCol=n;
-
-                    foundedfile = new Scanner(new File("../test/"+namafile));
-                    for(int i = 0; i < m; i++){
-                        for(int j = 0; j< n; j++){
-                            x=foundedfile.nextDouble();
-                            matrix.setElement(mtxdata,j, i, x);
-                        }
-                    }
-
-                    for(int i = 0; i < n-1; i++){
-                        x = foundedfile.nextDouble();
-                        matrix.setElement(mtxinput,0, i, x);
-                    }
-
-                    foundedfile.close();
-                    mtx = mtxdata;
-                    mtxforoperate = mtxinput;
-
-                }catch (IOException err){
-                    System.err.println("Terjadi kesalahan I/O: " + err.getMessage());
-                    err.printStackTrace();
-                    finding = false;
                 }
             }
         }
+        mtxinput.Matrix[mtxinput.nRow - 1][mtxinput.nCol - 1] = -999.0;
+        
+        return mtxinput;
+    }
 
+    
+    public static matrix varbebas(matrix mtxinput) {
+        matrix allisone = new matrix();
+        allisone.nRow = mtxinput.nRow - 1;
+        allisone.nCol = 1;
 
-        //Solve Regression with Regresi Linear Berganda
-        int i,j,k;
-        i=0;k=0;
-        double temp,sum;
-        matrix M = new matrix(); //menyimpan matriks yang akan digunakan dalam proses perhitungan regresi linear berganda
-        M.nCol=M.nRow+1;
-
-        for(j=0;j<M.nRow+1;j++){
-            if(j==0){
-                matrix.setElement(M, i, j, M.nCol);
-            }else{
-                sum=0;
-                for(k=0;k<M.nCol;k++){
-                    temp = matrix.getElement(M, j-1, k);
-                    sum+=temp;
-                }
-                matrix.setElement(M, i, j, sum);
-
-            }
+        for (int i = 0; i < allisone.nRow; i++) {
+            allisone.Matrix[i][0] = 1;
         }
 
-        for(i=1;i<M.nRow;i++){
-            for (j=0;j<M.nRow+1;j++){
-                if(j==0){
-                    sum=0;
-                    for(k=0;k<M.nCol;k++){
-                        temp = matrix.getElement(mtx, i-1, k);
-                        sum+=temp;
-                    }
-                    matrix.setElement(M, i,j, sum);
-                } else{
-                    sum=0;
-                    for(k=0;k<M.nCol;k++){
-                        temp = matrix.getElement(mtx, i-1, k)*matrix.getElement(mtx, j-1, k);
-                        sum+=temp;
-                    }
-                    matrix.setElement(M, i, j, sum);
-                }
-            }
-        }
+        matrix varbebas = matrixOperation.sliceLastCol(matrixOperation.concatCol(allisone,matrixOperation.sliceLastRow(mtxinput)));
+        
+        return varbebas;
+    }
 
-        SPL solusi = new SPL();
-        matrixOperation.gaussJordan(M);
-        String simpan;
-        double taksiranY,currentvalue;
-        taksiranY =0;
-        System.out.println("Sistem persamaan regresi linear yang terbentuk sebagai berikut\n");
-        System.out.println("f(x) = ");
-
-        for(i=0;i<solusi.nEff;i++){
-            currentvalue = solusi.x[i];
-            if (i!=0) {
-                currentvalue = currentvalue*matrix.getElement(mtxforoperate, 0, i-1);
-            }
-            taksiranY+=currentvalue;
-        }
-
-        for(i=0;i<solusi.nEff;i++){
-            simpan = " ";
-            if(i!=0 && solusi.x[i]>=0){
-                simpan += " + ";
-            }
-            if(i!=0){
-                simpan+=" x "+Integer.toString(i);
-            }
-            System.out.println(simpan);
-        }
-        String answer = Double.toString(taksiranY);
-
-        System.out.println("\n");
-        System.out.println("Hasil hampiran (taksiran) nilai regresi nya adalah "+answer+".\n");
-
-        //Penyimpanan ke file
-        System.out.println("\nSimpan jawaban ke file?: ");
-        System.out.println("1. Boleh");
-        System.out.println("2. Tidak Perlu");
-        System.out.println("Pilih : ");
-        while(userchoice != 1 && userchoice != 2){
-            System.out.println("Pilihan tidak valid! Silahkan Pilih ulang!\nPilih :  ");
-            userchoice = input.nextInt();
-        }
-        if(userchoice==1){
-            String namafile = "";
-            System.out.println("Masukkan nama file : ");
-                try{
-                    namafile = inputfile.readLine();
-
-                }catch (IOException err){
-                    System.err.println("Terjadi kesalahan I/O: " + err.getMessage());
-                }
-
-                try{
-                    FileWriter foundedfile = new FileWriter("../test/"+namafile);
-                    foundedfile.write("Sistem persamaan regresi linear yang terbentuk sebagai berikut\nf(x) = ");
-                    for(i=0;i<solusi.nEff;i++){
-                        simpan =" ";
-                        if(i!=0&&((solusi.x[i])>0)){
-                            simpan += " + ";
-                        }
-
-                        simpan+=Double.toString((solusi.x[i]));
-                        if(i!=0){
-                            simpan+= " x "+Integer.toString(i);
-                        }
-                        foundedfile.write(simpan);
-                        foundedfile.close();
-                        
-                    }
-                    foundedfile.write("\n");
-                    foundedfile.write("Hasil hampiran (taksiran) nilai regresi nya adalah "+answer+".\n");
-                    foundedfile.close();
-
-                    }catch(IOException err){
-                    System.err.println("Terjadi kesalahan I/O: " + err.getMessage());
-                    err.printStackTrace();
-                    }
+    public static matrix variabelterikat (matrix mtxinput) {
+        return matrixOperation.takeLastCol(matrixOperation.sliceLastRow(mtxinput));
     }
     
-}}
+    public static matrix koefreg (matrix mtxinput) {
+        return matrixOperation.takeLastRow(matrixOperation.sliceLastCol(mtxinput));
+    }
+
+    
+    public static matrix AI (matrix varbebas, matrix variabelterikat) {
+        matrix AI = new matrix();
+        AI.nRow = varbebas.nCol;
+        AI.nCol = 1;
+
+        matrix augmented = matrixOperation.concatCol(matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), varbebas),matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), variabelterikat));
+        matrix operasigauss =  matrixOperation.gauss(augmented);
+        
+        
+        for(int i = 0; i < operasigauss.nCol - 1; i++){
+            AI.Matrix[i][0] = 0;
+        }
+        double cac;
+        for(int i = operasigauss.nRow - 1; i >= 0; i--){
+            cac = operasigauss.Matrix[i][operasigauss.nCol-1];
+            for(int j = i; j < operasigauss.nCol-1; j++){
+                cac -= AI.Matrix[j][0] * operasigauss.Matrix[i][j];
+            }
+            AI.Matrix[i][0] = cac;
+        }
+
+        return AI;
+    }
+
+    public static double hasilfx (matrix koefreg, matrix AI) {
+        double hasilf;
+        hasilf = AI.Matrix[0][0];
+
+        for (int i = 0; i < koefreg.nCol; i++) {
+            hasilf += koefreg.Matrix[0][i] * AI.Matrix[i + 1][0];
+        }
+
+        return hasilf;
+    }
+
+  
+    public static String hasilfxStringvers (matrix AI) {
+        String fx = "f(x) =";
+        int nonzeropertama;
+        boolean found;
+
+        if (AI.isAllZero()) {
+            fx += " 0";
+        } else {
+            nonzeropertama = 0;
+            found = false;
+            for (int p = nonzeropertama; p <= AI.nRow - 1 && !found; p++) {
+                if (AI.Matrix[p][0] != 0) {
+                    found = true;
+                    nonzeropertama = p;
+                }
+            }
+
+            /* Add koefisien dari suku pertama */
+            if (AI.Matrix[nonzeropertama][0] > 0) {
+                if (AI.Matrix[nonzeropertama][0] != 1) {
+                    fx += (" " + (AI.Matrix[nonzeropertama][0]));
+                } else {
+                    if (nonzeropertama == 0) {
+                        fx += (" " + (AI.Matrix[nonzeropertama][0]));
+                    } else {
+                        fx += (" ");
+                    }
+                }
+            } else {
+                if (AI.Matrix[nonzeropertama][0] != -1) {
+                    fx += (" - " + ((-1) * AI.Matrix[nonzeropertama][0]));
+                } else {
+                    if (nonzeropertama == 0) {
+                        fx += (" - " + ((-1) * AI.Matrix[nonzeropertama][0]));
+                    } else {
+                        fx += (" - ");
+                    }
+                }    
+            }
+            
+            /* Add xk dari suku pertama */
+            if (nonzeropertama != 0) {
+                fx += ("x" + (nonzeropertama));
+            }
+
+            /* Add suku-suku selanjutnya */
+            for (int i = nonzeropertama + 1; i <= AI.nRow - 1; i++) {
+                if (AI.Matrix[i][0] != 0) {
+                    /* Print koefisien dari suku */
+                    if (AI.Matrix[i][0] > 0) {
+                        if (AI.Matrix[i][0] != 1) {
+                            fx += (" + " + (AI.Matrix[i][0]));
+                        } else {
+                            if (i == 0) {
+                                fx += (" + " + (AI.Matrix[i][0]));
+                            } else {
+                                fx += (" + ");
+                            }
+                        }
+                    } else {
+                        if (AI.Matrix[i][0] != -1) {
+                            fx += (" - " + ((-1) * AI.Matrix[i][0]));
+                        } else {
+                            if (i == 0) {
+                                fx += (" - " + ((-1) * AI.Matrix[i][0]));
+                            } else {
+                                fx += (" - ");
+                            }
+                        }
+                    }
+
+                    /* Add xk dari suku-suku selanjutnya*/
+                    if (i != 0) {
+                        fx += ("x" + (i));
+                    }
+                }
+            }
+        }
+        return fx;
+    }
+    
+    public static void RLBFile(matrix koefreg, matrix AI) {
+        // Kamus Lokal
+        String namafile;
+
+        System.out.print("\nMasukkan nama file: ");
+        namafile = in.nextLine() + ".txt";
+        try {
+            BufferedWriter buatfile = new BufferedWriter(new FileWriter("./test/" + namafile));
+
+            // Write
+            buatfile.write("Hasil Perhitungan Regresi Linear Berganda");
+            buatfile.newLine();
+            buatfile.write("Persamaan regresi linear berganda f(x):");
+            buatfile.newLine();
+            buatfile.write(hasilfxStringvers (AI));
+            buatfile.newLine();
+            buatfile.write("Hampiran (taksiran) nilai f(x):");
+            buatfile.newLine();
+            buatfile.write(("f(x) = " + hasilfx(koefreg, AI)));
+            buatfile.flush();
+            buatfile.close();
+
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+}
