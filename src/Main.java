@@ -1193,4 +1193,69 @@ public class Main {
         }
     }
 
+    /* Bicubic Interpolation */
+    public static void BicubicInterpolation(){
+        String line;
+        String[] row;
+
+        /* Memilih metode input */
+        System.out.println("\nBICUBIC INTERPOLATION");
+        System.out.println("\nPilih metode masukan:");
+        System.out.println("1. File");
+        System.out.println("2. Keyboard");
+        System.out.println("\n3. Kembali Ke Menu");
+
+        int input; 
+        matrix mInput = new matrix();
+    
+        /* Menerima masukan dari file */
+        System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
+        System.out.print("\nNama file (.txt): ");
+        String namaFile = in.nextLine();
+        String pathFile = "../test/" + namaFile;
+        mInput.readFileMatrixBolong(pathFile, 2); //???
+
+        /* Proses */
+        if (!(mInput.nRow == 0 || mInput.nCol == 0)) {
+            matrix mAij = bicubicInterpolation.mAij(bicubicInterpolation.m16x1(bicubicInterpolation.m4x4(mInput)));
+            double a = bicubicInterpolation.getA(mInput); // ???
+            double b = bicubicInterpolation.getB(mInput); // ???
+
+            /* Output terminal */
+            System.out.println("\nHasil Bicubic Interpolation");
+            System.out.println("Hasil substitusi dengan nilai x dan y dari masukan:");
+            System.out.println("f(" + a + "," + b + ") = " + bicubicInterpolation.getFab(mAij, a, b));
+            
+            /* Output file */
+            System.out.println("\nApakah ingin dalam bentuk file?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+            do{
+                System.out.print(">>");
+                line = in.nextLine();
+                row = line.split(" ");
+                try {
+                    input = Integer.parseInt(row[0]);
+                } catch (NumberFormatException e) {
+                    input = 0;
+                }
+                if (input <= 0 || input > 2) {
+                    System.out.println("Input tidak valid");
+                } 
+            } while (input <= 0 || input > 2);
+        
+            switch (input){
+                case 1:
+                bicubicInterpolation.bicubicInterFile(mAij, a, b);
+        
+                case 2:
+                System.out.println("\nKembali ke menu utama...");
+                break;
+            }
+
+        } else {
+            System.out.println("\nOperasi gagal, kembali ke menu utama...");
+        }
+    }
+
 }
