@@ -146,7 +146,7 @@ public class matrix {
             // Membaca integer dari file
             bacafile = new Scanner (file); // Refresh dari atas
             for (i = 0; i < this.nRow; i++){
-                for (j = 0; j < this.nCol; i++){
+                for (j = 0; j < this.nCol; j++){
                     if (bacafile.hasNextDouble()){
                         this.Matrix[i][j] = bacafile.nextDouble();
                     }

@@ -110,10 +110,10 @@ public class RegresiLinearBerganda {
         } else {
             nonzeropertama = 0;
             found = false;
-            for (int p = nonzeropertama; p <= AI.nRow - 1 && !found; p++) {
-                if (AI.Matrix[p][0] != 0) {
+            for (int i= nonzeropertama; i<= AI.nRow - 1 && !found; i++) {
+                if (AI.Matrix[i][0] != 0) {
                     found = true;
-                    nonzeropertama = p;
+                    nonzeropertama = i;
                 }
             }
 
@@ -208,3 +208,5 @@ public class RegresiLinearBerganda {
         }
     }
 }
+
+
