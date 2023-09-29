@@ -1189,7 +1189,7 @@ public class Main {
                 break;
             }
         } else {
-            System.out.println("\nUps! operasi Regresi Linear Berganda tidak dapat dijalankan, Silahkan ke menu utama...");
+            System.out.println("\nUps! operasi Regresi Linear Berganda tidak dapat dijalankan, Silahkan ke menu utama!");
         }
     }
 
