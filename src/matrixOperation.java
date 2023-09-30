@@ -1010,7 +1010,7 @@ public class matrixOperation {
 
     public static matrix concatCol(matrix m1, matrix m2) {
         // Menyatukan m1 dan m2
-        // I.S m1.nRow = m2.nRow
+        // PREKONDISI: m1.nRow = m2.nRow
         matrix m3 = new matrix();
         m3.nRow = m1.nRow;
         m3.nCol = m1.nCol + m2.nCol;

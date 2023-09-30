@@ -108,73 +108,63 @@ public class matrix {
     }
 
     public void readFileMatrixBolong(String filename, int nKosong) {
+
         // Membuat matriks dengan bagian baris terbawah tidak lengkap sebanyak nbBolong element
+        /* DEFAULT nKosong
+         * Interpolasi Polinom: 1
+         * Bicubic Interpolation: 2
+         * Regresi Linear Berganda: 1
+         */
         // PREKONDISI: nbBolong < nCol
-    
-        // Kamus lokal
+        // Kamus Lokal
         File file = new File(filename);
-        Scanner scanner = null;
-    
+        int i,j;
+        int countElmt;
+
         // Algoritma
-    
-        try {
-            scanner = new Scanner(new BufferedReader(new FileReader(filename)));
+        
+        try{ // Untuk validasi dan dapat error message
+            Scanner bacafile = new Scanner (file);
+            countElmt = 0;
     
             // Menghitung banyaknya kolom dan baris
-            int jumlahElmt = 0;
-            while (scanner.hasNextLine()) {
-                this.nCol++;
-    
+            while(bacafile.hasNextLine()){
+                this.nRow++;
+                
                 // Membaca banyak double
-                Scanner scannerKolom = new Scanner(scanner.nextLine());
-                while (scannerKolom.hasNextDouble()) {
-                    jumlahElmt++;
-                    scannerKolom.nextDouble();
+                Scanner bacakolom = new Scanner(bacafile.nextLine());
+                    while(bacakolom.hasNextDouble()){
+                        countElmt++;
+                        bacakolom.nextDouble();
+                    }
                 }
-            }
     
-            // Menghitung banyaknya baris
-            this.nRow = jumlahElmt / this.nCol;
+            // Testing
+            this.nCol = (countElmt + nKosong) / this.nRow ;
     
-            // Cek apakah jumlah baris sudah cukup
-            if (this.nRow < 2) {
-                throw new IllegalArgumentException("Jumlah baris tidak cukup untuk membuat matriks yang tidak lengkap.");
-            }
-    
-            // Mengisi matriks dengan nilai awal
-            for (int i = 0; i < this.nRow; i++) {
-                for (int j = 0; j < this.nCol; j++) {
-                    this.Matrix[i][j] = 0;
-                }
-            }
+            // close scanner
+            bacafile.close();
     
             // Membaca integer dari file
-            for (int i = 0; i < this.nRow; i++) {
-                for (int j = 0; j < this.nCol; j++) {
-                    if (scanner.hasNextDouble()) {
-                        this.Matrix[i][j] = scanner.nextDouble();
+            bacafile = new Scanner (file); // refresh dr atas
+            for(i=0; i<this.nRow; i++){
+                for(j=0; j<this.nCol; j++){
+                    if(bacafile.hasNextDouble()){
+                        this.Matrix[i][j] = bacafile.nextDouble();
                     }
                 }
             }
-    
+
             // Mengisi bagian yang kosong dengan -999.0
             for (int k = this.nCol - 1; k >= this.nCol - nKosong; k--) {
                 this.Matrix[this.nRow - 1][k] = -999.0;
             }
+
+        // Jika file tidak ditemukan, maka output error mess
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
-        }
+        System.out.println(e.getMessage());}
     }
     
-    
-        
-    
-    
-
     /* Write File dari matriks */
     public void writeMatrixFile(matrix m){
         // Kamus Lokal

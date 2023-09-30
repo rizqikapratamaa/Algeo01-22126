@@ -175,7 +175,6 @@ public class Main {
                 break;
 
                 case 4:
-                System.out.print("\033[H\033[2J");
                 InterpolasiPolinom();
                 break;
 
@@ -1024,17 +1023,14 @@ public class Main {
         String[] row;
 
         /* Memilih metode input */
-        System.out.println("\nINTERPOLASI POLINOM");
         System.out.println("\nPilih metode masukan:");
-        System.out.println("1. File");
-        System.out.println("2. Keyboard");
-        System.out.println("\n3. Kembali Ke Menu");
+        System.out.println("1. Dari file");
+        System.out.println("2. Dari keyboard");
 
         int input;
-        matrix mIn = new matrix();
+        matrix stdInput = new matrix();
 
         do{
-            System.out.print(">>");
             line = in.nextLine();
             row = line.split(" ");
             try {
@@ -1042,10 +1038,10 @@ public class Main {
             } catch (NumberFormatException e) {
                 input = 0;
             }
-            if (input <= 0 || input > 3) {
-                System.out.println("Input tidak valid!");
+            if (input <= 0 || input > 2) {
+                System.out.println("Input tidak valid");
             } 
-        } while (input <= 0 || input > 3);
+        } while (input <= 0 || input > 2);
 
         /* Memberi masukan */
         switch (input) {
@@ -1054,23 +1050,20 @@ public class Main {
             System.out.print("\nNama file (.txt): ");
             String namaFile = in.nextLine();
             String pathFile = "../test/" + namaFile;
-            mIn.readFileMatrixBolong(pathFile, 1);
+            stdInput.readFileMatrixBolong(pathFile, 1);
             break;
 
             case 2:
-            mIn = InterpolasiPolinom.inputMatrix();
-            break;
-
-            case 3:
+            stdInput = InterpolasiPolinom.inputKeyboard();
             break;
         }
 
         /* Proses */
-        if (!(mIn.nRow == 0 || mIn.nCol == 0)){
-            matrix ai = InterpolasiPolinom.ai(InterpolasiPolinom.xi(InterpolasiPolinom.x(mIn)),InterpolasiPolinom.fx(mIn));
-            double a = InterpolasiPolinom.a(mIn);
-
-            /* Output file */
+        if (!(stdInput.nRow == 0 || stdInput.nCol == 0)) {
+            matrix ai = InterpolasiPolinom.ai(InterpolasiPolinom.xi(InterpolasiPolinom.x(stdInput)),InterpolasiPolinom.fx(stdInput));
+            double a = InterpolasiPolinom.a(stdInput);
+            
+            /* Output terminal */
             System.out.println("\nHasil Perhitungan Interpolasi Polinom");
             System.out.println("Penjabaran f(x):");
             System.out.println(InterpolasiPolinom.fxString(ai));
@@ -1078,11 +1071,10 @@ public class Main {
             System.out.println("f("+ a +") = " + InterpolasiPolinom.fa(ai, a));
             
             /* Output file */
-            System.out.println("\nManeh mau filenya ga?");
-            System.out.println("1. sok");
-            System.out.println("2. g dulu");
+            System.out.println("\nApakah ingin dalam bentuk file?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
             do{
-                System.out.print(">>");
                 line = in.nextLine();
                 row = line.split(" ");
                 try {
@@ -1101,7 +1093,7 @@ public class Main {
                 break;
         
                 case 2:
-                System.out.println("\nKembali ke menu utama...");
+                System.out.println("\nOk! Kembali ke menu utama...");
                 break;
             }
 
