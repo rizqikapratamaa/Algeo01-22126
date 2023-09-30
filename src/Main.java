@@ -180,6 +180,7 @@ public class Main {
                 break;
 
                 case 5:
+                BicubicInterpolation();
                 break;
 
                 case 6:
