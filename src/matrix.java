@@ -113,20 +113,20 @@ public class matrix {
     
         // Kamus lokal
         File file = new File(filename);
-        int i, j;
-        int jumlahElmt;
+        Scanner scanner = null;
     
         // Algoritma
     
-        try (Scanner scannerFile = new Scanner(file)) {
-            jumlahElmt = 0;
+        try {
+            scanner = new Scanner(new BufferedReader(new FileReader(filename)));
     
             // Menghitung banyaknya kolom dan baris
-            while (scannerFile.hasNextLine()) {
+            int jumlahElmt = 0;
+            while (scanner.hasNextLine()) {
                 this.nCol++;
     
                 // Membaca banyak double
-                Scanner scannerKolom = new Scanner(scannerFile.nextLine());
+                Scanner scannerKolom = new Scanner(scanner.nextLine());
                 while (scannerKolom.hasNextDouble()) {
                     jumlahElmt++;
                     scannerKolom.nextDouble();
@@ -142,17 +142,17 @@ public class matrix {
             }
     
             // Mengisi matriks dengan nilai awal
-            for (i = 0; i < this.nRow; i++) {
-                for (j = 0; j < this.nCol; j++) {
+            for (int i = 0; i < this.nRow; i++) {
+                for (int j = 0; j < this.nCol; j++) {
                     this.Matrix[i][j] = 0;
                 }
             }
     
             // Membaca integer dari file
-            for (i = 0; i < this.nRow; i++) {
-                for (j = 0; j < this.nCol; j++) {
-                    if (scannerFile.hasNextDouble()) {
-                        this.Matrix[i][j] = scannerFile.nextDouble();
+            for (int i = 0; i < this.nRow; i++) {
+                for (int j = 0; j < this.nCol; j++) {
+                    if (scanner.hasNextDouble()) {
+                        this.Matrix[i][j] = scanner.nextDouble();
                     }
                 }
             }
@@ -161,12 +161,15 @@ public class matrix {
             for (int k = this.nCol - 1; k >= this.nCol - nKosong; k--) {
                 this.Matrix[this.nRow - 1][k] = -999.0;
             }
-    
-            // Jika file tidak ditemukan, maka output error message
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
         }
     }
+    
     
         
     

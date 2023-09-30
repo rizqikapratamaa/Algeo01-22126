@@ -4,4 +4,4 @@ Hasil pengolahan matriks:
 0.0 0.0 1.0 -1.0 1.0
 0.0 0.0 0.0 0.0 1.0
 
-Persamaan linear tidak memiliki solusi.
+Solusi tidak ada.
