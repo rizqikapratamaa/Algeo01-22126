@@ -17,7 +17,7 @@ public class bicubicInterpolation {
 
     /* Membuat matriks 4x4 dengan memotong baris terakhir */
     public static matrix m4x4(matrix mInput){
-        return matrixOperation.sliceLastRow(mInput);
+        return matrixOperation.transpose(matrixOperation.sliceLastRow(mInput));
     }
 
     /* Membuat matriks f(x,y) */
