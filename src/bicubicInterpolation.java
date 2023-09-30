@@ -3,6 +3,8 @@ import java.util.*;
 import java.io.*;
 
 public class bicubicInterpolation {
+    static Scanner input = new Scanner(System.in);
+
     /* Mengambil nilai a */
     public static double getA(matrix mInput){
         return mInput.Matrix[4][0];
@@ -67,12 +69,7 @@ public class bicubicInterpolation {
 
     /* Menghitung matriks Aij */
     public static matrix mAij(matrix m16x1){
-        matrix mInversA = new matrix();
-        mInversA.nRow = 16;
-        mInversA.nCol = 16;
-        mInversA = matrixOperation.inverseWithGaussJordan(m16x16());
-
-        return matrixOperation.multiplyMatrix(mInversA, m16x1);
+        return matrixOperation.multiplyMatrix(matrixOperation.inverseWithGaussJordan(m16x16()), m16x1);
     }
 
     /* Menghitung nilai f(a,b) */
@@ -88,8 +85,6 @@ public class bicubicInterpolation {
         }
         return hslfab;
     }
-
-    static Scanner input = new Scanner(System.in);
 
 
     /* Memasukkan hasil bicubic ke File */
