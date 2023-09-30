@@ -11,19 +11,18 @@ public class matrixOperation {
 
     public static matrix cloneMatrix(matrix mIn){
         /* Menduplikasi matriks */
-        // Kamus Lokal
-        matrix mOut = new matrix();
-        mOut.nRow = mIn.nRow;
-        mOut.nCol = mIn.nCol;
-
-        // Algoritma
-        for (int i = 0; i < mIn.nRow; i++){
-            for (int j = 0; j < mIn.nCol; j++){
-                mOut.Matrix[i][j] = mIn.Matrix[i][j];
+            // Kamus Lokal
+            matrix mOut = new matrix();
+            mOut.nCol = mIn.nCol;
+            mOut.nRow = mIn.nRow;
+            // Algoritma
+            for(int i=0; i<mIn.nRow; i++){
+                for(int j=0; j<mIn.nCol; j++) {
+                    mOut.Matrix[i][j] = mIn.Matrix[i][j];
+                }
             }
+            return mOut;
         }
-        return mOut;
-    }
 
     public static matrix matrixAddition(matrix m1, matrix m2){
         /* Menambahkan matriks */
@@ -108,13 +107,13 @@ public class matrixOperation {
         return mOut;
     }
 
-    public static matrix rowSwap(matrix mIn, int x, int y){
+    public static matrix rowSwap(matrix mIn, int b1, int b2){
         matrix mOut = new matrix();
 
         mOut = cloneMatrix(mIn);
 
-        mOut.Matrix[x] = mIn.Matrix[y];
-        mOut.Matrix[y] = mIn.Matrix[x];
+        mOut.Matrix[b1] = mIn.Matrix[b2];
+        mOut.Matrix[b2] = mIn.Matrix[b1];
 
         return mOut;
     }
@@ -208,7 +207,7 @@ public class matrixOperation {
     }
     
     static void tidyUp(matrix mIn){
-        for(int i = 0; i < mIn.nRow; i++){
+        for(int i =0; i < mIn.nRow; i++){
             for(int j = 0; j < mIn.nCol; j++){
                 if (mIn.Matrix[i][j] < 0.00000000001 && mIn.Matrix[i][j] > -0.00000000001){
                     mIn.Matrix[i][j] = 0;
@@ -221,81 +220,92 @@ public class matrixOperation {
     }
 
     public static matrix compactzero(matrix mIn){
-        // Madetin 0 ke bawah
+        //Madetin 0 ke bagian bawah
         matrix mOut = new matrix();
         int kolom = 0;
-        int lenNon0 = 0;
+        int lenNonZero = 0;
         int colSearch;
-        boolean adaNon0;
+        boolean adaNonZero;
 
         mOut = cloneMatrix(mIn);
 
-        while((lenNon0 < mOut.nRow) && (kolom < mOut.nCol)){
-            adaNon0 = false;
+        while ((lenNonZero < mOut.nRow) && (kolom < mOut.nCol)) {
+            adaNonZero = false;
 
-            if (mOut.Matrix[lenNon0][kolom] == 0){
-                colSearch = lenNon0 + 1;
-                while ((colSearch < mOut.nRow) && (!adaNon0)){
-                    if (mOut.Matrix[colSearch][kolom] != 0){
-                        adaNon0 = true;
-                        mOut = rowSwap(mOut, colSearch, lenNon0);
-                        lenNon0 += 1;
+            if (mOut.Matrix[lenNonZero][kolom] == 0) {
+                
+                colSearch = lenNonZero + 1;
+                while ((colSearch < mOut.nRow) && (!adaNonZero)) {
+                    if (mOut.Matrix[colSearch][kolom] != 0) {
+                        adaNonZero = true;
+                        mOut = rowSwap(mOut, colSearch, lenNonZero);
+                        lenNonZero += 1;
                     }
                     else{
                         colSearch += 1;
                     }
                 }
-                if (!adaNon0){
+
+
+                if (!adaNonZero) {
                     kolom += 1;
                 }
             }
+
             else{
-                lenNon0 += 1;
+                lenNonZero += 1;
             }
         }
         return mOut;
     }
 
-    public static matrix rowXConst(matrix mIn, int baris, double constant){
+    public static matrix rowXConst(matrix mIn, int baris, double konstanta){
         matrix mOut = new matrix();
+
+
         mOut = cloneMatrix(mIn);
+
         for (int i = 0; i < mOut.nCol; i++){
-            mOut.Matrix[baris][i] *= constant;
+            mOut.Matrix[baris][i] *= konstanta;
         }
+
         return mOut;
     }
 
     public static matrix minKaliBaris(matrix mIn, int barisTujuan, int barisPengurang, double konstanta){
         matrix mOut = new matrix();
+
         mOut = cloneMatrix(mIn);
 
         for (int i = 0; i < mOut.nCol; i++){
-            mOut.Matrix[barisTujuan][i] -= konstanta*mOut.Matrix[barisPengurang][i];
+            mOut.Matrix[barisTujuan][i] -= konstanta * mOut.Matrix[barisPengurang][i];
         }
+
         return mOut;
     }
 
     public static matrix gauss(matrix mIn){
         matrix mOut = new matrix();
-        int kolom = 0;
-        int baris = 0;
+        int column = 0;
+        int row = 0;
         int i;
-
+        
         tidyUp(mOut);
         mOut = compactzero(mIn);
-        while (kolom < mOut.nCol-1){
-            if (mOut.Matrix[baris][kolom] == 0){
-                kolom += 1;
+        while (column < mOut.nCol-1) {
+            if (mOut.Matrix[row][column] == 0) {
+                column += 1;
             }
             else{
-                for (i = baris + 1; i < mOut.nRow; i++){
-                    mOut = minKaliBaris(mOut,i , baris, mOut.Matrix[i][kolom]/mOut.Matrix[baris][kolom]);
+                for(i = row + 1; i < mOut.nRow; i++){
+                    mOut = minKaliBaris(mOut, i, row, mOut.Matrix[i][column]/mOut.Matrix[row][column]);
                 }
-                mOut = rowXConst(mOut, baris, 1/mOut.Matrix[baris][kolom]);
+                mOut = rowXConst(mOut, row, 1/mOut.Matrix[row][column]);
+
                 mOut = compactzero(mOut);
 
-                kolom += 1;
-                baris += 1;
+                column += 1;
+                row += 1;
             }
         }
         return mOut;
@@ -303,24 +313,24 @@ public class matrixOperation {
 
     public static matrix gaussJordan(matrix mIn){
         matrix mOut = new matrix();
-        int kolom = 0;
-        int baris = 0;
+        int column = 0;
+        int row = 0;
         int i;
 
         mOut = gauss(mIn);
         tidyUp(mOut);
-        while (kolom < mOut.nCol-1){
-            if (mOut.Matrix[baris][kolom] == 0){
-                kolom += 1;
+        while (column < mOut.nCol-1){
+            if (mOut.Matrix[row][column] == 0){
+                column += 1;
             }
             else{
-                for (i = 0; i < baris; i++){
-                    if (i != baris){
-                        mOut = minKaliBaris(mOut, i, baris, mOut.Matrix[i][kolom]/mOut.Matrix[baris][kolom]);
+                for (i = 0; i < row; i++){
+                    if (i != row){
+                        mOut = minKaliBaris(mOut, i, row, mOut.Matrix[i][column]/mOut.Matrix[row][column]);
                     }
                 }
-                kolom += 1;
-                baris += 1;
+                column += 1;
+                row += 1;
             }
         }
         return mOut;
@@ -627,9 +637,9 @@ public class matrixOperation {
         // Kamus Lokal
         double det = 1;
         int kolom = 0;
-        int lenNon0 = 0;
-        int kolomSearch;
-        boolean adaNon0;
+        int lenNonZero = 0;
+        int colSearch;
+        boolean adaNonZero;
         matrix temp = new matrix();
 
         // Algoritma
@@ -638,29 +648,29 @@ public class matrixOperation {
         temp = cloneMatrix(mIn);
         
         //Padetin 0 dulu
-        while ((lenNon0 < temp.nRow) && (kolom < temp.nCol)) {
-            adaNon0 = false;
+        while ((lenNonZero < temp.nRow) && (kolom < temp.nCol)) {
+            adaNonZero = false;
 
-            if (temp.Matrix[lenNon0][kolom] == 0) {
+            if (temp.Matrix[lenNonZero][kolom] == 0) {
                 
-                kolomSearch = lenNon0 + 1;
-                while ((kolomSearch < temp.nRow) && (!adaNon0)) {
-                    if (temp.Matrix[kolomSearch][kolom] != 0) {
-                        adaNon0 = true;
-                        temp = rowSwap(temp, kolomSearch, lenNon0);
+                colSearch = lenNonZero + 1;
+                while ((colSearch < temp.nRow) && (!adaNonZero)) {
+                    if (temp.Matrix[colSearch][kolom] != 0) {
+                        adaNonZero = true;
+                        temp = rowSwap(temp, colSearch, lenNonZero);
                         det *= -1;
-                        lenNon0 += 1;
+                        lenNonZero += 1;
                     }
                     else{
-                        kolomSearch += 1;
+                        colSearch += 1;
                     }
                 }
-                if (!adaNon0) {
+                if (!adaNonZero) {
                     kolom += 1;
                 }
             }
             else{
-                lenNon0 += 1;
+                lenNonZero += 1;
             }
         }
 
@@ -679,29 +689,29 @@ public class matrixOperation {
 
                 //Padetin 0 lagi
                 kolom = 0;
-                lenNon0 = 0;
-                while ((lenNon0 < temp.nRow) && (kolom < temp.nCol)) {
-                    adaNon0 = false;
+                lenNonZero = 0;
+                while ((lenNonZero < temp.nRow) && (kolom < temp.nCol)) {
+                    adaNonZero = false;
                     
-                    if (temp.Matrix[lenNon0][kolom] == 0) {
-                        kolomSearch = lenNon0 + 1;
-                        while ((kolomSearch < temp.nRow) && (!adaNon0)) {
-                            if (temp.Matrix[kolomSearch][kolom] != 0) {
-                                adaNon0 = true;
-                                temp = rowSwap(temp, kolomSearch, lenNon0);
+                    if (temp.Matrix[lenNonZero][kolom] == 0) {
+                        colSearch = lenNonZero + 1;
+                        while ((colSearch < temp.nRow) && (!adaNonZero)) {
+                            if (temp.Matrix[colSearch][kolom] != 0) {
+                                adaNonZero = true;
+                                temp = rowSwap(temp, colSearch, lenNonZero);
                                 det *= -1;
-                                lenNon0 += 1;
+                                lenNonZero += 1;
                             }
                             else{
-                                kolomSearch += 1;
+                                colSearch += 1;
                             }
                         }
-                        if (!adaNon0) {
+                        if (!adaNonZero) {
                             kolom += 1;
                         }
                     }
                     else{
-                        lenNon0 += 1;
+                        lenNonZero += 1;
                     }
                 }
 
@@ -783,14 +793,14 @@ public class matrixOperation {
         matrix temp = new matrix();
         matrix mOut = new matrix();
         double cache = 0;
-        int lenNon0 = 0;
+        int lenNonZero = 0;
         int kolom = 0;
         int kolom2 = 0;
-        int kolomSearch = 0;
+        int colSearch = 0;
         int baris = 0;
         int i = 0;
         int j = 0;
-        boolean adaNon0;
+        boolean adaNonZero;
 
         temp = cloneMatrix(mIn);
 
@@ -810,27 +820,27 @@ public class matrixOperation {
 
         //Gunakan metode gauss
         //Kumpulkan 0 ke atas
-        while ((lenNon0 < temp.nRow) && (kolom < temp.nCol)) {
-            adaNon0 = false;
-            if (temp.Matrix[lenNon0][kolom] == 0) {
-                kolomSearch = lenNon0 + 1;
-                while ((kolomSearch < temp.nRow) && (!adaNon0)) {
-                    if (temp.Matrix[kolomSearch][kolom] != 0) {
-                        adaNon0 = true;
-                        temp = rowSwap(temp, kolomSearch, lenNon0);
-                        mOut = rowSwap(mOut, kolomSearch, lenNon0);
-                        lenNon0 += 1;
+        while ((lenNonZero < temp.nRow) && (kolom < temp.nCol)) {
+            adaNonZero = false;
+            if (temp.Matrix[lenNonZero][kolom] == 0) {
+                colSearch = lenNonZero + 1;
+                while ((colSearch < temp.nRow) && (!adaNonZero)) {
+                    if (temp.Matrix[colSearch][kolom] != 0) {
+                        adaNonZero = true;
+                        temp = rowSwap(temp, colSearch, lenNonZero);
+                        mOut = rowSwap(mOut, colSearch, lenNonZero);
+                        lenNonZero += 1;
                     }
                     else{
-                        kolomSearch += 1;
+                        colSearch += 1;
                     }
                 }
-                if (!adaNon0) {
+                if (!adaNonZero) {
                     kolom += 1;
                 }
             }
             else{
-                lenNon0 += 1;
+                lenNonZero += 1;
             }
         }
         //endcompact 0 pertama
@@ -854,30 +864,30 @@ public class matrixOperation {
                 mOut = rowXConst(mOut, baris, cache);
 
                 //compact 0 kedua
-                lenNon0 = 0;
+                lenNonZero = 0;
                 kolom2 = 0;
-                kolomSearch = 0;
-                while ((lenNon0 < temp.nRow) && (kolom2 < temp.nCol)) {
-                    adaNon0 = false;
-                    if (temp.Matrix[lenNon0][kolom2] == 0) {
-                        kolomSearch = lenNon0 + 1;
-                        while ((kolomSearch < temp.nRow) && (!adaNon0)) {
-                            if (temp.Matrix[kolomSearch][kolom2] != 0) {
-                                adaNon0 = true;
-                                temp = rowSwap(temp, kolomSearch, lenNon0);
-                                mOut = rowSwap(mOut, kolomSearch, lenNon0);
-                                lenNon0 += 1;
+                colSearch = 0;
+                while ((lenNonZero < temp.nRow) && (kolom2 < temp.nCol)) {
+                    adaNonZero = false;
+                    if (temp.Matrix[lenNonZero][kolom2] == 0) {
+                        colSearch = lenNonZero + 1;
+                        while ((colSearch < temp.nRow) && (!adaNonZero)) {
+                            if (temp.Matrix[colSearch][kolom2] != 0) {
+                                adaNonZero = true;
+                                temp = rowSwap(temp, colSearch, lenNonZero);
+                                mOut = rowSwap(mOut, colSearch, lenNonZero);
+                                lenNonZero += 1;
                             }
                             else{
-                                kolomSearch += 1;
+                                colSearch += 1;
                             }
                         }
-                        if (!adaNon0) {
+                        if (!adaNonZero) {
                             kolom2 += 1;
                         }
                     }
                     else{
-                        lenNon0 += 1;
+                        lenNonZero += 1;
                     }
                 }
                 //endcompact 0 kedua

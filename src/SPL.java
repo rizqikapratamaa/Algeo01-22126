@@ -87,6 +87,7 @@ public class SPL{
             m1 = matrixOperation.inverseAdjoint(m1);
             m2 = matrixOperation.multiplyMatrix(m1, m2);
 
+            System.out.println("Solusi: ");
             for (int i = 0; i < m2.nRow; i++){
                 System.out.print("x");
                 System.out.print(i+1);
@@ -127,7 +128,7 @@ public class SPL{
 
             bw.newLine();
             if (m2.nRow != m2.nCol){
-                bw.write("Matriks tidak memerlukan " + m2.nCol + " persamaan untuk dapat diselesaikan");
+                bw.write("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat diselesaikan");
             }
             else if (matrixOperation.determinanKofaktor(m2) == 0){
                 bw.write("Tidak dapat menggunakan metode matriks balikan!");
@@ -136,7 +137,7 @@ public class SPL{
             else{
                 m2 = matrixOperation.inverseAdjoint(mIn);
                 m1 = matrixOperation.multiplyMatrix(m2, m1);
-
+                bw.write("Solusi: ");
                 for (i = 0; i < m1.nRow; i++){
                     bw.write("x" + (i+1) + " = " + m1.Matrix[i][0]);
                     if (i == m1.nRow - 1){
@@ -166,13 +167,14 @@ public class SPL{
 
         System.out.print("\n");
         if (m2.nRow != m2.nCol){
-            System.out.println("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat disolusikan.");
+            System.out.println("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat diselesaikan.");
         }
         else if (matrixOperation.determinanKofaktor(m2) == 0){
             System.out.println("Tidak dapat menggunakan kaidah Cramer!");
         }
 
         else{
+            System.out.println("Solusi: ");
             for (int i = 0; i < m1.nRow; i++){
                 temp = matrixOperation.cramerSwap(m2, m1, i);
 
@@ -216,17 +218,17 @@ public class SPL{
 
             bw.newLine();
             if (m2.nRow != m2.nCol){
-                bw.write("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat disolusikan.");
+                bw.write("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat diselesaikan.");
                 bw.newLine();
             }
             else if (matrixOperation.determinanKofaktor(m2) == 0){
-                bw.write("Matriks tidak memiliki inverse sehingga tidak dapat disolusikan.");
+                bw.write("Matriks tidak memiliki inverse sehingga tidak bisa menggunakan kaidah Cramer.");
                 bw.newLine();
             }
             else{
+                System.out.println("Solusi: ");
                 for (i = 0; i < m1.nRow; i++){
                     temp = matrixOperation.cramerSwap(m2, m1, i);
-
                     bw.write("x" + (i+1) + " = " + (matrixOperation.determinanKofaktor(temp)/matrixOperation.determinanKofaktor(m2)));
                     if (i == m1.nRow-1) {
                         bw.newLine();
@@ -247,8 +249,8 @@ public class SPL{
         }
     }
 
-    public static int checkSPL(matrix m){
-        // I.S matriks m adalah matriks gauss/gauss jordan spl
+    public static int checkSPL(matrix mIn) {
+        // PREKONDISI: matriks mIn adalah matriks gauss/gauss jordan spl (tidak terslice)
         // 0 = Matriks kosong (semua 0)
         // 1 = Solusi unik
         // 2 = Solusi banyak
@@ -256,16 +258,16 @@ public class SPL{
         int x = -999;
         boolean unique;
 
-        if (m.isAllZero()){
+        if (mIn.isAllZero()) {
             x = 0;
         }
-        else if(!solvable(m)){
+        else if (!solvable(mIn)){
             x = 3;
         }
-        else if (m.nRow == m.nCol-1){
+        else if (mIn.nRow == mIn.nCol-1){
             unique = true;
-            for (int i = 0; i < m.nRow; i++){
-                if (m.Matrix[i][i] != 1){
+            for (int i = 0; i < mIn.nRow; i++){
+                if (mIn.Matrix[i][i] != 1){
                     unique = false;
                 }
             }
@@ -282,43 +284,47 @@ public class SPL{
     }
 
     // FUNGSI ANTARA SPL
-    static matrix removerow0(matrix mIn){
-        // Buat ilangin baris 0 semua kalo ada
-        // di pake di solusi banyak sama solvable
+    static matrix removerow0 (matrix mIn){
+        //buat ngilangin baris 0 semua kalo ada
+        //dipake di solusi banyak & solvable
         matrix temp = new matrix();
         boolean adabaris0 = true;
         int i, j;
 
         temp = matrixOperation.cloneMatrix(mIn);
-        i = mIn.nRow - 1;
+
+        i = mIn.nRow-1;
         while (adabaris0 && i > -1){
-            while (adabaris0 && i > -1){
+            while (adabaris0 && i > -1) {
+
                 j = 0;
                 while (adabaris0 && j < mIn.nCol){
-                    if (mIn.Matrix[i][j] != 0){  
+                    if(mIn.Matrix[i][j] != 0){
                         adabaris0 = false;
                     }
                     j += 1;
                 }
-            }
-            if (adabaris0){
-                temp = matrixOperation.sliceLastRow(temp);
-                i = temp.nRow - 1;
+
+                if (adabaris0){
+                    temp = matrixOperation.sliceLastRow(temp);
+                    i = temp.nRow-1;
+                }
             }
         }
+
         return temp;
     }
 
-    static boolean solvable(matrix mIn){
-        /* Untuk cek apakah matrix punya solusi atau tidak */
-        // Kepake di check
 
+    static boolean solvable(matrix mIn){
+        //buat deteksi apa matrix punya solusi atau tidak
+        //kepake di check
         matrix temp = new matrix();
         boolean solvable = false;
-
         int j;
 
         temp = removerow0(mIn);
+
         j = 0;
         while (!solvable && j < temp.nCol-1){
             if (temp.Matrix[temp.nRow-1][j] != 0){
@@ -332,32 +338,30 @@ public class SPL{
         return solvable;
     }
 
-    public static int cariSatu(matrix mIn, int baris){
-        // Buat nyari 1 pertama suatu baris
-        // Dipake di solusi banyak
-        
-        // Kamus Lokal
-        int kolom;
-        boolean ada = false;
+    public static int cariSatu(matrix mIn, int row){
+        //buat nyari 1 pertama di suatu baris
+        //dipake di solusi banyak
+        int column;
+        boolean adasatu = false;
 
-        kolom = 0;
-        while ((!ada) && (kolom < mIn.nCol)){
-            if (mIn.Matrix[baris][kolom] == 1){
-                ada = true;
+        column = 0;
+        while ((!adasatu) && (column < mIn.nCol)){
+            if (mIn.Matrix[row][column] == 1){
+                adasatu = true;
             }
             else{
-                kolom += 1;
+                column += 1;
             }
         }
-        return kolom;
+
+        return column;
     }
 
     public static void solusiKosong(matrix mIn){
         char var = 'S';
         char arrayChar[] = new char[mIn.nCol-1];
         int i;
-
-        for (i = mIn.nCol-2; i > -1; i--){
+        for(i = mIn.nCol-2; i > -1; i--){
             arrayChar[i] = var;
             if (var == 'Z'){
                 var = 'A';
@@ -369,10 +373,11 @@ public class SPL{
         }
 
         System.out.println("Persamaan linear kosong, semua variabel nilai memenuhi.");
-        for (i = 0; i < mIn.nCol-1; i++){
+        for(i = 0; i < mIn.nCol-1; i++){
             System.out.print("x");
             System.out.print(i+1);
             System.out.print(" = ");
+            System.out.print(arrayChar[i]);
             System.out.print(", \n");
         }
     }
@@ -428,35 +433,37 @@ public class SPL{
     }
 
     public static void solusiUnik(matrix mIn){
-        /* Mencari solusi unik dari persamaan gauss */
-        // I.S Matrix yang masuk adalah matrix gauss atau gauss-jordan
-
-        // kamus lokal
-        int i, j;
-        double cache;
-        double arrayHasil[] = new double[mIn.nCol - 1];
-
-        // Algortima
-        for (i = 0; i < mIn.nCol - 1; i++){
-            arrayHasil[i] = 0;
-        }
-
-        for (i = mIn.nRow-1; i > -1; i--){
-            cache = mIn.Matrix[i][mIn.nCol-1];
-            for (j = i; j < mIn.nCol-1; j++){
-                cache -= arrayHasil[j] * mIn.Matrix[i][j];
+        /* Mencari hasil solusi unik dari persamaan Gauss */
+        //prekondisi matriks yang masuk adalah matriks gauss/gauss jordan
+            // Kamus Lokal
+            int i, j;
+            double cache;
+            double arrayRes[] = new double[mIn.nCol-1];
+            
+            // Algoritma
+            for(i = 0; i < mIn.nCol-1; i++){
+                arrayRes[i] = 0;
             }
-            arrayHasil[i] = cache;
+    
+            for(i = mIn.nRow-1; i > -1; i--){
+    
+                cache = mIn.Matrix[i][mIn.nCol-1];
+                for(j = i; j < mIn.nCol-1; j++){
+                    cache -= arrayRes[j] * mIn.Matrix[i][j];
+                }
+    
+                arrayRes[i] = cache;
+            }
+    
+                    
+            for(i = 0; i < mIn.nCol-1; i++){
+                System.out.print("x");
+                System.out.print(i+1);
+                System.out.print(" = ");
+                System.out.print(arrayRes[i]);
+                System.out.print(", \n");
+            }
         }
-
-        for (i = 0; i < mIn.nCol-1; i++){
-            System.out.print("x");
-            System.out.print(i+1);
-            System.out.print(" = ");
-            System.out.print(arrayHasil[i]);
-            System.out.print(", \n");
-        }
-    }
 
     public static void solusiUnikFile(matrix mIn, String filename){
         /* Mencari hasil solusi unik dari persamaan Gauss */
@@ -464,21 +471,21 @@ public class SPL{
             // Kamus Lokal
             int i, j;
             double cache;
-            double arrayHasil[] = new double[mIn.nCol-1];
+            double arrayRes[] = new double[mIn.nCol-1];
     
             try {
                         // Algoritma
             for(i = 0; i < mIn.nCol-1; i++){
-                arrayHasil[i] = 0;
+                arrayRes[i] = 0;
             }
     
             for(i = mIn.nRow-1; i > -1; i--){
     
                 cache = mIn.Matrix[i][mIn.nCol-1];
                 for(j = i; j < mIn.nCol-1; j++){
-                    cache -= arrayHasil[j] * mIn.Matrix[i][j];
+                    cache -= arrayRes[j] * mIn.Matrix[i][j];
                 }
-                arrayHasil[i] = cache;
+                arrayRes[i] = cache;
             }
                 // Buat file
                 BufferedWriter bw = new BufferedWriter(new FileWriter("../test/" + filename));
@@ -496,8 +503,9 @@ public class SPL{
                 bw.newLine();
     
                 // Write Perline
+                bw.write("Solusi: ");
                 for (i = 0; i < mIn.nCol-1; i++){
-                    bw.write("x" + (i+1) + " = " + arrayHasil[i]);
+                    bw.write("x" + (i+1) + " = " + arrayRes[i]);
                     if (i == mIn.nCol-2) {
                         bw.newLine();
                     }
@@ -515,149 +523,151 @@ public class SPL{
             }
         }
 
-    public static void solusiBanyak(matrix mIn){
-        /* Mencari hasil solusi unik dari persamaan Gauss */
-        // I.S Matriks yang masuk adalah matriks gauss/gauss-jordan
-
-        // Kamus Lokal
-        int i, j, k;
-        boolean trivial;
-        boolean realzero;
-        double cache;
-        double arrayHasil[] = new double[mIn.nCol-1];
-        char arrayChar[] = new char[mIn.nCol-1];
-        String arrayString[] = new String[mIn.nCol-1];
-        char var;
-
-        // Algoritma
-        for(i = 0; i < mIn.nCol-1; i++){
-            arrayHasil[i] = 0;
-        }
-        for(i = 0; i < mIn.nCol-1; i++){
-            arrayChar[i] = '/';
-        }
-        for(i = 0; i < mIn.nCol-1; i++){
-            arrayString[i] = "";
-        }
-
-        var = 'S';
-        mIn = removerow0(mIn);
-
-        for (i = mIn.nRow-1; i > -1; i--){
-            cache = mIn.Matrix[i][mIn.nCol-1];
-            for (j = cariSatu(mIn, i) + 1; j < mIn.nCol-1; j++){
-                if (arrayHasil[j] == 0){
-                    realzero = true;
-                    for(k = j; k < mIn.nCol-1; k++){
-                        if (arrayChar[k] != '/'){
-                            realzero = false;
-                        }
-                    }
-                    if (j > 0){
-                        for (k = j - 1; k > -1; k--){
-                            if (mIn.Matrix[i][k] != 0){
-                                realzero = false;
+        public static void solusiBanyak(matrix mIn){
+            /* Mencari hasil solusi unik dari persamaan Gauss */
+            //prekondisi matriks yang masuk adalah matriks gauss/gauss jordan
+                // Kamus Lokal
+                int i, j, k;
+                boolean trivial;
+                boolean realzerp;
+                double cache;
+                double arrayRes[] = new double[mIn.nCol-1];
+                char arrayChar[] = new char[mIn.nCol-1];
+                String arrayString[] = new String[mIn.nCol-1];
+                char var;
+                // Algoritma
+                for(i = 0; i < mIn.nCol-1; i++){
+                    arrayRes[i] = 0;
+                }for(i = 0; i < mIn.nCol-1; i++){
+                    arrayChar[i] = '/';
+                } for(i = 0; i < mIn.nCol-1; i++){
+                    arrayString[i] = "";
+                }
+        
+                var = 'S';
+                mIn = removerow0(mIn);
+        
+                for(i = mIn.nRow-1; i > -1; i--){
+        
+                    cache = mIn.Matrix[i][mIn.nCol-1];
+        
+                    for(j = cariSatu(mIn, i) + 1; j < mIn.nCol-1; j++){
+                        if (arrayRes[j] == 0) {
+                            realzerp = true;
+                            for(k = j; k < mIn.nCol-1; k++){
+                                if (arrayChar[k] != '/'){
+                                    realzerp = false;
+                                }
+                            }
+        
+                            if (j > 0){
+                                for(k = j-1; k > -1; k--){
+                                    if (mIn.Matrix[i][k] != 0){
+                                        realzerp = false;
+                                    }
+                                }
+                            }
+        
+                            if (arrayString[j] != ""){
+                                realzerp = true;
+                            }
+                            if (j == mIn.nCol-2){
+                                realzerp = false;
+                            }
+        
+                            if (!realzerp){
+                                if  (arrayChar[j] == '/'){
+                                    arrayChar[j] = var;
+                                    if (var == 'Z'){
+                                        var = 'A';
+                                    }
+                                    else if (var == 'R'){
+                                        var = 'a';
+                                    }
+                                    else var += 1;
+                                }
+                                double cacheConst = (-1)*mIn.Matrix[i][j];
+                                cacheConst += recursion(mIn.nCol-2, cariSatu(mIn, i), i, j, arrayRes, arrayString, mIn);
+                                
+                                if (cacheConst > 0){
+                                    arrayString[cariSatu(mIn, i)] += String.format("+%.2f%c", cacheConst, arrayChar[j]);
+                                }
+                                else if (cacheConst < 0) {
+                                    arrayString[cariSatu(mIn, i)] += String.format("%.2f%c", cacheConst, arrayChar[j]);
+                                }
                             }
                         }
+                        else{
+                            cache -= arrayRes[j] * mIn.Matrix[i][j];
+                        }
                     }
-                    if (arrayString[j] != ""){
-                        realzero = true;
+                    try {
+                        arrayRes[cariSatu(mIn, i)] = cache;
+                    } catch (Exception e) {
+        
                     }
-                    if (j == mIn.nCol-2){
-                        realzero = false;
+                }
+                
+                //cek kalo ada jawaban trivial
+                trivial = true;
+                for(i = 0; i < mIn.nCol-1; i++){
+                    if (arrayRes[i] != 0){
+                        trivial = false;
                     }
-
-                    if (!realzero){
-                        if (arrayChar[j] == '/'){
-                            arrayChar[j] = var;
-                            if (var == 'Z'){
-                                var = 'A';
+                }
+        
+                //printing
+                //print trivial
+                if (trivial) {
+                    for(i = 0; i < mIn.nCol-1; i++){
+                        System.out.print("x");
+                        System.out.print(i+1);
+                        System.out.print(" = ");
+                    }
+                    System.out.print(0);
+                    System.out.println("atau");
+                }
+        
+                //print utama
+                for(i = 0; i < mIn.nCol-1; i++){
+                    System.out.print("x");
+                    System.out.print(i+1);
+                    System.out.print(" = ");
+                    if (arrayRes[i] == 0){
+                        realzerp = true;
+                        for(j = i; j < mIn.nCol-1; j++){
+                            if (arrayChar[j] != '/'){
+                                realzerp = false;
                             }
-                            else if (var == 'R'){
-                                var = 'a';
+                        }
+                        if (arrayString[i] != ""){
+                            realzerp = true;
+                        }
+        
+                        if (!realzerp){
+                            if (arrayChar[i] == '/'){
+                                arrayChar[i] = var;
+                                if (var == 'Z'){
+                                    var = 'A';
+                                }
+                                else if (var == 'R'){
+                                    var = 'a';
+                                }
+                                else var += 1;
                             }
-                            else var += 1;
+                            System.out.print(arrayChar[i] + "");
                         }
-                        double cacheConst = (-1)*mIn.Matrix[i][j];
-                        cacheConst += recursion(mIn.nCol-2, cariSatu(mIn, i), i, j, arrayHasil, arrayString,mIn);
-
-                        if (cacheConst > 0){
-                            arrayString[cariSatu(mIn, i)] += String.format("+%.2f%c", cacheConst, arrayChar[j]);
+                        if (realzerp && (arrayString[i] == "")){
+                            System.out.print(arrayRes[i]);
                         }
-                        else if (cacheConst < 0){
-                            arrayString[cariSatu(mIn, i)] += String.format("%.2f%c", cacheConst, arrayChar[j]);
-                        }
-
                     }
-                }
-                else{
-                    cache -= arrayHasil[j] * mIn.Matrix[i][j];
-                }
-            }
-            try{
-                arrayHasil[cariSatu(mIn, i)] = cache;
-            }catch (Exception e){
-
-            }
-        }
-        // Cek kalo ada jawaban trivial
-        trivial = true;
-        for (i = 0; i < mIn.nCol-1; i++){
-            if (arrayHasil[i] != 0){
-                trivial = false;
-            }
-        }
-
-        // Print trivial
-        if (trivial){
-            for (i = 0; i < mIn.nCol-1; i++){
-                System.out.print("x");
-                System.out.print(i+1);
-                System.out.print(" = ");
-            }
-            System.out.print(0);
-            System.out.println("atau");
-        }
-
-        // Print utama
-        for (i = 0; i < mIn.nCol-1; i++){
-            System.out.print("x");
-            System.out.print(i+1);
-            System.out.print(" = ");
-            if (arrayHasil[i] == 0){
-                realzero = true;
-                for (j = i; j < mIn.nCol-1; j++){
-                    if (arrayChar[j] != '/'){
-                        realzero = true;
+                    else {
+                        System.out.print(arrayRes[i]);
                     }
-                }
-                if (arrayString[i] != ""){
-                    realzero = true;
-                }
-                if(!realzero){
-                    if (arrayChar[i] == '/'){
-                        arrayChar[i] = var;
-                        if (var == 'Z'){
-                            var = 'A';
-                        }
-                        else if (var == 'R'){
-                            var = 'a';
-                        }
-                        else var += 1;
-                    }
-                    System.out.print(arrayChar[i] + "");
-                }
-                if (realzero && (arrayString[i] == "")){
-                    System.out.print(arrayHasil[i]);
+                    System.out.print(arrayString[i]);
+                    System.out.print(", \n");
                 }
             }
-            else {
-                System.out.print(arrayHasil[i]);
-            }
-            System.out.print(arrayString[i]);
-            System.out.print(", \n");
-        }
-    }
 
     public static void solusiBanyakFile(matrix mIn, String filename){
         /* Mencari hasil solusi unik dari persamaan Gauss */
@@ -665,15 +675,15 @@ public class SPL{
             // Kamus Lokal
             int i, j, k;
             boolean trivial;
-            boolean nolbeneran;
+            boolean realzerp;
             double cache;
-            double arrayHasil[] = new double[mIn.nCol-1];
+            double arrayRes[] = new double[mIn.nCol-1];
             char arrayChar[] = new char[mIn.nCol-1];
             String arrayString[] = new String[mIn.nCol-1];
             char var;
             // Algoritma
             for(i = 0; i < mIn.nCol-1; i++){
-                arrayHasil[i] = 0;
+                arrayRes[i] = 0;
             }for(i = 0; i < mIn.nCol-1; i++){
                 arrayChar[i] = '/';
             } for(i = 0; i < mIn.nCol-1; i++){
@@ -688,30 +698,30 @@ public class SPL{
                 cache = mIn.Matrix[i][mIn.nCol-1];
     
                 for(j = cariSatu(mIn, i) + 1; j < mIn.nCol-1; j++){
-                    if (arrayHasil[j] == 0) {
-                        nolbeneran = true;
+                    if (arrayRes[j] == 0) {
+                        realzerp = true;
                         for(k = j; k < mIn.nCol-1; k++){
                             if (arrayChar[k] != '/'){
-                                nolbeneran = false;
+                                realzerp = false;
                             }
                         }
     
                         if (j > 0){
                             for(k = j-1; k < -1; k--){
                                 if (mIn.Matrix[i][k] != 0){
-                                    nolbeneran = false;
+                                    realzerp = false;
                                 }
                             }
                         }
     
                         if (arrayString[j] != ""){
-                            nolbeneran = true;
+                            realzerp = true;
                         }
                         if (j == mIn.nCol-2){
-                            nolbeneran = false;
+                            realzerp = false;
                         }
     
-                        if (!nolbeneran){
+                        if (!realzerp){
                             if  (arrayChar[j] == '/'){
                                 arrayChar[j] = var;
                                 if (var == 'Z'){
@@ -723,7 +733,7 @@ public class SPL{
                                 else var += 1;
                             }
                             double cacheConst = (-1)*mIn.Matrix[i][j];
-                            cacheConst += recursion(mIn.nCol-2, cariSatu(mIn, i), i, j, arrayHasil, arrayString, mIn);
+                            cacheConst += recursion(mIn.nCol-2, cariSatu(mIn, i), i, j, arrayRes, arrayString, mIn);
                             
                             if (cacheConst > 0){
                                 arrayString[cariSatu(mIn, i)] += String.format("+%.2f%c", cacheConst, arrayChar[j]);
@@ -734,11 +744,11 @@ public class SPL{
                         }
                     }
                     else{
-                        cache -= arrayHasil[j] * mIn.Matrix[i][j];
+                        cache -= arrayRes[j] * mIn.Matrix[i][j];
                     }
                 }
                 try {
-                    arrayHasil[cariSatu(mIn, i)] = cache;
+                    arrayRes[cariSatu(mIn, i)] = cache;
                 } catch (Exception e) {
     
                 }
@@ -747,7 +757,7 @@ public class SPL{
             //cek kalo ada jawaban trivial
             trivial = true;
             for(i = 0; i < mIn.nCol-1; i++){
-                if (arrayHasil[i] != 0){
+                if (arrayRes[i] != 0){
                     trivial = false;
                 }
             }
@@ -779,26 +789,26 @@ public class SPL{
     
                 for(i = 0; i < mIn.nCol-1; i++){
                     bw.write("x" + (i+1) + " = ");
-                    if (arrayHasil[i] == 0){
-                        nolbeneran = true;
+                    if (arrayRes[i] == 0){
+                        realzerp = true;
                         for(j = i; j < mIn.nCol-1; j++){
                             if (arrayChar[j] != '/'){
-                                nolbeneran = false;
+                                realzerp = false;
                             }
                         }
                         if (arrayString[i] != ""){
-                            nolbeneran = true;
+                            realzerp = true;
                         }
     
                         if (i > 0){
                             for(j = i-1; j > -1; j--){
                                 if (mIn.Matrix[i][j] != 0){
-                                    nolbeneran = false;
+                                    realzerp = false;
                                 }
                             }
                         }
         
-                        if (!nolbeneran){
+                        if (!realzerp){
                             if (arrayChar[i] == '/'){
                                 arrayChar[i] = var;
                                 if (var == 'Z'){
@@ -812,14 +822,14 @@ public class SPL{
                             bw.write(arrayChar[i]);
                         }
     
-                        if (nolbeneran && arrayString[i] == ""){
-                            bw.write(arrayHasil[i] + "");
+                        if (realzerp && arrayString[i] == ""){
+                            bw.write(arrayRes[i] + "");
                         }
                     }
     
                     
                     else {
-                        bw.write(arrayHasil[i] + "");
+                        bw.write(arrayRes[i] + "");
                     }
                     bw.write(arrayString[i]);
                     bw.write((i == mIn.nCol-2) ? "\n" : ", \n");
@@ -833,7 +843,7 @@ public class SPL{
         }
 
     public static void solusiNone(){
-        System.out.println("Persamaan linear tidak memiliki solusi");
+        System.out.println("Solusi tidak ada.");
     }
 
     public static void solusiNoneFile(matrix mIn, String filename){
@@ -856,7 +866,7 @@ public class SPL{
 
 
             // Write
-            bw.write("Persamaan linear tidak memiliki solusi.");
+            bw.write("Solusi tidak ada.");
             bw.newLine();
             bw.flush();
             bw.close();
@@ -870,12 +880,12 @@ public class SPL{
         double cacheConst = 0;
         for (int k = toplimit; k > bottomlimit; k--){
             if ((arrayHasil[k] != 0 || arrayString[k] != "") && mIn.Matrix[row][k] != 0){
-                int baris1 = mIn.nRow-1;
-                while (mIn.Matrix[baris1][k] != 1){
-                    baris1 -= 1;
+                int row1 = mIn.nRow-1;
+                while (mIn.Matrix[row1][k] != 1) {
+                    row1 -=1;
                 }
-
-                cacheConst = cacheConst + mIn.Matrix[row][k]*(mIn.Matrix[baris1][varCol]) - mIn.Matrix[row][k]*recursion(toplimit, cariSatu(mIn, baris1), baris1, varCol, arrayHasil, arrayString, mIn);
+    
+                cacheConst = cacheConst + mIn.Matrix[row][k]*(mIn.Matrix[row1][varCol]) - mIn.Matrix[row][k] * recursion(toplimit, cariSatu(mIn, row1), row1, varCol, arrayHasil, arrayString, mIn);
             }
         }
         return cacheConst;
