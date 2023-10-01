@@ -109,7 +109,7 @@ public class matrix {
 
     public void readFileMatrixBolong(String filename, int nKosong) {
 
-        // Membuat matriks dengan bagian baris terbawah tidak lengkap sebanyak nbBolong element
+        // Menerima matriks dengan baris terbawah bolong (tidak lengkap)
         /* DEFAULT nKosong
          * Interpolasi Polinom: 1
          * Bicubic Interpolation: 2

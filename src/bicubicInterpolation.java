@@ -26,7 +26,9 @@ public class bicubicInterpolation {
         m16x1.nRow = 16;
         m16x1.nCol = 1;
 
-        int i, j, row=0; 
+        int row = 0;
+
+        int i, j; 
         for(i=0; i<4; i++){
             for(j=0; j<4; j++){
                 m16x1.Matrix[row][0] = m4x4.Matrix[i][j];
@@ -44,24 +46,16 @@ public class bicubicInterpolation {
 
         int i, j, x, y, row, col;
         row=0;
-        for(y=0; y<2; y++){
-            for(x=0; x<2; x++){
+        for(y=-1; y<=2; y++){
+            for(x=-1; x<=2; x++){
                 col=0;
-                for(j=0; j<4; j++){
-                    for(i=0; i<4; i++){
-                        if(row>=0 && row<=3){
-                            m16x16.Matrix[row][col] = Math.pow(x, i) * Math.pow(y, j);
-                        } else if(row>=4 && row<=7){
-                            m16x16.Matrix[row][col] = i * Math.pow(x, i-1) * Math.pow(y, j);
-                        } else if(row>=8 && row<=11){
-                            m16x16.Matrix[row][col] = j * Math.pow(x, i) * Math.pow(y, j-1);
-                        } else{
-                            m16x16.Matrix[row][col] = i * j * Math.pow(x, i-1) * Math.pow(y, j-1); 
-                        }
+                for(j=0; j<=3; j++){
+                    for(i=0; i<=3; i++){
+                        m16x16.Matrix[row][col] = Math.pow(x, i) * Math.pow(y, j);
                         col++;
                     }
-                }
                 row++;
+                }
             }
         }
         return m16x16;
@@ -69,16 +63,19 @@ public class bicubicInterpolation {
 
     /* Menghitung matriks Aij */
     public static matrix mAij(matrix m16x1){
-        return matrixOperation.multiplyMatrix(matrixOperation.inverseWithGaussJordan(m16x16()), m16x1);
+        return matrixOperation.multiplyMatrix(matrixOperation.inverseIdentitas(m16x16()), m16x1);
     }
 
     /* Menghitung nilai f(a,b) */
     public static double getFab(matrix mAij, double a, double b){
-        int i, j, row=0;
-        double hslfab = 0;
+        int i, j, row;
+        double hslfab;
 
-        for(j=0; j<4; j++){
-            for(i=0; i<4; i++){
+        row = 0;
+        hslfab = 0;
+
+        for(j=0; j<=3; j++){
+            for(i=0; i<=3; i++){
                 hslfab += mAij.Matrix[row][0] * Math.pow(a, i) * Math.pow(b, j);
                 row++;
             }
@@ -94,7 +91,7 @@ public class bicubicInterpolation {
 
         try{
             // Membuat file
-            BufferedWriter buff = new BufferedWriter(new FileWriter("./test/" + fileName));
+            BufferedWriter buff = new BufferedWriter(new FileWriter("../test/" + fileName));
 
             // Write Perline
             buff.write("\nHasil Perhitungan Bicubic Interpolation\n");

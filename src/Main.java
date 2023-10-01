@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 public class Main {
     static Scanner in = new Scanner (System.in);
     public static void main(String[] args) {
@@ -7,7 +8,7 @@ public class Main {
         String line;
         String[] row = new String[100];
 
-        // Pilih menu
+        // Tampilkan pilihan menu
         while (run){
             System.out.print("\033[H\033[2J");
             System.out.print("Kalkulator Matriks by Mandala Jaya\n");
@@ -20,10 +21,13 @@ public class Main {
             System.out.println("6. Regresi Linear Berganda");
             System.out.println("7. Keluar");
             
+            // Lakukan looping selama input belum valid
             do {
+                // Terima input pilihan menu dari pengguna
                 System.out.print(">>");
                 line = in.nextLine();
                 row = line.split(" ");
+                // Lakukan penanganan error
                 try{
                     input = Integer.parseInt(row[0]);
 
@@ -31,11 +35,12 @@ public class Main {
                     input = 0;
                 }
                 if (input <= 0 || input > 7){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
             }while(input <= 0 || input > 7);
 
             switch(input){
+                // Bila pengguna input 1, maka masuk ke SPL
                 case 1:
                 System.out.print("\033[H\033[2J");
                 System.out.println("Sistem Persamaan Linear");
@@ -45,7 +50,9 @@ public class Main {
                 System.out.println("3. Metode Matriks Balikan");
                 System.out.println("4. Kaidah Cramer");
                 System.out.println("5. Kembali Ke Menu");
+                // Lakukan looping selama input belum valid
                 do{
+                    // Terima input pilihan metode SPL dari pengguna
                     System.out.print(">>");
                     line = in.nextLine();
                     row = line.split(" ");
@@ -56,36 +63,36 @@ public class Main {
                         input = 0;
                     }
                     if (input <= 0 || input > 5){
-                        System.out.println("Input tidak valid!");
+                        System.out.println("Input tidak valid! Silahkan input dengan benar.");
                     }
                 }while(input <= 0 || input > 5);
 
                 switch(input){
-                    // Metode eliminasi gauss
+                    // Jika pengguna input 1, maka lakukan penyelesaian SPL dengan metode eleminasi Gauss
                     case 1:
                     System.out.print("\033[H\033[2J");
                     SPLGauss();
                     break;
                     
-                    // Metode eliminasi Gauss-Jordan
+                    // Jika pengguna input 2, maka lakukan penyelesaian SPL dengan metode eleminasi Gauss-Jordan
                     case 2:
                     System.out.print("\033[H\033[2J");
                     SPLGaussJordan();
                     break;
-
-                    // Metode matriks balikan
+                    
+                    // Jika pengguna input 3, maka lakukan penyelesaian SPL dengan metode matriks balikan
                     case 3:
                     System.out.print("\033[H\033[2J");
                     SPLInverse();
                     break;
-
-                    // Kaidah Cramer
+                    
+                    // Jika pengguna input 4, maka lakukan penyelesaian SPL dengan kaidah cramer
                     case 4:
                     System.out.print("\033[H\033[2J");
                     SPLCramer();
                     break;
 
-                    // Back to main menu
+                    // Jika pengguna input 5, maka kembali ke main menu
                     case 5:
                     System.out.println("\nKembali ke menu utama...");
                     break;
@@ -110,7 +117,7 @@ public class Main {
                         input = 0;
                     }
                     if (input <= 0 || input > 5){
-                        System.out.println("Input tidak valid!");
+                        System.out.println("Input tidak valid! Silahkan input dengan benar.");
                     }
                 }while(input <= 0 || input > 5);
 
@@ -151,7 +158,7 @@ public class Main {
                         input = 0;
                     }
                     if (input <= 0 || input > 5){
-                        System.out.println("Input tidak valid!");
+                        System.out.println("Input tidak valid! Silahkan input dengan benar.");
                     }
                 }while(input <= 0 || input > 5);
 
@@ -218,16 +225,16 @@ public class Main {
                 input = 0;
             }
             if (input <= 0 || input > 3){
-                System.out.println("Input tidak valid!");
+                System.out.println("Input tidak valid! Silahkan input dengan benar.");
             }
         }while (input <= 0 || input > 3);
 
         switch (input){
             case 1:
-            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-            System.out.print("\nNama (.txt): ");
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
             String filename = in.nextLine();
-            filename = "../test/" + filename;
+            filename = "../test/" + filename + ".txt";
             M.readFileMatrix(filename);
             break;
 
@@ -242,7 +249,7 @@ public class Main {
                     baris = 0;
                 }
                 if (baris <= 0){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
             } while (baris <= 0);
 
@@ -256,7 +263,7 @@ public class Main {
                     kolom = 0;
                 }
                 if (kolom <= 0){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
             } while (kolom <= 0);
             kolom = kolom + 1;
@@ -287,7 +294,7 @@ public class Main {
                     input = 0;
                 }
                 if ((input <= 0 || input > 2) && notFirst){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
                 notFirst = true;
             } while(input <= 0 || input > 2);
@@ -329,16 +336,16 @@ public class Main {
                 input = 0;
             }
             if (input <= 0 || input > 3){
-                System.out.println("Input tidak valid!");
+                System.out.println("Input tidak valid! Silahkan input dengan benar.");
             }
         }while (input <= 0 || input > 3);
 
         switch (input){
             case 1:
-            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-            System.out.print("\nNama (.txt): ");
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
             String filename = in.nextLine();
-            filename = "../test/" + filename;
+            filename = "../test/" + filename + ".txt";
             M.readFileMatrix(filename);
             break;
 
@@ -353,7 +360,7 @@ public class Main {
                     baris = 0;
                 }
                 if (baris <= 0){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
             } while (baris <= 0);
 
@@ -367,7 +374,7 @@ public class Main {
                     kolom = 0;
                 }
                 if (kolom <= 0){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
             } while (kolom <= 0);
             kolom = kolom + 1;
@@ -398,7 +405,7 @@ public class Main {
                     input = 0;
                 }
                 if ((input <= 0 || input > 2) && notFirst){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
                 notFirst = true;
             } while(input <= 0 || input > 2);
@@ -439,16 +446,16 @@ public class Main {
                 input = 0;
             }
             if (input <= 0 || input > 3){
-                System.out.println("Input tidak valid!");
+                System.out.println("Input tidak valid! Silahkan input dengan benar.");
             }
         }while (input <= 0 || input > 3);
 
         switch (input){
             case 1:
-            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-            System.out.print("\nNama (.txt): ");
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
             String filename = in.nextLine();
-            filename = "../test/" + filename;
+            filename = "../test/" + filename  + ".txt";
             M.readFileMatrix(filename);
             break;
 
@@ -463,7 +470,7 @@ public class Main {
                     baris = 0;
                 }
                 if (baris <= 0){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
             } while (baris <= 0);
 
@@ -477,7 +484,7 @@ public class Main {
                     kolom = 0;
                 }
                 if (kolom <= 0){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
             } while (kolom <= 0);
             kolom = kolom + 1;
@@ -507,7 +514,7 @@ public class Main {
                     input = 0;
                 }
                 if ((input <= 0 || input > 2) && notFirst){
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
                 notFirst = true;
             } while(input <= 0 || input > 2);
@@ -548,17 +555,17 @@ public class Main {
                 input = 0;
             }
             if (input <= 0 || input > 3) {
-                System.out.println("Input tidak valid!");
+                System.out.println("Input tidak valid! Silahkan input dengan benar.");
             } 
         } while (input <= 0 || input > 3);
 
         switch (input){
             case 1:
-            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-            System.out.print("\nNama file (.txt): ");
-            String namaFile = in.nextLine();
-            namaFile = "../test/" + namaFile;
-            M.readFileMatrix(namaFile);
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
+            String filename = in.nextLine();
+            filename = "../test/" + filename + ".txt";
+            M.readFileMatrix(filename);
             break;
 
             case 2:
@@ -572,7 +579,7 @@ public class Main {
                     baris = 0;
                 }
                 if (baris <= 0) {
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (baris <= 0);
 
@@ -586,7 +593,7 @@ public class Main {
                     kolom = 0;
                 }
                 if (kolom <= 0) {
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (kolom <= 0);
             kolom = kolom + 1;
@@ -617,7 +624,7 @@ public class Main {
                     input = 0;
                 }
                 if ((input <= 0 || input > 2) && notFirst) {
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 }
                 notFirst = true;
             } while (input <= 0 || input > 2);
@@ -657,17 +664,17 @@ public class Main {
                 input = 0;
             }
             if (input <= 0 || input > 3) {
-                System.out.println("Input tidak valid!");
+                System.out.println("Input tidak valid! Silahkan input dengan benar.");
             } 
         } while (input <= 0 || input > 3);
 
         switch (input){
             case 1:
-            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-            System.out.print("\nNama file (.txt): ");
-            String namaFile = in.nextLine();
-            namaFile = "../test/" + namaFile;
-            M.readFileMatrix(namaFile);
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
+            String filename = in.nextLine();
+            filename = "../test/" + filename + ".txt";
+            M.readFileMatrix(filename);
             break;
 
             case 2:
@@ -681,7 +688,7 @@ public class Main {
                     dimensi = 0;
                 }
                 if (dimensi <= 0) {
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (dimensi <= 0);
     
@@ -711,7 +718,7 @@ public class Main {
                     input = 0;
                 }
                 if (input <= 0 || input > 2) {
-                    System.out.println("Input tidak valid!");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (input <= 0 || input > 2);
 
@@ -750,17 +757,17 @@ public class Main {
                 input = 0;
             }
             if (input <= 0 || input > 4) {
-                System.out.println("Input tidak valid");
+                System.out.println("Input tidak valid! Silahkan input dengan benar.");
             } 
         } while (input <= 0 || input > 4);
 
         switch (input){
             case 1:
-            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-            System.out.print("\nNama file (.txt): ");
-            String namaFile = in.nextLine();
-            namaFile = "../test/" + namaFile;
-            M.readFileMatrix(namaFile);
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
+            String filename = in.nextLine();
+            filename = "../test/" + filename + ".txt";
+            M.readFileMatrix(filename);
             break;
 
             case 2:
@@ -774,7 +781,7 @@ public class Main {
                     dimensi = 0;
                 }
                 if (dimensi <= 0) {
-                    System.out.println("Input tidak valid");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (dimensi <= 0);
     
@@ -804,7 +811,7 @@ public class Main {
                     input = 0;
                 }
                 if (input <= 0 || input > 2) {
-                    System.out.println("Input tidak valid");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (input <= 0 || input > 2);
 
@@ -843,17 +850,17 @@ public class Main {
                 input = 0;
             }
             if (input <= 0 || input > 3) {
-                System.out.println("Input tidak valid");
+                System.out.println("Input tidak valid! Silahkan input dengan benar.");
             } 
         } while (input <= 0 || input > 3);
 
         switch (input){
             case 1:
-            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-            System.out.print("\nNama file (.txt): ");
-            String namaFile = in.nextLine();
-            namaFile = "../test/" + namaFile;
-            M.readFileMatrix(namaFile);
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
+            String filename = in.nextLine();
+            filename = "../test/" + filename + ".txt";
+            M.readFileMatrix(filename);
             break;
 
             case 2:
@@ -867,7 +874,7 @@ public class Main {
                     dimensi = 0;
                 }
                 if (dimensi <= 0) {
-                    System.out.println("Input tidak valid");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (dimensi <= 0);
     
@@ -901,7 +908,7 @@ public class Main {
                         input = 0;
                     }
                     if (input <= 0 || input > 2) {
-                        System.out.println("Input tidak valid");
+                        System.out.println("Input tidak valid! Silahkan input dengan benar.");
                     } 
                 } while (input <= 0 || input > 2);
         
@@ -941,17 +948,17 @@ public class Main {
                 input = 0;
             }
             if (input <= 0 || input > 3) {
-                System.out.println("Input tidak valid");
+                System.out.println("Input tidak valid! Silahkan input dengan benar.");
             } 
         } while (input <= 0 || input > 3);
 
         switch (input){
             case 1:
-            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-            System.out.print("\nNama file (.txt): ");
-            String namaFile = in.nextLine();
-            namaFile = "../test/" + namaFile;
-            M.readFileMatrix(namaFile);
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
+            String filename = in.nextLine();
+            filename = "../test/" + filename + ".txt";
+            M.readFileMatrix(filename);
             break;
 
             case 2:
@@ -965,7 +972,7 @@ public class Main {
                     dimensi = 0;
                 }
                 if (dimensi <= 0) {
-                    System.out.println("Input tidak valid");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (dimensi <= 0);
     
@@ -978,6 +985,7 @@ public class Main {
         }
 
         if (M.nRow > 0 && M.nCol > 0){
+            // Jika determinan dari 
             if (matrixOperation.determinanKofaktor(M) == 0){
                 System.out.println("Matriks tidak memiliki balikan.");
             }
@@ -999,7 +1007,7 @@ public class Main {
                         input = 0;
                     }
                     if (input <= 0 || input > 2) {
-                        System.out.println("Input tidak valid!");
+                        System.out.println("Input tidak valid! Silahkan input dengan benar.");
                     } 
                 } while (input <= 0 || input > 2);
         
@@ -1024,11 +1032,12 @@ public class Main {
 
         /* Memilih metode input */
         System.out.println("\nPilih metode masukan:");
-        System.out.println("1. Dari file");
-        System.out.println("2. Dari keyboard");
+        System.out.println("1. File");
+        System.out.println("2. Keyboard");
+        System.out.println("\n3. Kembali Ke Menu Utaman");
 
         int input;
-        matrix stdInput = new matrix();
+        matrix mIn = new matrix();
 
         do{
             line = in.nextLine();
@@ -1039,31 +1048,29 @@ public class Main {
                 input = 0;
             }
             if (input <= 0 || input > 2) {
-                System.out.println("Input tidak valid");
+                System.out.println("Input tidak valid! Silahkan input dengan benar.");
             } 
         } while (input <= 0 || input > 2);
 
         /* Memberi masukan */
         switch (input) {
             case 1:
-            System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-            System.out.print("\nNama file (.txt): ");
-            String namaFile = in.nextLine();
-            String pathFile = "../test/" + namaFile;
-            stdInput.readFileMatrixBolong(pathFile, 1);
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
+            String filename = in.nextLine();
+            String pathFile = "../test/" + filename + ".txt";
+            mIn.readFileMatrixBolong(pathFile, 1);
             break;
 
             case 2:
-            stdInput = InterpolasiPolinom.inputKeyboard();
+            mIn = InterpolasiPolinom.inputKeyboard();
             break;
         }
 
-        /* Proses */
-        if (!(stdInput.nRow == 0 || stdInput.nCol == 0)) {
-            matrix ai = InterpolasiPolinom.ai(InterpolasiPolinom.xi(InterpolasiPolinom.x(stdInput)),InterpolasiPolinom.fx(stdInput));
-            double a = InterpolasiPolinom.a(stdInput);
+        if (!(mIn.nRow == 0 || mIn.nCol == 0)) {
+            matrix ai = InterpolasiPolinom.ai(InterpolasiPolinom.xi(InterpolasiPolinom.x(mIn)),InterpolasiPolinom.fx(mIn));
+            double a = InterpolasiPolinom.a(mIn);
             
-            /* Output terminal */
             System.out.println("\nHasil Perhitungan Interpolasi Polinom");
             System.out.println("Penjabaran f(x):");
             System.out.println(InterpolasiPolinom.fxString(ai));
@@ -1083,7 +1090,7 @@ public class Main {
                     input = 0;
                 }
                 if (input <= 0 || input > 2) {
-                    System.out.println("Input tidak valid");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (input <= 0 || input > 2);
         
@@ -1093,7 +1100,7 @@ public class Main {
                 break;
         
                 case 2:
-                System.out.println("\nOk! Kembali ke menu utama...");
+                System.out.println("\nKembali ke menu utama...");
                 break;
             }
 
@@ -1130,10 +1137,10 @@ public class Main {
 
         switch (input) {
             case 1:
-            System.out.print("\nPastikan file yang Anda masukkan sudah berada di dalam folder test.");
-            System.out.print("\nNama file harus dalam format (.txt): ");
+            System.out.print("\nMengambil file dari folder test.");
+            System.out.print("\nNama file: ");
             String filename = in.nextLine();
-            String filespath = "../test/" + filename;
+            String filespath = "../test/" + filename + ".txt";
             mtxinput.readFileMatrixBolong(filespath, 1);
             break;
 
@@ -1168,7 +1175,7 @@ public class Main {
                 } catch (NumberFormatException e) {
                     input = 0;                    }
                     if (input <= 0 || input > 2) {
-                        System.out.println("Input tidak valid");
+                        System.out.println("Input tidak valid! Silahkan input dengan benar.");
                     } 
             } while (input <= 0 || input > 2);
     
@@ -1178,11 +1185,11 @@ public class Main {
                 break;
     
                 case 2:
-                System.out.println("\n Silahkan ke menu utama!");
+                System.out.println("\nKembali ke menu utama...");
                 break;
             }
         } else {
-            System.out.println("\nUps! operasi Regresi Linear Berganda tidak dapat dijalankan, Silahkan ke menu utama!");
+            System.out.println("\nOperasi gagal, kembali ke menu utama...");
         }
     }
 
@@ -1197,10 +1204,10 @@ public class Main {
         matrix mInput = new matrix();
     
         /* Menerima masukan dari file */
-        System.out.print("\nPastikan file masukan sudah dimasukkan ke folder test.");
-        System.out.print("\nNama file (.txt): ");
-        String namaFile = in.nextLine();
-        String pathFile = "../test/" + namaFile;
+        System.out.print("\nMengambil file dari folder test.");
+        System.out.print("\nNama file: ");
+        String filename = in.nextLine();
+        String pathFile = "../test/" + filename + ".txt";
         mInput.readFileMatrixBolong(pathFile, 2); //???
 
         /* Proses */
@@ -1211,11 +1218,11 @@ public class Main {
 
             /* Output terminal */
             System.out.println("\nHasil Bicubic Interpolation");
-            System.out.println("Hasil substitusi dengan nilai x dan y dari masukan:");
+            System.out.println("Nilai x dan y dari masukan disubstitusikan, dan hasilnya adalah");
             System.out.println("f(" + a + "," + b + ") = " + bicubicInterpolation.getFab(mAij, a, b));
             
             /* Output file */
-            System.out.println("\nApakah ingin dalam bentuk file?");
+            System.out.println("\nApakah anda ingin filenya?");
             System.out.println("1. Ya");
             System.out.println("2. Tidak");
             do{
@@ -1228,7 +1235,7 @@ public class Main {
                     input = 0;
                 }
                 if (input <= 0 || input > 2) {
-                    System.out.println("Input tidak valid");
+                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
                 } 
             } while (input <= 0 || input > 2);
         
