@@ -1210,6 +1210,7 @@ public class Main {
         String pathFile = "../test/" + filename + ".txt";
         mInput.readFileMatrixBolong(pathFile, 2); //???
 
+
         /* Proses */
         if (!(mInput.nRow == 0 || mInput.nCol == 0)) {
             matrix mAij = bicubicInterpolation.mAij(bicubicInterpolation.m16x1(bicubicInterpolation.m4x4(mInput)));
@@ -1220,6 +1221,8 @@ public class Main {
             System.out.println("\nHasil Bicubic Interpolation");
             System.out.println("Nilai x dan y dari masukan disubstitusikan, dan hasilnya adalah");
             System.out.println("f(" + a + "," + b + ") = " + bicubicInterpolation.getFab(mAij, a, b));
+
+            bicubicInterpolation.m16x16().writeMatrix();
             
             /* Output file */
             System.out.println("\nApakah anda ingin filenya?");
