@@ -9,10 +9,10 @@ public class RegresiLinearBerganda {
 
     public static matrix mtxfromkeyboard() {
         int n, m;
-        System.out.println("Masukkan jumlah data yang akan dihitung : ");
-        m = Integer.parseInt(in.nextLine());
         System.out.println("Notes : Untuk jumlah variabel peubah, variabel y tidak diperhitungkan\nMasukkan jumlah variabel : ");
         n = Integer.parseInt(in.nextLine());
+        System.out.println("Masukkan jumlah data yang akan dihitung : ");
+        m = Integer.parseInt(in.nextLine());
 
         matrix mtxinput = new matrix();
         mtxinput.nRow = m + 1;
@@ -22,9 +22,9 @@ public class RegresiLinearBerganda {
             for (int j = 0; j < mtxinput.nCol; j++) {
                 if (i != mtxinput.nRow - 1) {
                     if (j != mtxinput.nCol - 1) {
-                        System.out.println("Masukkan nilai x" + (j + 1) + " sampel ke-" + (i + 1) + ": ");
+                        System.out.println("Masukkan nilai x" + (j + 1) + " data ke-" + (i + 1) + ": ");
                     } else {
-                        System.out.println("Masukkan nilai y sampel ke-" + (i + 1) + ": ");
+                        System.out.println("Masukkan nilai y data ke-" + (i + 1) + ": ");
                     }
                     mtxinput.Matrix[i][j] = Double.parseDouble(in.nextLine());
                 } else {
@@ -72,11 +72,11 @@ public class RegresiLinearBerganda {
         matrix augmented = matrixOperation.concatCol(matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), varbebas),matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), variabelterikat));
         matrix operasigauss =  matrixOperation.gauss(augmented);
         
-        
+        double cac;
         for(int i = 0; i < operasigauss.nCol - 1; i++){
             AI.Matrix[i][0] = 0;
         }
-        double cac;
+        
         for(int i = operasigauss.nRow - 1; i >= 0; i--){
             cac = operasigauss.Matrix[i][operasigauss.nCol-1];
             for(int j = i; j < operasigauss.nCol-1; j++){
@@ -110,10 +110,10 @@ public class RegresiLinearBerganda {
         } else {
             nonzeropertama = 0;
             found = false;
-            for (int i= nonzeropertama; i<= AI.nRow - 1 && !found; i++) {
-                if (AI.Matrix[i][0] != 0) {
+            for (int p= nonzeropertama; p<= AI.nRow - 1 && !found; p++) {
+                if (AI.Matrix[p][0] != 0) {
                     found = true;
-                    nonzeropertama = i;
+                    nonzeropertama = p;
                 }
             }
 
