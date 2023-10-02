@@ -46,24 +46,26 @@ public class bicubicInterpolation {
 
         int i, j, x, y, row, col;
         row=0;
-        for(y=0; y<2; y++){
-            for(x=0; x<2; x++){
-                col=0;
-                for(j=0; j<4; j++){
-                    for(i=0; i<4; i++){
-                        if(row>=0 && row<=3){
-                            m16x16.Matrix[row][col] = Math.pow(x, i) * Math.pow(y, j);
-                        } else if(row>=4 && row<=7){
-                            m16x16.Matrix[row][col] = i * Math.pow(x, i-1) * Math.pow(y, j);
-                        } else if(row>=8 && row<=11){
-                            m16x16.Matrix[row][col] = j * Math.pow(x, i) * Math.pow(y, j-1);
-                        } else{
-                            m16x16.Matrix[row][col] = i * j * Math.pow(x, i-1) * Math.pow(y, j-1); 
+        for (int z = 0; z< 4; z++){
+            for(y=0; y<2; y++){
+                for(x=0; x<2; x++){
+                    col=0;
+                    for(j=0; j<4; j++){
+                        for(i=0; i<4; i++){
+                            if(row>=0 && row<=3){
+                                m16x16.Matrix[row][col] = Math.pow(x, i) * Math.pow(y, j);
+                            } else if(row>=4 && row<=7){
+                                m16x16.Matrix[row][col] = i * Math.pow(x, i-1) * Math.pow(y, j);
+                            } else if(row>=8 && row<=11){
+                                m16x16.Matrix[row][col] = j * Math.pow(x, i) * Math.pow(y, j-1);
+                            } else{
+                                m16x16.Matrix[row][col] = i * j * Math.pow(x, i-1) * Math.pow(y, j-1); 
+                            }
+                            col++;
                         }
-                        col++;
                     }
+                    row++;
                 }
-                row++;
             }
         }
         return m16x16;

@@ -10,7 +10,6 @@ public class Main {
 
         // Tampilkan pilihan menu
         while (run){
-            System.out.print("\033[H\033[2J");
             System.out.print("Kalkulator Matriks by Mandala Jaya\n");
             System.out.println("\nMENU");
             System.out.println("1. Sistem Persamaan Linear");
@@ -700,39 +699,45 @@ public class Main {
             break;
         }
 
-        if (M.nRow > 0 && M.nCol > 0){
-            det = matrixOperation.detOBE(M);
-            System.out.print("\nDeterminannya adalah: ");
-            System.out.println(det);
-
-            System.out.println("Maneh mau filenya ga?");
-            System.out.println("1. sok");
-            System.out.println("2. g dulu");
-            do{
-                System.out.print(">>");
-                line = in.nextLine();
-                row = line.split(" ");
-                try {
-                    input = Integer.parseInt(row[0]);
-                } catch (NumberFormatException e) {
-                    input = 0;
-                }
-                if (input <= 0 || input > 2) {
-                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
-                } 
-            } while (input <= 0 || input > 2);
-
-            switch (input){
-                case 1:
-                matrixOperation.detFile(M, det);
-
-                case 2:
-                System.out.println("\nKembali ke menu utama...");
-                break;
-            }
+        if (M.nRow != M.nCol){
+            System.out.println("Matriks harus persegi untuk dihitung determinannya!");
         }
         else{
-            System.out.println("Operasi gagal, kembali ke menu utama...");
+            if (M.nRow > 0 && M.nCol > 0){
+            
+                det = matrixOperation.detOBE(M);
+                System.out.print("\nDeterminannya adalah: ");
+                System.out.println(det);
+    
+                System.out.println("Maneh mau filenya ga?");
+                System.out.println("1. sok");
+                System.out.println("2. g dulu");
+                do{
+                    System.out.print(">>");
+                    line = in.nextLine();
+                    row = line.split(" ");
+                    try {
+                        input = Integer.parseInt(row[0]);
+                    } catch (NumberFormatException e) {
+                        input = 0;
+                    }
+                    if (input <= 0 || input > 2) {
+                        System.out.println("Input tidak valid! Silahkan input dengan benar.");
+                    } 
+                } while (input <= 0 || input > 2);
+    
+                switch (input){
+                    case 1:
+                    matrixOperation.detFile(M, det);
+    
+                    case 2:
+                    System.out.println("\nKembali ke menu utama...");
+                    break;
+                }
+            }
+            else{
+                System.out.println("Operasi gagal, kembali ke menu utama...");
+            }
         }
     }
 
@@ -756,10 +761,10 @@ public class Main {
             } catch (NumberFormatException e) {
                 input = 0;
             }
-            if (input <= 0 || input > 4) {
+            if (input <= 0 || input > 3) {
                 System.out.println("Input tidak valid! Silahkan input dengan benar.");
             } 
-        } while (input <= 0 || input > 4);
+        } while (input <= 0 || input > 3);
 
         switch (input){
             case 1:
@@ -793,39 +798,45 @@ public class Main {
             break;
         }
 
-        if (M.nRow > 0 && M.nCol > 0){
-            det = matrixOperation.determinanKofaktor(M);
-            System.out.print("\nDeterminannya adalah: ");
-            System.out.println(det);
-
-            System.out.println("Maneh mau filenya ga?");
-            System.out.println("1. sok");
-            System.out.println("2. g dulu");
-            do{
-                System.out.print(">>");
-                line = in.nextLine();
-                row = line.split(" ");
-                try {
-                    input = Integer.parseInt(row[0]);
-                } catch (NumberFormatException e) {
-                    input = 0;
-                }
-                if (input <= 0 || input > 2) {
-                    System.out.println("Input tidak valid! Silahkan input dengan benar.");
-                } 
-            } while (input <= 0 || input > 2);
-
-            switch (input){
-                case 1:
-                matrixOperation.detFile(M, det);
-
-                case 2:
-                System.out.println("\nKembali ke menu utama...");
-                break;
-            }
+        if (M.nRow != M.nCol){
+            System.out.println("Matriks harus persegi untuk dihitung determinannya!");
         }
         else{
-            System.out.println("Operasi gagal, kembali ke menu utama...");
+            if (M.nRow > 0 && M.nCol > 0){
+            
+                det = matrixOperation.determinanKofaktor(M);
+                System.out.print("\nDeterminannya adalah: ");
+                System.out.println(det);
+    
+                System.out.println("Maneh mau filenya ga?");
+                System.out.println("1. sok");
+                System.out.println("2. g dulu");
+                do{
+                    System.out.print(">>");
+                    line = in.nextLine();
+                    row = line.split(" ");
+                    try {
+                        input = Integer.parseInt(row[0]);
+                    } catch (NumberFormatException e) {
+                        input = 0;
+                    }
+                    if (input <= 0 || input > 2) {
+                        System.out.println("Input tidak valid! Silahkan input dengan benar.");
+                    } 
+                } while (input <= 0 || input > 2);
+    
+                switch (input){
+                    case 1:
+                    matrixOperation.detFile(M, det);
+    
+                    case 2:
+                    System.out.println("\nKembali ke menu utama...");
+                    break;
+                }
+            }
+            else{
+                System.out.println("Operasi gagal, kembali ke menu utama...");
+            }
         }
     }
     
