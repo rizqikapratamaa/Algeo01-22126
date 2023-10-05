@@ -652,4 +652,52 @@ public class matrixOperation {
         }
         return m3;
     }
-}
+
+    public static matrix gaussJordanReg(matrix mIn){   
+        matrix mOut = new matrix();
+        int column = 0;
+        int row = 0;
+
+        mOut = gauss(mIn);
+        tidyUp(mOut);
+
+        while (column < mOut.nCol - 1 && row < mOut.nRow) {
+            if (mOut.Matrix[row][column] == 0) {
+                // Jika elemen utama di bawah nol, coba cari baris di bawahnya yang tidak nol
+                int swapRow = -1;
+                for (int i = row + 1; i < mOut.nRow; i++) {
+                    if (mOut.Matrix[i][column] != 0) {
+                        swapRow = i;
+                        break;
+                    }
+                }
+
+                if (swapRow != -1) {
+                    // Tukar baris
+                    mOut = rowSwap(mOut, row, swapRow);
+                } else {
+                    // Tidak ada baris yang bisa ditukar, lanjut ke kolom berikutnya
+                    column += 1;
+                    continue;
+                }
+            }
+
+            // Buat elemen utama menjadi 1
+            double pivot = mOut.Matrix[row][column];
+            mOut = rowXConst(mOut, row, 1.0 / pivot);
+
+            // Nolkan elemen-elemen di atas dan di bawah elemen utama
+            for (int i = 0; i < mOut.nRow; i++) {
+                if (i != row) {
+                    double factor = -mOut.Matrix[i][column];
+                    mOut = minKaliBaris(mOut, i, row, factor);
+                }
+            }
+
+            // Pindah ke kolom berikutnya
+            column += 1;
+            row += 1;
+        }
+
+        return mOut;
+    }}

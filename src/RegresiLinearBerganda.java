@@ -33,121 +33,136 @@ public class RegresiLinearBerganda {
                 }
             }
         }
-        mtxinput.Matrix[mtxinput.nRow - 1][mtxinput.nCol - 1] = -999.0;
+        mtxinput.Matrix[mtxinput.nRow - 1][mtxinput.nCol - 1] = 0.0;
         
         return mtxinput;
     }
 
     
-    public static matrix varbebas(matrix mtxinput) {
-        matrix allisone = new matrix();
-        allisone.nRow = mtxinput.nRow - 1;
-        allisone.nCol = 1;
-
-        for (int i = 0; i < allisone.nRow; i++) {
-            allisone.Matrix[i][0] = 1;
-        }
-
-        matrix varbebas = (matrixOperation.concatCol(matrixOperation.sliceLastRow(matrixOperation.sliceLastCol(mtxinput)),allisone));
-        
-        return varbebas;
-    }
-
-    public static matrix variabelterikat (matrix mtxinput) {
-        return matrixOperation.takeLastCol(matrixOperation.sliceLastRow(mtxinput));
-    }
     
-    public static matrix koefreg (matrix mtxinput) {
-        return matrixOperation.takeLastRow(matrixOperation.sliceLastCol(mtxinput));
-    }
 
-    
-    public static matrix AI (matrix varbebas, matrix variabelterikat) {
-        matrix AI = new matrix();
-        AI.nRow = varbebas.nCol;
-        AI.nCol = 1;
-        matrix augmented = matrixOperation.concatCol((matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), varbebas)),(matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), variabelterikat)));
-        matrix operasigauss =  matrixOperation.gauss(augmented);
+    public static double ROW(matrix m, int s, int rowReg, int colReg) {
+        double countRow; 
+        countRow = 0;
+        int i;
         
+        for (i = 0; i < s - 1; i++) {
+            if (rowReg == 0) {
+                countRow += m.Matrix[colReg-1][i]; 
+            } else {
+                countRow += m.Matrix[rowReg-1][i]*m.Matrix[colReg-1][i];
+            }
+            
+        }
+        return countRow;
+    }
 
+    public static matrix FUNCTION(matrix m) {
+        int i, j;
+        matrix m1 = matrixOperation.transpose(m);
+        matrix mfuc = new matrix();
+        mfuc.nRow = m.nCol;
+        mfuc.nCol = m.nCol+1;
+        for (i = 0; i < mfuc.nRow; i++) {
+            for (j = 0; j < mfuc.nCol; j++) {
+                if (i == 0) {
+                    if (j == 0) {
+                        mfuc.Matrix[i][j] = m.nRow - 1;}
+                    // } else if(j==mfuc.nRow){
+                    //     mfuc.Matrix[i][j] = 0.0;
+                    // }
+                    else {
+                        mfuc.Matrix[i][j] = ROW(m1, m.nRow, i, j);
+                    }
 
-        double cac;
-        for(int i = 0; i < operasigauss.nCol - 1; i++){
-            AI.Matrix[i][0] = 0;
+                } else {
+                    if (j == 0) {
+                        mfuc.Matrix[i][j] = mfuc.Matrix[j][i];
+                    } else {
+                        mfuc.Matrix[i][j] = ROW(m1, m.nRow, i, j);
+                    }
+                }
+            }
         }
         
-        for(int i = operasigauss.nRow - 1; i >= 0; i--){
-            cac = operasigauss.Matrix[i][operasigauss.nCol-1];
-            for(int j = i; j < operasigauss.nCol-1; j++){
-                cac -= AI.Matrix[j][0] * operasigauss.Matrix[i][j];
-            }
-            AI.Matrix[i][0] = cac;
-        }
-
-        return AI;
+        return mfuc;
     }
-
-    public static double hasilfx (matrix koefreg, matrix AI) {
-        double hasilf;
-        hasilf = AI.Matrix[0][0];
-
-        for (int i = 0; i < koefreg.nCol; i++) {
-            hasilf += koefreg.Matrix[0][i] * AI.Matrix[i + 1][0];
-        }
-
-        return hasilf;
-    }
-
-  
-    public static String hasilfxStringvers(matrix AI) {
-    String fx = "f(x) = ";
-    boolean firstTerm = true;
-
-    for (int i = 0; i < AI.nRow; i++) {
-        double coefficient = AI.Matrix[i][0];
-        
-        if (coefficient != 0) {
-            if (coefficient > 0 && !firstTerm) {
-                fx += " + ";
-            } else if (coefficient < 0) {
-                fx += " - ";
-            }
-
-            if (i == 0 || Math.abs(coefficient) != 1) {
-                fx += Math.abs(coefficient);
-            }
-
-            if (i != 0) {
-                fx += "x" + i;
-            }
-
-            firstTerm = false;
-        }
-    }
-
-    return fx;
-}
 
     
-    public static void RLBFile(matrix koefreg, matrix AI) {
+
+    public static void SOLUTION(matrix m) {
+        matrix mb = FUNCTION(m);
+        matrix a = matrixOperation.gaussJordan(mb);
+
+        String output = "f(x) = ";
+        System.out.print("f(x) = ");
+        double fx = a.Matrix[0][a.nCol - 1] + a.Matrix[1][a.nCol - 1] * m.Matrix[m.nRow - 1][0] + a.Matrix[2][a.nCol - 1] * m.Matrix[m.nRow - 1][1] + a.Matrix[3][a.nCol - 1] * m.Matrix[m.nRow - 1][2];
+
+        for (int i = 0; i < a.nRow; i++) {
+            double coefficient = a.Matrix[i][a.nCol - 1]; // Mengambil koefisien (hasil) di kolom terakhir
+            if (i == 0) {
+                output += String.format("%.10f", coefficient);
+                System.out.print(String.format("%.10f", coefficient));
+            } else {
+                if (coefficient > 0) {
+                    output += " + ";
+                    System.out.print(" + ");
+                } else if (coefficient < 0) {
+                    output += " - ";
+                    System.out.print(" - ");
+                }
+                output += String.format("%.10f", Math.abs(coefficient)) + "x" + i;
+                System.out.print(String.format("%.10f", Math.abs(coefficient)) + "x" + i);
+            }
+        }
+        
+        System.out.println();
+        System.out.println("Hampiran (taksiran) nilai f(x): " + fx);
+
+        
+        
+        
+    }
+
+    
+    public static void RLBFile(matrix m) {
         // Kamus Lokal
         String namafile;
 
         System.out.print("\nMasukkan nama file: ");
         namafile = in.nextLine() + ".txt";
         try {
-            BufferedWriter buatfile = new BufferedWriter(new FileWriter("./test/" + namafile));
+            BufferedWriter buatfile = new BufferedWriter(new FileWriter("../test/" + namafile));
 
             // Write
-            buatfile.write("Hasil Perhitungan Regresi Linear Berganda");
-            buatfile.newLine();
-            buatfile.write("Persamaan regresi linear berganda f(x):");
-            buatfile.newLine();
-            buatfile.write(hasilfxStringvers (AI));
-            buatfile.newLine();
-            buatfile.write("Hampiran (taksiran) nilai f(x):");
-            buatfile.newLine();
-            buatfile.write(("f(x) = " + hasilfx(koefreg, AI)));
+            matrix mb = FUNCTION(m);
+            matrix a = matrixOperation.gaussJordan(mb);
+            a.writeMatrix();
+
+            String output = "f(x) = ";
+            buatfile.write("f(x) = ");
+            double fx = a.Matrix[0][a.nCol - 1] + a.Matrix[1][a.nCol - 1] * m.Matrix[m.nRow - 1][0] + a.Matrix[2][a.nCol - 1] * m.Matrix[m.nRow - 1][1] + a.Matrix[3][a.nCol - 1] * m.Matrix[m.nRow - 1][2];
+
+            for (int i = 0; i < a.nRow; i++) {
+                double coefficient = a.Matrix[i][a.nCol - 1]; // Mengambil koefisien (hasil) di kolom terakhir
+                if (i == 0) {
+                    output += String.format("%.10f", coefficient);
+                    buatfile.write(String.format("%.10f", coefficient));
+                } else {
+                    if (coefficient > 0) {
+                        output += " + ";
+                        buatfile.write(" + ");
+                    } else if (coefficient < 0) {
+                        output += " - ";
+                        buatfile.write(" - ");
+                    }
+                    output += String.format("%.10f", Math.abs(coefficient)) + "x" + i;
+                    buatfile.write(String.format("%.10f", Math.abs(coefficient)) + "x" + i);
+                }
+            }
+            
+            buatfile.newLine();;
+            buatfile.write("Hampiran (taksiran) nilai f(x): " + fx);
             buatfile.flush();
             buatfile.close();
 

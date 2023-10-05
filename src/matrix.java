@@ -1,5 +1,4 @@
-/* ADT Matriks */
-// Import library
+/* ADT Matriks dan IO Matriks*/
 
 import java.util.Scanner;
 import java.io.File;
@@ -23,8 +22,6 @@ public class matrix {
 
     // Prosedur untuk mengisi elemen matriks
     public void readMatrix(int m, int n){
-        // untuk baca matriks maksimal input 50 kolom, orang gila mana juga yang mau masukkin matrix 50 kolom lewat terminal
-
         String line;
         String[] row = new String[100];
         double[] cache = new double[50];

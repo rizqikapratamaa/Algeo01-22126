@@ -1182,15 +1182,10 @@ public class Main {
 
         /* Proses */
         if (!(mtxinput.nRow == 0 || mtxinput.nRow == 0)) {
-            matrix koefreg = RegresiLinearBerganda.koefreg(mtxinput);
-            // matrix AI = RegresiLinearBerganda.AI(RegresiLinearBerganda.varbebas(mtxinput), RegresiLinearBerganda.variabelterikat(mtxinput));
-            matrix AI = rlb3.Fungsi(mtxinput);
             //output terminal biasa
             System.out.println("\nHasil Perhitungan Regresi Linear Berganda");
             System.out.println("Persamaan regresi linear berganda f(x):");
-            System.out.println(RegresiLinearBerganda.hasilfxStringvers (AI));
-            System.out.println("Hampiran (taksiran) nilai f(x):");
-            System.out.println("f(x) = " + RegresiLinearBerganda.hasilfx(RegresiLinearBerganda.koefreg(mtxinput), RegresiLinearBerganda.AI(RegresiLinearBerganda.varbebas(mtxinput), RegresiLinearBerganda.variabelterikat(mtxinput))));
+            RegresiLinearBerganda.SOLUTION(mtxinput);
             
            //Output File
             System.out.println("\nSimpan dalam bentuk file?");
@@ -1211,7 +1206,7 @@ public class Main {
     
             switch (input){
                 case 1:
-                RegresiLinearBerganda.RLBFile(koefreg, AI);;
+                RegresiLinearBerganda.RLBFile(mtxinput);
                 break;
     
                 case 2:
