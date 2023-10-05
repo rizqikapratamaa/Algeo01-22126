@@ -1183,8 +1183,8 @@ public class Main {
         /* Proses */
         if (!(mtxinput.nRow == 0 || mtxinput.nRow == 0)) {
             matrix koefreg = RegresiLinearBerganda.koefreg(mtxinput);
-            matrix AI = RegresiLinearBerganda.AI(RegresiLinearBerganda.varbebas(mtxinput), RegresiLinearBerganda.variabelterikat(mtxinput));
-            
+            // matrix AI = RegresiLinearBerganda.AI(RegresiLinearBerganda.varbebas(mtxinput), RegresiLinearBerganda.variabelterikat(mtxinput));
+            matrix AI = rlb3.Fungsi(mtxinput);
             //output terminal biasa
             System.out.println("\nHasil Perhitungan Regresi Linear Berganda");
             System.out.println("Persamaan regresi linear berganda f(x):");
