@@ -2,6 +2,8 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner in = new Scanner (System.in);
+
+    /* MAIN PROGRAM */
     public static void main(String[] args) {
         boolean run = true;
         int input = 0;
@@ -101,7 +103,7 @@ public class Main {
                 case 2:
                 System.out.print("\033[H\033[2J");
                 System.out.println("Determinan");
-                System.out.println("\nPilih Metode:");
+                System.out.println("\nPILIH METODE");
                 System.out.println("1. Metode OBE");
                 System.out.println("2. Metode Kofaktor");
                 System.out.println("3. Kembali Ke Menu");
@@ -142,7 +144,7 @@ public class Main {
                 case 3:
                 System.out.print("\033[H\033[2J");
                 System.out.println("Matriks Balikan");
-                System.out.println("\nPilih Metode: ");
+                System.out.println("\nPILIH METODE");
                 System.out.println("1. Metode Identitas");
                 System.out.println("2. Metode Adjoint");
                 System.out.println("3. Kembali Ke Menu");
@@ -181,18 +183,22 @@ public class Main {
                 break;
 
                 case 4:
+                System.out.print("\033[H\033[2J");
                 InterpolasiPolinom();
                 break;
 
                 case 5:
+                System.out.print("\033[H\033[2J");
                 BicubicInterpolation();
                 break;
 
                 case 6:
+                System.out.print("\033[H\033[2J");
                 RLB();
                 break;
 
                 case 7:
+                System.out.print("Sampai Jumpa!");
                 run = false;
                 break;
 
@@ -202,6 +208,8 @@ public class Main {
     }
 
     /* FUNGSI ANTARA */
+
+    // Fungsi antara untuk memanggil SPL Gauss
     public static void SPLGauss(){
         String line;
         String[] row;
@@ -209,7 +217,7 @@ public class Main {
         int baris, kolom, input = 0;
         Boolean notFirst = false;
 
-        System.out.println("\nPilih metode masukan: ");
+        System.out.println("\nPilih metode masukan:");
         System.out.println("1. File");
         System.out.println("2. Keyboard");
         System.out.println("\n3. Kembali Ke Menu");
@@ -279,9 +287,9 @@ public class Main {
             M = matrixOperation.gauss(M);
             SPL.solveSPL(M);
 
-            System.out.println("Maneh mau filenya ga?");
-            System.out.println("1. sok");
-            System.out.println("2. g dulu");
+            System.out.println("Simpan dalam bentuk file?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
 
             do{
                 System.out.print(">>");
@@ -313,6 +321,7 @@ public class Main {
         }
     }
 
+    // Fungsi antara untuk memanggil SPL Gauss Jordan
     public static void SPLGaussJordan(){
         String line;
         String[] row;
@@ -320,7 +329,7 @@ public class Main {
         int baris, kolom, input;
         Boolean notFirst = false;
 
-        System.out.println("\nPilih metode masukan: ");
+        System.out.println("\nPilih metode masukan:");
         System.out.println("1. File");
         System.out.println("2. Keyboard");
         System.out.println("\n3. Kembali Ke Menu");
@@ -390,10 +399,9 @@ public class Main {
             M = matrixOperation.gaussJordan(M);
             SPL.solveSPL(M);
 
-            System.out.println("Maneh mau filenya ga?");
-            System.out.println("1. sok");
-            System.out.println("2. g dulu");
-
+            System.out.println("Simpan dalam bentuk file?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
             do{
                 System.out.print(">>");
                 line = in.nextLine();
@@ -424,6 +432,7 @@ public class Main {
         }
     }
 
+    // Fungsi antara untuk memanggil SPL Inverse
     public static void SPLInverse(){
         String line;
         String[] row;
@@ -431,12 +440,13 @@ public class Main {
         int baris, kolom, input;
         Boolean notFirst = false;
 
-        System.out.println("\nPilih metode masukan: ");
+        System.out.println("\nPilih metode masukan:");
         System.out.println("1. File");
         System.out.println("2. Keyboard");
         System.out.println("\n3. Kembali Ke Menu");
 
         do{
+            System.out.print(">>");
             line = in.nextLine();
             row = line.split(" ");
             try{
@@ -499,10 +509,9 @@ public class Main {
         if (M.nRow > 0 && M.nCol > 0){
             SPL.solveWithInverse(M);
 
-            System.out.println("Maneh mau filenya ga?");
-            System.out.println("1. sok");
-            System.out.println("2. g dulu");
-
+            System.out.println("Simpan dalam bentuk file?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
             do{
                 System.out.print(">>");
                 line = in.nextLine();
@@ -533,6 +542,7 @@ public class Main {
         }
     }
 
+    // Fungsi antara untuk memanggil SPL Cramer
     public static void SPLCramer(){
         String line;
         String[] row;
@@ -546,6 +556,7 @@ public class Main {
         System.out.println("\n3. Kembali Ke Menu");
         
         do{
+            System.out.print(">>");
             line = in.nextLine();
             row = line.split(" ");
             try {
@@ -609,10 +620,9 @@ public class Main {
         if (M.nRow > 0 && M.nCol > 0){
             SPL.solveCramer(M);
 
-            System.out.println("Maneh mau filenya ga?");
-            System.out.println("1. sok");
-            System.out.println("2. g dulu");
-
+            System.out.println("Simpan dalam bentuk file?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
             do{
                 System.out.print(">>");
                 line = in.nextLine();
@@ -642,6 +652,7 @@ public class Main {
         }
     }
     
+    // Fungsi antara untuk memanggil Determinan metode OBE
     public static void DeterminanOBE(){
         String line;
         String[] row;
@@ -709,9 +720,9 @@ public class Main {
                 System.out.print("\nDeterminannya adalah: ");
                 System.out.println(det);
     
-                System.out.println("Maneh mau filenya ga?");
-                System.out.println("1. sok");
-                System.out.println("2. g dulu");
+                System.out.println("Simpan dalam bentuk file?");
+                System.out.println("1. Ya");
+                System.out.println("2. Tidak");
                 do{
                     System.out.print(">>");
                     line = in.nextLine();
@@ -741,6 +752,7 @@ public class Main {
         }
     }
 
+    // Fungsi antara untuk memanggil Determinan metode ekspansi kofaktor
     public static void DeterminanKofaktor(){
         String line;
         String[] row;
@@ -808,9 +820,9 @@ public class Main {
                 System.out.print("\nDeterminannya adalah: ");
                 System.out.println(det);
     
-                System.out.println("Maneh mau filenya ga?");
-                System.out.println("1. sok");
-                System.out.println("2. g dulu");
+                System.out.println("Simpan dalam bentuk file?");
+                System.out.println("1. Ya");
+                System.out.println("2. Tidak");
                 do{
                     System.out.print(">>");
                     line = in.nextLine();
@@ -840,6 +852,7 @@ public class Main {
         }
     }
     
+    // Fungsi antara untuk memanggil Matriks Balikan metode inverse identitas
     public static void InverseIdentitas(){
         String line;
         String[] row;
@@ -906,9 +919,9 @@ public class Main {
                 System.out.print("\nBalikannya adalah: \n");
                 inverse.writeMatrix();
         
-                System.out.println("Maneh mau filenya ga?");
-                System.out.println("1. sok");
-                System.out.println("2. g dulu");
+                System.out.println("Simpan dalam bentuk file?");
+                System.out.println("1. Ya");
+                System.out.println("2. Tidak");
                 do{
                     System.out.print(">>");
                     line = in.nextLine();
@@ -938,6 +951,7 @@ public class Main {
         }
     }
 
+    // Fungsi antara untuk memanggil Matriks Balikan metode inverse adjoint
     public static void InverseAdjoint(){
         String line;
         String[] row;
@@ -1005,9 +1019,9 @@ public class Main {
                 System.out.print("\nBalikannya adalah: \n");
                 inverse.writeMatrix();
         
-                System.out.println("Maneh mau filenya ga?");
-                System.out.println("1. sok");
-                System.out.println("2. g dulu");
+                System.out.println("Simpan dalam bentuk file?");
+                System.out.println("1. Ya");
+                System.out.println("2. Tidak");
                 do{
                     System.out.print(">>");
                     line = in.nextLine();
@@ -1037,6 +1051,7 @@ public class Main {
         }
     }
 
+    // Fungsi antara untuk memanggil Interpolasi Polinom
     public static void InterpolasiPolinom(){
         String line;
         String[] row;
@@ -1045,12 +1060,13 @@ public class Main {
         System.out.println("\nPilih metode masukan:");
         System.out.println("1. File");
         System.out.println("2. Keyboard");
-        System.out.println("\n3. Kembali Ke Menu Utaman");
+        System.out.println("\n3. Kembali Ke Menu");
 
         int input;
         matrix mIn = new matrix();
 
         do{
+            System.out.print(">>");
             line = in.nextLine();
             row = line.split(" ");
             try {
@@ -1120,7 +1136,7 @@ public class Main {
         }
     }
 
-    //Regresi Linear Berganda
+    // Fungsi antara untuk memanggil Regresi Linear Berganda
     public static void RLB() {
         matrix mtxinput = new matrix();
         int input;
@@ -1128,11 +1144,12 @@ public class Main {
         String[] baris;
 
         System.out.println("\nPilih metode masukan:");
-        System.out.println("1. Dari file");
-        System.out.println("2. Dari keyboard");
+        System.out.println("1. File");
+        System.out.println("2. Keyboard");
+        System.out.println("\n3. Kembali Ke Menu");
 
         do{
-            System.out.println("Pilih : ");
+            System.out.print(">>");
             mark = in.nextLine();
             baris = mark.split(" ");
             try {
@@ -1140,10 +1157,10 @@ public class Main {
             } catch (NumberFormatException e) {
                 input = 0;
             }
-            if (input <= 0 || input > 2) {
+            if (input <= 0 || input > 3) {
                 System.out.println("Pilihan Anda tidak valid, Silahkan Ulangi!");
             } 
-        } while (input <= 0 || input > 2);
+        } while (input <= 0 || input > 3);
 
 
         switch (input) {
@@ -1157,6 +1174,9 @@ public class Main {
 
             case 2:
             mtxinput = RegresiLinearBerganda.mtxfromkeyboard();
+            break;
+
+            case 3:
             break;
         }
 
@@ -1174,11 +1194,10 @@ public class Main {
             
            //Output File
             System.out.println("\nSimpan dalam bentuk file?");
-            System.out.println("1. Boleh");
-            System.out.println("2. Tidak perlu");
-            
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
             do{
-                System.out.println("Pilih : ");
+                System.out.print(">>");
                 mark = in.nextLine();
                 baris = mark.split(" ");
                 try {
@@ -1204,7 +1223,7 @@ public class Main {
         }
     }
 
-    /* Bicubic Interpolation */
+    // Fungsi antara untuk memanggil Bicubic Interpolation
     public static void BicubicInterpolation(){
         String line;
         String[] row;
@@ -1219,7 +1238,7 @@ public class Main {
         System.out.print("\nNama file: ");
         String filename = in.nextLine();
         String pathFile = "../test/" + filename + ".txt";
-        mInput.readFileMatrixBolong(pathFile, 2); //???
+        mInput.readFileMatrixBolong(pathFile, 2);
 
 
         /* Proses */
@@ -1234,7 +1253,7 @@ public class Main {
             System.out.println("f(" + a + "," + b + ") = " + bicubicInterpolation.getFab(mAij, a, b));
             
             /* Output file */
-            System.out.println("\nApakah anda ingin filenya?");
+            System.out.println("\nSimpan dalam bentuk file?");
             System.out.println("1. Ya");
             System.out.println("2. Tidak");
             do{
