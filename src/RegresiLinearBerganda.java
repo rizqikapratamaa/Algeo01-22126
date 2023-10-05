@@ -40,25 +40,17 @@ public class RegresiLinearBerganda {
 
     
     public static matrix varbebas(matrix mtxinput) {
-        matrix norm = new matrix();
-        for(int i = 0; i<mtxinput.nCol;i++){
-            for (int j = 0; j < mtxinput.nCol+1;j++){
-                for(int k = 0; k<mtxinput.nRow;k++){
-                    if(i==0&&j==0){
-                        norm.Matrix[i][j]++;
-                    } else if(j==mtxinput.nCol){
-                        if(i==0){
-                            norm.Matrix[i][j] =  norm.Matrix[i][j] + mtxinput.Matrix[k][j-1];
-                        } else {
-                            norm.Matrix[i][j] =  norm.Matrix[i][j] +(mtxinput.Matrix[k][i-1]*mtxinput.Matrix[k][j-1]) ;
-                        }
-                    }
-                }
-            }
+        matrix allisone = new matrix();
+        allisone.nRow = mtxinput.nRow - 1;
+        allisone.nCol = 1;
+
+        for (int i = 0; i < allisone.nRow; i++) {
+            allisone.Matrix[i][0] = 1;
         }
+
+        matrix varbebas = matrixOperation.sliceLastCol(matrixOperation.concatCol(allisone,matrixOperation.sliceLastRow(mtxinput)));
         
-        
-        return norm;
+        return varbebas;
     }
 
     public static matrix variabelterikat (matrix mtxinput) {
@@ -74,10 +66,11 @@ public class RegresiLinearBerganda {
         matrix AI = new matrix();
         AI.nRow = varbebas.nCol;
         AI.nCol = 1;
-
-        matrix augmented = matrixOperation.concatCol(matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), varbebas),matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), variabelterikat));
+        matrix augmented = matrixOperation.concatCol((matrixOperation.multiplyMatrixBik(matrixOperation.transpose(varbebas), varbebas)),(matrixOperation.multiplyMatrixBik(matrixOperation.transpose(varbebas), variabelterikat)));
         matrix operasigauss =  matrixOperation.gauss(augmented);
         
+
+
         double cac;
         for(int i = 0; i < operasigauss.nCol - 1; i++){
             AI.Matrix[i][0] = 0;
