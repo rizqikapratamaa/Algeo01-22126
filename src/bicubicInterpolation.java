@@ -17,7 +17,7 @@ public class bicubicInterpolation {
 
     /* Membuat matriks 4x4 dengan memotong baris terakhir */
     public static matrix m4x4(matrix mInput){
-        return matrixOperation.transpose(matrixOperation.sliceLastRow(mInput));
+        return matrixOperation.sliceLastRow(mInput);
     }
 
     /* Membuat matriks f(x,y) */
@@ -61,6 +61,10 @@ public class bicubicInterpolation {
                             } else{
                                 m16x16.Matrix[row][col] = i * j * Math.pow(x, i-1) * Math.pow(y, j-1); 
                             }
+
+                            if(Double.isNaN(m16x16.Matrix[row][col])){
+                                m16x16.Matrix[row][col] = 0;
+                            }
                             col++;
                         }
                     }
@@ -73,7 +77,7 @@ public class bicubicInterpolation {
 
     /* Menghitung matriks Aij */
     public static matrix mAij(matrix m16x1){
-        return matrixOperation.multiplyMatrix(matrixOperation.inverseIdentitas(m16x16()), m16x1);
+        return matrixOperation.multiplyMatrixBik(matrixOperation.inverseIdentitas(m16x16()), m16x1);
     }
 
     /* Menghitung nilai f(a,b) */
