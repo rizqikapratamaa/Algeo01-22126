@@ -39,7 +39,9 @@ A matrix calculator developed in Java. this repository is an archive of the file
 ├── cover.jpg
 │ 
 ├── bin
+│   ├── balikan.class
 │   ├── bicubicInterpolation.class
+│   ├── determinan.class
 │   ├── InterpolasiPolinom.class
 │   ├── Main.class
 │   ├── matrix.class
@@ -51,7 +53,9 @@ A matrix calculator developed in Java. this repository is an archive of the file
 │   └── Algeo01-22126.pdf
 │ 
 ├── src
+│   ├── balikan.java
 │   ├── bicubicInterpolation.java
+│   ├── daterminan.java
 │   ├── InterpolasiPolinom.java
 │   ├── Main.java
 │   ├── matrix.java
@@ -77,7 +81,10 @@ A matrix calculator developed in Java. this repository is an archive of the file
     ├── 5_b_a.txt
     ├── 5_b_b.txt
     ├── 5_b_c.txt
-    ├── 5_c.txt
+    ├── 5_b_d.txt
+    ├── 5_c_4.txt
+    ├── 5_c_5.txt
+    ├── 5_c_6.txt
     ├── 6.txt
     ├── 7_a.txt
     ├── 7_b.txt
@@ -123,13 +130,14 @@ A matrix calculator developed in Java. this repository is an archive of the file
     ├── solusi_4_cramer.txt
     ├── solusi_4_gauss.txt
     ├── solusi_4_gaussjordan.txt
-    ├── solusi_5_a_1_balikan.txt
-    ├── solusi_5_a_2_cramer.txt
-    ├── solusi_5_a_3_gauss.txt
-    ├── solusi_5_a_4_gaussjordan.txt
-    ├── solusi_5_b_a_cramer.txt
-    ├── solusi_5_b_b_gauss.txt
-    ├── solusi_5_b_c_gaussjordan.txt
+    ├── solusi_5_a_1.txt
+    ├── solusi_5_a_2.txt
+    ├── solusi_5_a_3.txt
+    ├── solusi_5_a_4.txt
+    ├── solusi_5_b_a.txt
+    ├── solusi_5_b_b.txt
+    ├── solusi_5_b_c.txt
+    ├── solusi_5_b_d.txt
     ├── solusi_6.txt
     ├── solusi_7_a.txt
     ├── solusi_7_b.txt
