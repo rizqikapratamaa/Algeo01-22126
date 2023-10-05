@@ -1232,8 +1232,6 @@ public class Main {
             System.out.println("\nHasil Bicubic Interpolation");
             System.out.println("Nilai x dan y dari masukan disubstitusikan, dan hasilnya adalah");
             System.out.println("f(" + a + "," + b + ") = " + bicubicInterpolation.getFab(mAij, a, b));
-
-            bicubicInterpolation.m16x16().writeMatrix();
             
             /* Output file */
             System.out.println("\nApakah anda ingin filenya?");
