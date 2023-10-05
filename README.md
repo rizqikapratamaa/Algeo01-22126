@@ -1,16 +1,16 @@
 # Algeo01-22126 - Mandala Jaya
-<!-- ## Table of Contents
-* [General Info](#general-information)
-* [Technologies Used](#technologies-used)
-* [Features](#features)
-* [Screenshots](#screenshots)
-* [Setup](#setup)
-* [Usage](#usage)
-* [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
-* [Acknowledgements](#acknowledgements)
-* [Contact](#contact)
-* [License](#license) -->
+## Table of Contents
+- [Algeo01-22126 - Mandala Jaya](#algeo01-22126---mandala-jaya)
+  - [Table of Contents](#table-of-contents)
+  - [General Information](#general-information)
+  - [Contributor](#contributor)
+  - [Technologies Used](#technologies-used)
+  - [Features](#features)
+  - [Structure](#structure)
+  - [How to Use](#how-to-use)
+    - [Dependencies](#dependencies)
+    - [Installation](#installation)
+    - [Program Execution](#program-execution)
 
 ## General Information
 A matrix calculator developed in Java. this repository is an archive of the files for Tugas Besar 1 IF2123 Aljabar Linear dan Geometri 2023/2024. The main goal of this project is to make a Java library that is able to solve Linear Algebra problems using several methods including matrices. These methods include Gauss Elimination, Gauss-Jordan Elimination, Inverse, and Cramer's Rule. Aside of that, this project also include several implementation of the library: Polinomial Interpolation, Bicubic Interpolation, and Double Linear Regression.
