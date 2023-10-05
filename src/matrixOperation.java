@@ -589,7 +589,7 @@ public class matrixOperation {
         return mOut;
     }
 
-    // Fungsi untuk implementasi kaidah cramer
+    // Prosedur untuk implementasi kaidah cramer
     public static void kaidahCramer(matrix m){
         matrix mCut = new matrix();
         matrix mhasilB = new matrix();

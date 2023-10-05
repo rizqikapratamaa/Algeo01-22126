@@ -14,7 +14,7 @@ public class SPL{
 
     static Scanner in = new Scanner(System.in);
 
-    // Fungsi untuk mendapat solusi SPL
+    // Prosedur untuk mendapat solusi SPL
     public static void solveSPL(matrix mIn){
         // Menerima matriks gauss/gauss jordan SPL
         int condition;
@@ -41,7 +41,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk membuat file dari solusi SPL
+    // Prosedur untuk membuat file dari solusi SPL
     public static void solveSPLFile(matrix mIn){
         int condition;
         String filename;
@@ -70,7 +70,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk implementasi solusi inverse
+    // Prosedur untuk implementasi solusi inverse
     public static void solveWithInverse(matrix mIn){
         matrix m1 = new matrix();
         matrix m2 = new matrix();
@@ -100,7 +100,7 @@ public class SPL{
         }   
     }
     
-    // Fungsi untuk membuat file dari solusi inverse
+    // Prosedur untuk membuat file dari solusi inverse
     public static void solveWithInverseFile(matrix mIn){
         matrix m1 = new matrix();
         matrix m2 = new matrix();
@@ -157,7 +157,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk implementasi solusi kaidah cramer
+    // Prosedur untuk implementasi solusi kaidah cramer
     public static void solveCramer(matrix mIn){
         matrix m1 = new matrix();
         matrix m2 = new matrix();
@@ -189,7 +189,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk membuat file dari solusi kaidah crame
+    // Prosedur untuk membuat file dari solusi kaidah crame
     public static void solveCramerFile(matrix mIn){
         matrix m1 = new matrix();
         matrix m2 = new matrix();
@@ -358,7 +358,7 @@ public class SPL{
         return column;
     }
 
-    // Fungsi untuk mencetak solusi kosong
+    // Prosedur untuk mencetak solusi kosong
     public static void solusiKosong(matrix mIn){
         char var = 'S';
         char arrayChar[] = new char[mIn.nCol-1];
@@ -384,7 +384,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk menulis solusi kosong di file
+    // Prosedur untuk menulis solusi kosong di file
     public static void solusiKosongFile(matrix mIn, String filename){
         char var = 'S';
         char arrayChar[] = new char[mIn.nCol-1];
@@ -433,7 +433,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk mencari solusi unik dari persamaan gauss
+    // Prosedur untuk mencari solusi unik dari persamaan gauss
     public static void solusiUnik(matrix mIn){
         int i, j;
         double cache;
@@ -463,7 +463,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk menulis file solusi unik dari persamaan gauss
+    // Prosedur untuk menulis file solusi unik dari persamaan gauss
     public static void solusiUnikFile(matrix mIn, String filename){
         int i, j;
         double cache;
@@ -514,7 +514,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk mencari solusi banyak dari persamaan gauss
+    // Prosedur untuk mencari solusi banyak dari persamaan gauss
     public static void solusiBanyak(matrix mIn){
         int i, j, k;
         boolean trivial;
@@ -651,7 +651,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk menulis file solusi banyak dari persamaan gauss
+    // Prosedur untuk menulis file solusi banyak dari persamaan gauss
     public static void solusiBanyakFile(matrix mIn, String filename){
         int i, j, k;
         boolean trivial;
@@ -818,7 +818,7 @@ public class SPL{
         }
     }
 
-    // Fungsi untuk menampilkan tidak ada solusi
+    // Prosedur untuk menampilkan tidak ada solusi
     public static void solusiNone(){
         System.out.println("Solusi tidak ada.");
     }
