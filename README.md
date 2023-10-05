@@ -153,3 +153,6 @@ A matrix calculator developed in Java. this repository is an archive of the file
     git clone https://github.com/rizqikapratamaa/Algeo01-22126
     cd Algeo01-22126/bin
     java Main
+
+From Mandala Jaya, with love <3
+![image](https://github.com/rizqikapratamaa/Algeo01-22126/blob/5c9a30ef98e3573cfa9463abbc5d19f58662a9eb/cover.jpg)
