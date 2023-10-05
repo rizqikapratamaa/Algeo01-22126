@@ -35,6 +35,8 @@ A matrix calculator developed in Java. this repository is an archive of the file
 
 ```
 ├── README.md
+├── .gitignore
+├── cover.jpg
 │ 
 ├── bin
 │   ├── bicubicInterpolation.class
