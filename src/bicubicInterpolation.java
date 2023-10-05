@@ -77,7 +77,7 @@ public class bicubicInterpolation {
 
     // Fungsi untuk menghitung matriks Aij
     public static matrix mAij(matrix m16x1){
-        return matrixOperation.multiplyMatrixBik(matrixOperation.inverseIdentitas(m16x16()), m16x1);
+        return matrixOperation.multiplyMatrixBik(balikan.inverseIdentitas(m16x16()), m16x1);
     }
 
     // Fungsi untuk menghitung nilai f(a,b)

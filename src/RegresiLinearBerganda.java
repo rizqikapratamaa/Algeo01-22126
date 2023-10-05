@@ -5,6 +5,7 @@ public class RegresiLinearBerganda {
 
     static Scanner in = new Scanner (System.in);
 
+    // Fungsi untuk menerima masukan dari keyboard
     public static matrix mtxfromkeyboard() {
         int n, m;
         System.out.println("Notes : Untuk jumlah variabel peubah, variabel y tidak diperhitungkan\nMasukkan jumlah variabel : ");
@@ -38,9 +39,7 @@ public class RegresiLinearBerganda {
         return mtxinput;
     }
 
-    
-    
-
+    // Fungsi untuk mengubah matriks yang vertikal menjadi horizontal
     public static double ROW(matrix m, int s, int rowReg, int colReg) {
         double countRow; 
         countRow = 0;
@@ -57,6 +56,7 @@ public class RegresiLinearBerganda {
         return countRow;
     }
 
+    // Fungsi untuk mendapatkan persamaan normal equation
     public static matrix FUNCTION(matrix m) {
         int i, j;
         matrix m1 = matrixOperation.transpose(m);
@@ -88,11 +88,10 @@ public class RegresiLinearBerganda {
         return mfuc;
     }
 
-    
-
+    // Prosedur untuk mendapatkan persamaan regresi dan hampirannya
     public static void SOLUTION(matrix m) {
         matrix mb = FUNCTION(m);
-        matrix a = matrixOperation.gaussJordan(mb);
+        matrix a = SPL.gaussJordan(mb);
 
         String output = "f(x) = ";
         System.out.print("f(x) = ");
@@ -124,9 +123,8 @@ public class RegresiLinearBerganda {
         
     }
 
-    
+    // Prosedur untuk menyimpan hasil regresi dalam bentuk file
     public static void RLBFile(matrix m) {
-        // Kamus Lokal
         String namafile;
 
         System.out.print("\nMasukkan nama file: ");
@@ -136,8 +134,7 @@ public class RegresiLinearBerganda {
 
             // Write
             matrix mb = FUNCTION(m);
-            matrix a = matrixOperation.gaussJordan(mb);
-            a.writeMatrix();
+            matrix a = SPL.gaussJordan(mb);
 
             String output = "f(x) = ";
             buatfile.write("f(x) = ");

@@ -82,11 +82,11 @@ public class SPL{
         if (m1.nRow != m1.nCol){
             System.out.println("Matriks memerlukan " + m1.nCol + " persamaan untuk dapat diselesaikan");
         }
-        else if (matrixOperation.determinanKofaktor(m1) == 0){
+        else if (determinan.determinanKofaktor(m1) == 0){
             System.out.println("Matriks tidak memiliki inverse.");
         }
         else{
-            m1 = matrixOperation.inverseAdjoint(m1);
+            m1 = balikan.inverseAdjoint(m1);
             m2 = matrixOperation.multiplyMatrix(m1, m2);
 
             System.out.println("Solusi: ");
@@ -131,12 +131,12 @@ public class SPL{
             if (m2.nRow != m2.nCol){
                 bw.write("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat diselesaikan");
             }
-            else if (matrixOperation.determinanKofaktor(m2) == 0){
+            else if (determinan.determinanKofaktor(m2) == 0){
                 bw.write("Tidak dapat menggunakan metode matriks balikan!");
                 bw.newLine();
             }
             else{
-                m2 = matrixOperation.inverseAdjoint(mIn);
+                m2 = balikan.inverseAdjoint(mIn);
                 m1 = matrixOperation.multiplyMatrix(m2, m1);
                 bw.write("Solusi: ");
                 for (i = 0; i < m1.nRow; i++){
@@ -171,7 +171,7 @@ public class SPL{
         if (m2.nRow != m2.nCol){
             System.out.println("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat diselesaikan.");
         }
-        else if (matrixOperation.determinanKofaktor(m2) == 0){
+        else if (determinan.determinanKofaktor(m2) == 0){
             System.out.println("Tidak dapat menggunakan kaidah Cramer!");
         }
 
@@ -183,7 +183,7 @@ public class SPL{
                 System.out.print("x");
                 System.out.print(i+1);
                 System.out.print(" = ");
-                System.out.print(matrixOperation.determinanKofaktor(temp)/matrixOperation.determinanKofaktor(m2));
+                System.out.print(determinan.determinanKofaktor(temp)/determinan.determinanKofaktor(m2));
                 System.out.print(", \n");
             }
         }
@@ -222,7 +222,7 @@ public class SPL{
                 bw.write("Matriks memerlukan " + m2.nCol + " persamaan untuk dapat diselesaikan.");
                 bw.newLine();
             }
-            else if (matrixOperation.determinanKofaktor(m2) == 0){
+            else if (determinan.determinanKofaktor(m2) == 0){
                 bw.write("Matriks tidak memiliki inverse sehingga tidak bisa menggunakan kaidah Cramer.");
                 bw.newLine();
             }
@@ -230,7 +230,7 @@ public class SPL{
                 System.out.println("Solusi: ");
                 for (i = 0; i < m1.nRow; i++){
                     temp = matrixOperation.cramerSwap(m2, m1, i);
-                    bw.write("x" + (i+1) + " = " + (matrixOperation.determinanKofaktor(temp)/matrixOperation.determinanKofaktor(m2)));
+                    bw.write("x" + (i+1) + " = " + (determinan.determinanKofaktor(temp)/determinan.determinanKofaktor(m2)));
                     if (i == m1.nRow-1) {
                         bw.newLine();
                     }
@@ -284,6 +284,185 @@ public class SPL{
         return x;
     }
 
+    // Fungsi untuk implementasi metode eliminasi Gauss
+    public static matrix gauss(matrix mIn){
+        matrix mOut = new matrix();
+        int column = 0;
+        int row = 0;
+        int i;
+        
+        matrixOperation.tidyUp(mOut);
+        mOut = matrixOperation.compactzero(mIn);
+        while (column < mOut.nCol-1) {
+            if (mOut.Matrix[row][column] == 0) {
+                column += 1;
+            }
+            else{
+                for(i = row + 1; i < mOut.nRow; i++){
+                    mOut = matrixOperation.minKaliBaris(mOut, i, row, mOut.Matrix[i][column]/mOut.Matrix[row][column]);
+                }
+                mOut = matrixOperation.rowXConst(mOut, row, 1/mOut.Matrix[row][column]);
+
+                mOut = matrixOperation.compactzero(mOut);
+
+                column += 1;
+                row += 1;
+            }
+        }
+        return mOut;
+    }
+
+    // Fungsi untuk implementasi metode eliminasi Gauss-Jordan
+    public static matrix gaussJordan(matrix mIn){
+        matrix mOut = new matrix();
+        int column = 0;
+        int row = 0;
+        int i;
+
+        mOut = gauss(mIn);
+        matrixOperation.tidyUp(mOut);
+        while (column < mOut.nCol-1){
+            if (mOut.Matrix[row][column] == 0){
+                column += 1;
+            }
+            else{
+                for (i = 0; i < row; i++){
+                    if (i != row){
+                        mOut = matrixOperation.minKaliBaris(mOut, i, row, mOut.Matrix[i][column]/mOut.Matrix[row][column]);
+                    }
+                }
+                column += 1;
+                row += 1;
+            }
+        }
+        return mOut;
+    }   
+    
+    // Fungsi untuk mendapat matriks kofaktor tiap elemen i, j
+    public static matrix matrixCof(matrix mIn){
+        matrix mOut = new matrix();
+        mOut.nRow = mIn.nRow;
+        mOut.nCol = mIn.nCol;
+        for ( int i = 0; i < mIn.nRow; i++){
+            for (int j = 0; j < mIn.nCol; j++){
+                mOut.Matrix[i][j] = determinan.cofactor(mIn, i, j);
+            }
+        }
+        return mOut;
+    }
+
+    // Prosedur untuk implementasi kaidah cramer
+    public static void kaidahCramer(matrix m){
+        matrix mCut = new matrix();
+        matrix mhasilB = new matrix();
+        double determinanX, determinant;
+        int i, j;
+
+        // memotong elemen terakhir dari matriks augmented dan masukin ke matriks mCut
+        for(i = 0; i < m.nRow; i++){
+            for(j = 0; j < m.nCol-1; j++){
+                mCut.Matrix[i][j] = m.Matrix[i][j];
+            }
+        }
+
+        determinant = determinan.determinanKofaktor(mCut);
+
+        if(determinant == 0){
+            System.out.println("Tidak bisa menggunakan kaidah cramer karena determinan matriks = 0");
+        }else{
+
+            // bikin matriks yang isinya b
+            for(i=0; i<m.nRow; i++){
+                mhasilB.Matrix[i][0] = m.Matrix[i][m.nCol-1];
+            }
+
+            for(j=0; j<m.nCol-1; j++){
+                for(i=0; i<m.nRow; i++){
+                    mCut.Matrix[i][j] = mhasilB.Matrix[i][0];
+                }
+                determinanX = determinan.determinanKofaktor(mCut);
+                System.out.println("Nilai x" + (j+1) + " = " + determinanX/determinant);
+            }
+        }
+    }
+
+    // Fungsi untuk untuk menyelesaikan sistem persamaan linear dengan kaidar cramer
+    public static matrix cramerSwap(matrix m2, matrix m1, int col){
+        matrix temp = new matrix();
+        temp = matrixOperation.cloneMatrix(m2);
+        for (int i = 0; i < m2.nRow; i++){
+            temp.Matrix[i][col] = m1.Matrix[i][0];
+        }
+        return temp;
+    }
+
+    // Fungsi untuk menyatukan m1 dan m2 secara kolom
+    public static matrix concatCol(matrix m1, matrix m2) {
+        // PREKONDISI: m1.nRow = m2.nRow
+        matrix m3 = new matrix();
+        m3.nRow = m1.nRow;
+        m3.nCol = m1.nCol + m2.nCol;
+        int i, j;
+        for (i = 0; i <= m3.nRow; i++) {
+            for (j = 0; j <= m3.nCol; j++){
+                if (j < m1.nCol) {
+                    m3.Matrix[i][j] = m1.Matrix[i][j];
+                } else {
+                    m3.Matrix[i][j] = m2.Matrix[i][j - m1.nCol];
+                }
+            }
+        }
+        return m3;
+    }
+
+    public static matrix gaussJordanReg(matrix mIn){   
+        matrix mOut = new matrix();
+        int column = 0;
+        int row = 0;
+
+        mOut = SPL.gauss(mIn);
+        matrixOperation.tidyUp(mOut);
+
+        while (column < mOut.nCol - 1 && row < mOut.nRow) {
+            if (mOut.Matrix[row][column] == 0) {
+                // Jika elemen utama di bawah nol, coba cari baris di bawahnya yang tidak nol
+                int swapRow = -1;
+                for (int i = row + 1; i < mOut.nRow; i++) {
+                    if (mOut.Matrix[i][column] != 0) {
+                        swapRow = i;
+                        break;
+                    }
+                }
+
+                if (swapRow != -1) {
+                    // Tukar baris
+                    mOut = matrixOperation.rowSwap(mOut, row, swapRow);
+                } else {
+                    // Tidak ada baris yang bisa ditukar, lanjut ke kolom berikutnya
+                    column += 1;
+                    continue;
+                }
+            }
+
+            // Buat elemen utama menjadi 1
+            double pivot = mOut.Matrix[row][column];
+            mOut = matrixOperation.rowXConst(mOut, row, 1.0 / pivot);
+
+            // Nolkan elemen-elemen di atas dan di bawah elemen utama
+            for (int i = 0; i < mOut.nRow; i++) {
+                if (i != row) {
+                    double factor = -mOut.Matrix[i][column];
+                    mOut = matrixOperation.minKaliBaris(mOut, i, row, factor);
+                }
+            }
+
+            // Pindah ke kolom berikutnya
+            column += 1;
+            row += 1;
+        }
+
+        return mOut;
+    }
 
     /* FUNGSI ANTARA SPL */
     // Fungsi untuk menghapus baris yang elemennya 0 semua

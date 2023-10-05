@@ -94,7 +94,7 @@ public class InterpolasiPolinom {
         ai.nCol = 1;
         
         matrix augmented = matrixOperation.concatCol(xi, fx);
-        matrix gaussed = matrixOperation.gauss(augmented);
+        matrix gaussed = SPL.gauss(augmented);
         
         double cache;
         

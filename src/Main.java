@@ -284,7 +284,7 @@ public class Main {
         }
 
         if (M.nRow > 0 && M.nCol > 0){
-            M = matrixOperation.gauss(M);
+            M = SPL.gauss(M);
             SPL.solveSPL(M);
 
             System.out.println("Simpan dalam bentuk file?");
@@ -396,7 +396,7 @@ public class Main {
         }
 
         if (M.nRow > 0 && M.nCol > 0){
-            M = matrixOperation.gaussJordan(M);
+            M = SPL.gaussJordan(M);
             SPL.solveSPL(M);
 
             System.out.println("Simpan dalam bentuk file?");
@@ -716,7 +716,7 @@ public class Main {
         else{
             if (M.nRow > 0 && M.nCol > 0){
             
-                det = matrixOperation.detOBE(M);
+                det = determinan.detOBE(M);
                 System.out.print("\nDeterminannya adalah: ");
                 System.out.println(det);
     
@@ -739,7 +739,7 @@ public class Main {
     
                 switch (input){
                     case 1:
-                    matrixOperation.detFile(M, det);
+                    determinan.detFile(M, det);
     
                     case 2:
                     System.out.println("\nKembali ke menu utama...");
@@ -816,7 +816,7 @@ public class Main {
         else{
             if (M.nRow > 0 && M.nCol > 0){
             
-                det = matrixOperation.determinanKofaktor(M);
+                det = determinan.determinanKofaktor(M);
                 System.out.print("\nDeterminannya adalah: ");
                 System.out.println(det);
     
@@ -839,7 +839,7 @@ public class Main {
     
                 switch (input){
                     case 1:
-                    matrixOperation.detFile(M, det);
+                    determinan.detFile(M, det);
     
                     case 2:
                     System.out.println("\nKembali ke menu utama...");
@@ -911,11 +911,11 @@ public class Main {
         }
 
         if (M.nRow > 0 && M.nCol > 0){
-            if (matrixOperation.determinanKofaktor(M) == 0){
+            if (determinan.determinanKofaktor(M) == 0){
                 System.out.println("Matriks tidak memiliki balikan.");
             }
             else{
-                inverse = matrixOperation.inverseIdentitas(M);
+                inverse = balikan.inverseIdentitas(M);
                 System.out.print("\nBalikannya adalah: \n");
                 inverse.writeMatrix();
         
@@ -1011,11 +1011,11 @@ public class Main {
 
         if (M.nRow > 0 && M.nCol > 0){
             // Jika determinan dari 
-            if (matrixOperation.determinanKofaktor(M) == 0){
+            if (determinan.determinanKofaktor(M) == 0){
                 System.out.println("Matriks tidak memiliki balikan.");
             }
             else{
-                inverse = matrixOperation.inverseAdjoint(M);
+                inverse = balikan.inverseAdjoint(M);
                 System.out.print("\nBalikannya adalah: \n");
                 inverse.writeMatrix();
         
