@@ -1232,6 +1232,16 @@ public class Main {
             System.out.println("\nHasil Bicubic Interpolation");
             System.out.println("Nilai x dan y dari masukan disubstitusikan, dan hasilnya adalah");
             System.out.println("f(" + a + "," + b + ") = " + bicubicInterpolation.getFab(mAij, a, b));
+
+            bicubicInterpolation.m16x16().writeMatrix();
+            System.out.println("\nMatriks m16x1");
+            bicubicInterpolation.m16x1(bicubicInterpolation.m4x4(mInput)).writeMatrix();
+            System.out.println("\ntest inverse");
+            matrixOperation.inverseIdentitas(bicubicInterpolation.m16x16()).writeMatrix();
+            System.out.println("\nMatriks mAij");
+            bicubicInterpolation.mAij(bicubicInterpolation.m16x1(bicubicInterpolation.m4x4(mInput))).writeMatrix();
+            System.out.println("\nMatriks m4x4");
+            bicubicInterpolation.m4x4(mInput).writeMatrix();
             
             /* Output file */
             System.out.println("\nApakah anda ingin filenya?");

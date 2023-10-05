@@ -2,7 +2,7 @@ import java.lang.Math;
 import java.util.*;
 import java.io.*;
 
-public class bicubicInterpolation {
+public class bikubik {
     static Scanner input = new Scanner(System.in);
 
     /* Mengambil nilai a */
@@ -17,7 +17,7 @@ public class bicubicInterpolation {
 
     /* Membuat matriks 4x4 dengan memotong baris terakhir */
     public static matrix m4x4(matrix mInput){
-        return matrixOperation.sliceLastRow(mInput);
+        return matrixOperation.transpose(matrixOperation.sliceLastRow(mInput));
     }
 
     /* Membuat matriks f(x,y) */
@@ -46,30 +46,24 @@ public class bicubicInterpolation {
 
         int i, j, x, y, row, col;
         row=0;
-        for (int z = 0; z< 4; z++){
-            for(y=0; y<2; y++){
-                for(x=0; x<2; x++){
-                    col=0;
-                    for(j=0; j<4; j++){
-                        for(i=0; i<4; i++){
-                            if(row>=0 && row<=3){
-                                m16x16.Matrix[row][col] = Math.pow(x, i) * Math.pow(y, j);
-                            } else if(row>=4 && row<=7){
-                                m16x16.Matrix[row][col] = i * Math.pow(x, i-1) * Math.pow(y, j);
-                            } else if(row>=8 && row<=11){
-                                m16x16.Matrix[row][col] = j * Math.pow(x, i) * Math.pow(y, j-1);
-                            } else{
-                                m16x16.Matrix[row][col] = i * j * Math.pow(x, i-1) * Math.pow(y, j-1); 
-                            }
-
-                            if(Double.isNaN(m16x16.Matrix[row][col])){
-                                m16x16.Matrix[row][col] = 0;
-                            }
-                            col++;
+        for(y=0; y<2; y++){
+            for(x=0; x<2; x++){
+                col=0;
+                for(j=0; j<4; j++){
+                    for(i=0; i<4; i++){
+                        if(row>=0 && row<=3){
+                            m16x16.Matrix[row][col] = Math.pow(x, i) * Math.pow(y, j);
+                        } else if(row>=4 && row<=7){
+                            m16x16.Matrix[row][col] = i * Math.pow(x, i-1) * Math.pow(y, j);
+                        } else if(row>=8 && row<=11){
+                            m16x16.Matrix[row][col] = j * Math.pow(x, i) * Math.pow(y, j-1);
+                        } else{
+                            m16x16.Matrix[row][col] = i * j * Math.pow(x, i-1) * Math.pow(y, j-1); 
                         }
+                        col++;
                     }
-                    row++;
                 }
+                row++;
             }
         }
         return m16x16;
@@ -77,7 +71,7 @@ public class bicubicInterpolation {
 
     /* Menghitung matriks Aij */
     public static matrix mAij(matrix m16x1){
-        return matrixOperation.multiplyMatrixBik(matrixOperation.inverseIdentitas(m16x16()), m16x1);
+        return matrixOperation.multiplyMatrix(matrixOperation.inverseIdentitas(m16x16()), m16x1);
     }
 
     /* Menghitung nilai f(a,b) */
