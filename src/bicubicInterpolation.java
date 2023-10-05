@@ -5,22 +5,22 @@ import java.io.*;
 public class bicubicInterpolation {
     static Scanner input = new Scanner(System.in);
 
-    /* Mengambil nilai a */
+    // FUngsi untuk mengambil nilai a
     public static double getA(matrix mInput){
         return mInput.Matrix[4][0];
     }
 
-    /* Mengambil nilai b */
+    // Fungsi untuk mengambil nilai b
     public static double getB(matrix mInput){
         return mInput.Matrix[4][1];
     }
 
-    /* Membuat matriks 4x4 dengan memotong baris terakhir */
+    // Fungsi untuk membuat matriks 4x4 dengan memotong baris terakhir
     public static matrix m4x4(matrix mInput){
         return matrixOperation.sliceLastRow(mInput);
     }
 
-    /* Membuat matriks f(x,y) */
+    // Fungs untuk membuat matriks f(x,y)
     public static matrix m16x1(matrix m4x4){
         matrix m16x1 = new matrix();
         m16x1.nRow = 16;
@@ -38,7 +38,7 @@ public class bicubicInterpolation {
         return m16x1;
     }
 
-    /* Membuat matriks X */
+    // Fungsi untuk membuat matriks X
     public static matrix m16x16(){
         matrix m16x16 = new matrix();
         m16x16.nRow = 16;
@@ -75,12 +75,12 @@ public class bicubicInterpolation {
         return m16x16;
     }
 
-    /* Menghitung matriks Aij */
+    // Fungsi untuk menghitung matriks Aij
     public static matrix mAij(matrix m16x1){
         return matrixOperation.multiplyMatrixBik(matrixOperation.inverseIdentitas(m16x16()), m16x1);
     }
 
-    /* Menghitung nilai f(a,b) */
+    // Fungsi untuk menghitung nilai f(a,b)
     public static double getFab(matrix mAij, double a, double b){
         int i, j, row;
         double hslfab;
@@ -97,24 +97,19 @@ public class bicubicInterpolation {
         return hslfab;
     }
 
-
-    /* Memasukkan hasil bicubic ke File */
+    // Prosedur untuk memasukkan hasil bicubic ke file
     public static void bicubicInterFile(matrix mAij, double a, double b){
         System.out.print("\nMasukkan nama file: ");
         String fileName = input.nextLine() + ".txt";
 
         try{
-            // Membuat file
             BufferedWriter buff = new BufferedWriter(new FileWriter("../test/" + fileName));
-
-            // Write Perline
             buff.write("Hasil Perhitungan Bicubic Interpolation\n");
             buff.write("f(" + a + ", " + b + ") = " + getFab(mAij, a, b));
 
             buff.flush();
             buff.close();
 
-        // Handler error
         } catch(IOException e){
             System.out.println(e.getMessage());
         }
