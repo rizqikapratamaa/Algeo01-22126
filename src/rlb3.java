@@ -43,7 +43,9 @@ public class rlb3 {
                 }
             }
         }
-        mfuc.writeMatrix();;
+        matrix mf = new matrix();
+        mf = matrixOperation.sliceLastRow(mfuc);
+        mf.writeMatrix();
         return mfuc;
     }
 
