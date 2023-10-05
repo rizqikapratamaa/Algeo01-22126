@@ -207,8 +207,8 @@ public class Main {
 
     }
 
-    /* FUNGSI ANTARA */
 
+    /* FUNGSI ANTARA */
     // Fungsi antara untuk memanggil SPL Gauss
     public static void SPLGauss(){
         String line;
@@ -1137,7 +1137,7 @@ public class Main {
     }
 
     // Fungsi antara untuk memanggil Regresi Linear Berganda
-    public static void RLB() {
+    public static void RLB(){
         matrix mtxinput = new matrix();
         int input;
         String mark;

@@ -6,6 +6,8 @@ import java.io.*;
 public class InterpolasiPolinom {
     static Scanner in = new Scanner (System.in);
 
+    /* IO */
+    // Fungsi untuk menerima input dari keyboard
     public static matrix inputKeyboard() {
         int n;
         System.out.print("Masukkan derajat polinom (n): ");
@@ -37,6 +39,7 @@ public class InterpolasiPolinom {
         return inputMatrix;
     }
 
+    // Fungsi untuk membuat matriks tanpa kolom pertama
     public static matrix x (matrix inputMatrix) {
         matrix x = new matrix();
         x.nRow = inputMatrix.nRow - 1;
@@ -49,6 +52,7 @@ public class InterpolasiPolinom {
         return x;
     }
 
+    // Fungsi untuk membuat matrix hasil perhitungan
     public static matrix fx (matrix inputMatrix) {
         matrix fx = new matrix();
         fx.nRow = inputMatrix.nRow - 1;
@@ -60,12 +64,14 @@ public class InterpolasiPolinom {
         return fx;
     }
 
+    // Fungsi untuk mengekstrak nilai a dari matriks inputMatrix
     public static double a (matrix inputMatrix) {
-        /* Mengekstrak nilai a dari matrix inputMatrix */
         return inputMatrix.Matrix[inputMatrix.nRow - 1][0];
     }
 
-    /* MATH */
+
+    /* PERHITUNGAN */
+    // Fungsi untuk membuat matriks xi dari matriks x
     public static matrix xi (matrix x) {
         /* Membuat matrix xi dari matrix x */
         matrix xi = new matrix();
@@ -81,8 +87,8 @@ public class InterpolasiPolinom {
         return xi;
     }
 
+    // Fungsi untuk membuat matriks ai dengan metode gauss dari matriks augmented xi|fx
     public static matrix ai (matrix xi, matrix fx) {
-        /* Membuat matrix ai dengan metode gauss dari matrix augmented xi|fx */ 
         matrix ai = new matrix();
         ai.nRow = fx.nRow;
         ai.nCol = 1;
@@ -107,11 +113,10 @@ public class InterpolasiPolinom {
         return ai;
     }
 
+    // Fungsi untuk menghasilkan fa
     public static double fa (matrix ai, double a) {
-        /* Menghasilkan f(a) */
         double fa;
         int baris;
-
         fa = 0;
         baris = 0;
         for (int i = 0; i < ai.nRow ; i++) {
@@ -122,7 +127,9 @@ public class InterpolasiPolinom {
         return fa;
     }
 
+
     /* OUTPUT */
+    // Fungsi untuk menghasilkan string hasil
     public static String fxString(matrix ai) {
         String fx = "f(x) =";
 
@@ -204,6 +211,7 @@ public class InterpolasiPolinom {
         return fx;
     }
     
+    // Prosedur untuk menulis hasil interpolasi ke file
     public static void IPFile(matrix ai, double a) {
         String filename;
         System.out.print("\nMasukkan nama file: ");

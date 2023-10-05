@@ -100,7 +100,7 @@ public class bicubicInterpolation {
 
     /* Memasukkan hasil bicubic ke File */
     public static void bicubicInterFile(matrix mAij, double a, double b){
-        System.out.println("\nMasukkan nama file: ");
+        System.out.print("\nMasukkan nama file: ");
         String fileName = input.nextLine() + ".txt";
 
         try{
@@ -108,7 +108,7 @@ public class bicubicInterpolation {
             BufferedWriter buff = new BufferedWriter(new FileWriter("../test/" + fileName));
 
             // Write Perline
-            buff.write("\nHasil Perhitungan Bicubic Interpolation\n");
+            buff.write("Hasil Perhitungan Bicubic Interpolation\n");
             buff.write("f(" + a + ", " + b + ") = " + getFab(mAij, a, b));
 
             buff.flush();
