@@ -66,7 +66,7 @@ public class RegresiLinearBerganda {
         matrix AI = new matrix();
         AI.nRow = varbebas.nCol;
         AI.nCol = 1;
-        matrix augmented = matrixOperation.concatCol((matrixOperation.multiplyMatrixBik(matrixOperation.transpose(varbebas), varbebas)),(matrixOperation.multiplyMatrixBik(matrixOperation.transpose(varbebas), variabelterikat)));
+        matrix augmented = matrixOperation.concatCol((matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), varbebas)),(matrixOperation.multiplyMatrix(matrixOperation.transpose(varbebas), variabelterikat)));
         matrix operasigauss =  matrixOperation.gauss(augmented);
         
 
@@ -99,86 +99,35 @@ public class RegresiLinearBerganda {
     }
 
   
-    public static String hasilfxStringvers (matrix AI) {
-        String fx = "f(x) =";
-        int nonzeropertama;
-        boolean found;
+    public static String hasilfxStringvers(matrix AI) {
+    String fx = "f(x) = ";
+    boolean firstTerm = true;
 
-        if (AI.isAllZero()) {
-            fx += " 0";
-        } else {
-            nonzeropertama = 0;
-            found = false;
-            for (int p= nonzeropertama; p<= AI.nRow - 1 && !found; p++) {
-                if (AI.Matrix[p][0] != 0) {
-                    found = true;
-                    nonzeropertama = p;
-                }
+    for (int i = 0; i < AI.nRow; i++) {
+        double coefficient = AI.Matrix[i][0];
+        
+        if (coefficient != 0) {
+            if (coefficient > 0 && !firstTerm) {
+                fx += " + ";
+            } else if (coefficient < 0) {
+                fx += " - ";
             }
 
-            /* Add koefisien dari suku pertama */
-            if (AI.Matrix[nonzeropertama][0] > 0) {
-                if (AI.Matrix[nonzeropertama][0] != 1) {
-                    fx += (" " + (AI.Matrix[nonzeropertama][0]));
-                } else {
-                    if (nonzeropertama == 0) {
-                        fx += (" " + (AI.Matrix[nonzeropertama][0]));
-                    } else {
-                        fx += (" ");
-                    }
-                }
-            } else {
-                if (AI.Matrix[nonzeropertama][0] != -1) {
-                    fx += (" - " + ((-1) * AI.Matrix[nonzeropertama][0]));
-                } else {
-                    if (nonzeropertama == 0) {
-                        fx += (" - " + ((-1) * AI.Matrix[nonzeropertama][0]));
-                    } else {
-                        fx += (" - ");
-                    }
-                }    
-            }
-            
-            /* Add xk dari suku pertama */
-            if (nonzeropertama != 0) {
-                fx += ("x" + (nonzeropertama));
+            if (i == 0 || Math.abs(coefficient) != 1) {
+                fx += Math.abs(coefficient);
             }
 
-            /* Add suku-suku selanjutnya */
-            for (int i = nonzeropertama + 1; i <= AI.nRow - 1; i++) {
-                if (AI.Matrix[i][0] != 0) {
-                    /* Print koefisien dari suku */
-                    if (AI.Matrix[i][0] > 0) {
-                        if (AI.Matrix[i][0] != 1) {
-                            fx += (" + " + (AI.Matrix[i][0]));
-                        } else {
-                            if (i == 0) {
-                                fx += (" + " + (AI.Matrix[i][0]));
-                            } else {
-                                fx += (" + ");
-                            }
-                        }
-                    } else {
-                        if (AI.Matrix[i][0] != -1) {
-                            fx += (" - " + ((-1) * AI.Matrix[i][0]));
-                        } else {
-                            if (i == 0) {
-                                fx += (" - " + ((-1) * AI.Matrix[i][0]));
-                            } else {
-                                fx += (" - ");
-                            }
-                        }
-                    }
-
-                    /* Add xk dari suku-suku selanjutnya*/
-                    if (i != 0) {
-                        fx += ("x" + (i));
-                    }
-                }
+            if (i != 0) {
+                fx += "x" + i;
             }
+
+            firstTerm = false;
         }
-        return fx;
     }
+
+    return fx;
+}
+
     
     public static void RLBFile(matrix koefreg, matrix AI) {
         // Kamus Lokal
