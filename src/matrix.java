@@ -1,4 +1,4 @@
-/* Kelas ADT Matriks */
+/* ADT Matriks */
 // Import library
 
 import java.util.Scanner;
@@ -11,7 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class matrix {
-    /* CreateMatrix dengan maximal CAPACITY 100 */
+    /* Membuat matriks dengan kapasitas maksimal 100 */
     Scanner in = new Scanner(System.in);
     int CAPACITY = 100;
     double[][] Matrix = new double[CAPACITY][CAPACITY];
@@ -19,12 +19,12 @@ public class matrix {
     public int nCol = 0;
     public int nRow = 0;
 
-    // Method:
+    /* METHOD */
+
+    // Prosedur untuk mengisi elemen matriks
     public void readMatrix(int m, int n){
-        // Fungsi untuk mengisi elemen matriks
         // untuk baca matriks maksimal input 50 kolom, orang gila mana juga yang mau masukkin matrix 50 kolom lewat terminal
 
-        // Kamus Lokal
         String line;
         String[] row = new String[100];
         double[] cache = new double[50];
@@ -63,12 +63,10 @@ public class matrix {
         }
     }
 
-    /* Baca matrix dari file */
+    // Prosedur untuk membaca/mengisi elemen matriks dari file
     public void readFileMatrix(String filename){
-        // Kamus lokal
         File file = new File(filename);
 
-        // Algoritma
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
 
@@ -90,8 +88,6 @@ public class matrix {
                     this.nRow++;
                 }
             }
-
-            // Testing
             for (int i = 0; i < this.nRow; i++) {
                 for (int j = 0; j < this.nCol; j++) {
                     System.out.print(this.Matrix[i][j] + " ");
@@ -107,21 +103,21 @@ public class matrix {
         }
     }
 
+    // Prosedur untuk membaca/mengisi elemen matriks dari file yang baris paling bawahnya tidak lengkap
     public void readFileMatrixBolong(String filename, int nKosong) {
 
-        // Menerima matriks dengan baris terbawah bolong (tidak lengkap)
         /* DEFAULT nKosong
          * Interpolasi Polinom: 1
          * Bicubic Interpolation: 2
          * Regresi Linear Berganda: 1
          */
+
         // PREKONDISI: nbBolong < nCol
-        // Kamus Lokal
+
         File file = new File(filename);
         int i,j;
         int countElmt;
 
-        // Algoritma
         
         try{ // Untuk validasi dan dapat error message
             Scanner bacafile = new Scanner (file);
@@ -142,11 +138,11 @@ public class matrix {
             // Testing
             this.nCol = (countElmt + nKosong) / this.nRow ;
     
-            // close scanner
+            // Close scanner
             bacafile.close();
     
             // Membaca integer dari file
-            bacafile = new Scanner (file); // refresh dr atas
+            bacafile = new Scanner (file);
             for(i=0; i<this.nRow; i++){
                 for(j=0; j<this.nCol; j++){
                     if(bacafile.hasNextDouble()){
@@ -160,25 +156,20 @@ public class matrix {
                 this.Matrix[this.nRow - 1][k] = -999.0;
             }
 
-        // Jika file tidak ditemukan, maka output error mess
         } catch (FileNotFoundException e) {
         System.out.println(e.getMessage());}
     }
     
-    /* Write File dari matriks */
+    // Prosedur untuk menampilkan matriks dari file pada layar
     public void writeMatrixFile(matrix m){
-        // Kamus Lokal
         int i, j;
         String filename;
 
-        // Algoritma
         System.out.print("\nMasukkan nama file: ");
         filename = in.nextLine() + ".txt";
         try {
-            // Buat file
             BufferedWriter bw = new BufferedWriter(new FileWriter("./test/" + filename));
 
-            // Write Perline
             for (i= 0; i < m.nRow; i++){
                 for (j=0; j < m.nCol; j++){
                     bw.write(m.Matrix[i][j] + ((j == m.nCol-1) ? "" : " "));
@@ -188,28 +179,13 @@ public class matrix {
             bw.flush();
             bw.close();
 
-        // Handling Error
         } catch(IOException e){
             System.out.println(e.getMessage());
         }
     }
 
-    /* Fungsi untuk mendapatkan komponen matrix (siapa tau perlu) */
-    public double getComponent(int n, int m){
-        return this.Matrix[n][m];
-    }
-
-    /* Apakah matrix penuh? */
-    public boolean fullRow(){
-        return (this.nRow == CAPACITY);
-    }
-    public boolean fullCol(){
-        return (this.nCol == CAPACITY);
-    }
-
-    /* Mengecek apakah semua elemen di dalam matrix bernilai nol */
+    // Fungsi untuk mengecek apakah semua elemen di dalam matriks bernilai nol */
     public boolean isAllZero() {
-        // Mengecek apakah semua elemen dalam matriks bernilai nol
         int i, j;
         boolean foundNonZero;
         foundNonZero = false;
@@ -221,12 +197,9 @@ public class matrix {
         return !foundNonZero;
     }
 
+    // Prosedur untuk menampilkan matriks pada layar
     public void writeMatrix(){
-        /* I.S. Matriks terdefinisi */
-        /* Menuliskan matriks pada layar */
-        // Kamus Lokal
         int i, j;
-        // Algoritma
         for(i = 0; i < this.nRow; i++) {
             System.out.print("| ");
             for (j = 0; j < this.nCol; j++) {
@@ -236,30 +209,4 @@ public class matrix {
             System.out.print("|\n");
         }  
     }
-
-    /* Mengubah kapasitas matrix */
-    public void resetCap(int newCap){
-        this.CAPACITY = newCap;
-        this.Matrix = new double[CAPACITY][CAPACITY];
-        this.nRow = 0;
-        this.nCol = 0;
-    }
-
-    public static double getElement(matrix matriks, int row, int col) {
-        if (row < 0 || row >= matriks.nRow || col < 0 || col >= matriks.nCol) {
-            System.out.println("Indeks baris atau kolom tidak valid.");
-        }
-
-        return matriks.Matrix[row][col];
-    }
-    
-    public static void setElement(matrix matriks, int row, int col, double value) {
-        if (row < 0 || row >= matriks.nRow || col < 0 || col >= matriks.nCol) {
-            System.out.println("Indeks baris atau kolom tidak valid.");
-        }
-    
-        matriks.Matrix[row][col] = value;
-    }
-    
-
 }
