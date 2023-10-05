@@ -48,7 +48,7 @@ public class RegresiLinearBerganda {
             allisone.Matrix[i][0] = 1;
         }
 
-        matrix varbebas = matrixOperation.sliceLastCol(matrixOperation.concatCol(allisone,matrixOperation.sliceLastRow(mtxinput)));
+        matrix varbebas = (matrixOperation.concatCol(matrixOperation.sliceLastRow(matrixOperation.sliceLastCol(mtxinput)),allisone));
         
         return varbebas;
     }
