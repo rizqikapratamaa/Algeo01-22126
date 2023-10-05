@@ -24,7 +24,7 @@ public class rlb3 {
         matrix m1 = matrixOperation.transpose(m);
         matrix mfuc = new matrix();
         mfuc.nRow = m.nRow;
-        mfuc.nCol = m.nCol+1;
+        mfuc.nCol = m.nCol;
         for (i = 0; i < mfuc.nRow; i++) {
             for (j = 0; j < mfuc.nCol; j++) {
                 if (i == 0) {
@@ -43,9 +43,8 @@ public class rlb3 {
                 }
             }
         }
-        matrix mf = new matrix();
-        mf = matrixOperation.sliceLastRow(mfuc);
-        mf.writeMatrix();
+        
+        mfuc.writeMatrix();;
         return mfuc;
     }
 
